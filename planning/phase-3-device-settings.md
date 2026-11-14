@@ -125,9 +125,9 @@ or a clear "not configured" state.**
 | A6 | 2026-11-15 | e1218911 | Pass | `pagemind_x4pro_release` builds (RAM +96 B, flash +10.6 KB vs Phase 1); host tests 1034/1034; clang-format clean |
 | A7 | 2026-11-15 | e6c11d3b | Pass | `AiSettingsTest` setup-file cases 4/4 (valid file; 9 invalid files change nothing; oversized rejected); host tests 1038/1038 |
 | D1 | 2026-11-15 | b2fcb846 (0.0.2-dev) | Pass | Owner: all AI Assistant steps work on device (web settings entry, key shown as "(unchanged)", values kept after reboot) |
-| D2 | | | | |
+| D2 | 2026-11-15 | de5cb988 (0.0.2-dev) | Pass | `/.crosspoint/ai.json` holds `enabled`, `serverUrl`, `answerLanguage`, `apiKeySealed` (`sb1:`, 104 chars). Neither device key, nor `pm_`, `apiKey`, `Bearer` appears in it |
 | D3 | 2026-11-15 | b2fcb846 (0.0.2-dev) | Pass | Owner: AI Assistant screen and on-screen keyboard entry work on device |
 | D4 | | | | |
 | D5 | 2026-11-15 | de5cb988 (0.0.2-dev) | Pass | Owner: ~20 open/edit/back rounds. Home before: 159,500 B free, largest block 114,676 B; Home after: 159,492 B, 114,676 B; PSRAM unchanged. Serial dropped 04:51:40–04:54:05 (no reboot; uptime continuous) while most rounds ran, so the result rests on before/after Home readings |
-| D6 | | | | |
+| D6 | 2026-11-15 | de5cb988 (0.0.2-dev) | Pass | Owner copied `pagemind-ai.json` (from `rotate-key.sh add`) to the SD root; after restart the file is gone and `ai.json` has Ask AI on with the server URL and a sealed key. Which key was sealed cannot be read off-device by design; Phase 4 confirms it via the server log's device id |
 | Owner sign-off | | | | |
