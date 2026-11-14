@@ -90,8 +90,8 @@ TEST(AiSettings, KeyFromAnotherDeviceIsUnreadableNotCrash) {
 
 TEST(AiSettings, DamagedFileFallsBackToDefaults) {
   reset();
-  for (const char* bad : {"{not json", "", "[]", "{\"enabled\":\"yes\",\"serverUrl\":5}",
-                          "{\"apiKeySealed\":\"sb1:garbage\"}"}) {
+  for (const char* bad :
+       {"{not json", "", "[]", "{\"enabled\":\"yes\",\"serverUrl\":5}", "{\"apiKeySealed\":\"sb1:garbage\"}"}) {
     reset();
     loadFromString(bad);
     EXPECT_FALSE(AI_SETTINGS.isConfigured()) << bad;
@@ -137,6 +137,55 @@ TEST(AiUrl, Checks) {
 TEST(AiUrl, Normalize) {
   EXPECT_EQ(ai::normalizeServerUrl("  https://x.run.app//  "), "https://x.run.app");
   EXPECT_EQ(ai::normalizeServerUrl("https://x.run.app/v"), "https://x.run.app/v");
+}
+
+TEST(AiSetupFile, ValidFileTurnsAskAiOn) {
+  reset();
+  ASSERT_TRUE(AI_SETTINGS.applySetupJson(
+      R"({"serverUrl":"https://ai-proxy-abc-uc.a.run.app/","apiKey":" pm_fromDeploy123 ","answerLanguage":"Hindi"})"));
+  EXPECT_TRUE(AI_SETTINGS.isEnabled());
+  EXPECT_EQ(AI_SETTINGS.getServerUrl(), "https://ai-proxy-abc-uc.a.run.app");
+  EXPECT_EQ(AI_SETTINGS.getApiKey(), "pm_fromDeploy123");
+  EXPECT_EQ(AI_SETTINGS.getAnswerLanguage(), "Hindi");
+  EXPECT_TRUE(AI_SETTINGS.isConfigured());
+}
+
+TEST(AiSetupFile, LanguageIsOptionalAndKeepsCurrent) {
+  reset();
+  AI_SETTINGS.setAnswerLanguage("Hindi");
+  ASSERT_TRUE(AI_SETTINGS.applySetupJson(R"({"serverUrl":"https://x.run.app","apiKey":"pm_k"})"));
+  EXPECT_EQ(AI_SETTINGS.getAnswerLanguage(), "Hindi");
+}
+
+TEST(AiSetupFile, InvalidFilesChangeNothing) {
+  const char* bad[] = {
+      "",
+      "{not json",
+      "[]",
+      R"("just a string")",
+      R"({"apiKey":"pm_k"})",
+      R"({"serverUrl":"https://x.run.app"})",
+      R"({"serverUrl":"ftp://x","apiKey":"pm_k"})",
+      R"({"serverUrl":"https://x.run.app","apiKey":"   "})",
+      R"({"serverUrl":"https://x.run.app","apiKey":5})",
+  };
+  for (const char* json : bad) {
+    reset();
+    AI_SETTINGS.setServerUrl("https://old.run.app");
+    AI_SETTINGS.setApiKey("pm_old");
+    EXPECT_FALSE(AI_SETTINGS.applySetupJson(json)) << json;
+    EXPECT_FALSE(AI_SETTINGS.isEnabled()) << json;
+    EXPECT_EQ(AI_SETTINGS.getServerUrl(), "https://old.run.app") << json;
+    EXPECT_EQ(AI_SETTINGS.getApiKey(), "pm_old") << json;
+  }
+}
+
+TEST(AiSetupFile, OversizedFileAndKeyRejected) {
+  reset();
+  const std::string bigKey(ai::MAX_API_KEY + 1, 'k');
+  EXPECT_FALSE(AI_SETTINGS.applySetupJson(R"({"serverUrl":"https://x.run.app","apiKey":")" + bigKey + "\"}"));
+  EXPECT_FALSE(AI_SETTINGS.applySetupJson(std::string(3000, ' ')));
+  EXPECT_FALSE(AI_SETTINGS.isEnabled());
 }
 
 }  // namespace

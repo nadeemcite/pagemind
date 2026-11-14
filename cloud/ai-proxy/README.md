@@ -88,8 +88,20 @@ The script asks for the project, provider (`ollama` or `openai`) and model, then
    or reuses an existing secret (`--key-secret NAME`);
 3. creates a device API key and stores it in secret `ai-proxy-device-keys`;
 4. creates service account `ai-proxy-runtime`, allowed to read only those two secrets;
-5. deploys the service and prints the **server URL** and **device API key** to
-   enter on the e-reader.
+5. deploys the service, prints the **server URL**, and writes the e-reader setup
+   file **`pagemind-ai.json`** (server URL + device API key).
+
+### Set up the e-reader
+
+Easiest first:
+
+1. **Setup file:** copy `pagemind-ai.json` to the root of the SD card (USB Drive
+   mode, or upload it in File Transfer) and restart the reader. PageMind imports
+   it, encrypts the key, turns Ask AI on and deletes the file. Then delete your
+   computer's copy: it holds the key in plain text.
+2. **Web settings page:** start File Transfer, open the reader's address from your
+   phone or computer, go to **Settings → AI Assistant**, and paste the URL and key.
+3. **On the reader:** Settings → Network → AI Assistant (on-screen keyboard).
 
 Run it again after changes; it reuses what exists. `./deploy.sh --dry-run`
 prints every command without changing anything. All options: `./deploy.sh --help`.
@@ -105,7 +117,7 @@ Example (existing Ollama key in secret `ollama_api_key`):
 
 ```bash
 ./rotate-key.sh list            # key ids (first characters only)
-./rotate-key.sh add             # new key, printed once
+./rotate-key.sh add             # new key + a new pagemind-ai.json
 ./rotate-key.sh revoke pm_AbCdEf  # remove a key (lost or old device)
 ```
 

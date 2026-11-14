@@ -37,6 +37,12 @@ Books, fonts, settings and reading progress on the SD card are kept.
 > [CrossPoint's warning](https://github.com/crosspoint-reader/crosspoint-reader#usb-locked-devices-xteink-unlocker)
 > first and proceed at your own risk.
 
+## Ask AI setup
+
+1. Deploy your own AI server: [`cloud/ai-proxy`](cloud/ai-proxy/README.md) (`./deploy.sh`).
+2. Copy the `pagemind-ai.json` it writes to the SD card root and restart the reader.
+   Or paste the URL and key in the reader's web settings page (Settings → AI Assistant).
+
 ## Updates
 
 **Settings → Check for updates** installs the latest PageMind release from this

@@ -52,6 +52,10 @@ class AiSettingsStore : public PersistableStore<AiSettingsStore> {
   // Enabled, with a usable URL and a key.
   bool isConfigured() const;
 
+  // Applies a setup file ({"serverUrl", "apiKey", optional "answerLanguage"}):
+  // turns Ask AI on. False, with nothing changed, when the JSON, URL or key is invalid.
+  bool applySetupJson(std::string_view json);
+
  private:
   AiSettingsStore() = default;
   friend class PersistableStore<AiSettingsStore>;

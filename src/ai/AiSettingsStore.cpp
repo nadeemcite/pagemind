@@ -64,6 +64,23 @@ bool AiSettingsStore::isConfigured() const {
   return enabled && (url == ai::UrlCheck::Ok || url == ai::UrlCheck::Insecure) && !apiKey.empty();
 }
 
+bool AiSettingsStore::applySetupJson(std::string_view json) {
+  if (json.empty() || json.size() > 2048) return false;
+  JsonDocument doc;
+  if (deserializeJson(doc, json.data(), json.size()) || !doc.is<JsonObjectConst>()) return false;
+  const std::string url = ai::normalizeServerUrl(doc["serverUrl"] | "");
+  const ai::UrlCheck check = ai::checkServerUrl(url);
+  if (check != ai::UrlCheck::Ok && check != ai::UrlCheck::Insecure) return false;
+  const std::string_view key = trim(doc["apiKey"] | "");
+  if (key.empty() || key.size() > ai::MAX_API_KEY) return false;
+
+  enabled = true;
+  serverUrl = url;
+  setApiKey(key);
+  if (doc["answerLanguage"].is<const char*>()) setAnswerLanguage(doc["answerLanguage"].as<const char*>());
+  return true;
+}
+
 void AiSettingsStore::toJson(JsonDocument& doc) const {
   doc["enabled"] = enabled;
   doc["serverUrl"] = serverUrl.c_str();

@@ -15,6 +15,7 @@
 #   --key-secret NAME     secret holding the provider API key
 #                         (default: ollama-api-key or openai-api-key)
 #   --tokens-secret NAME  secret holding device API keys, default ai-proxy-device-keys
+#   --setup-file PATH     where to write the e-reader setup file, default ./pagemind-ai.json
 #   --dry-run             print what would run
 #   --yes                 do not ask for confirmation
 
@@ -27,6 +28,7 @@ PROVIDER="${AI_PROVIDER:-}"
 MODEL="${AI_MODEL:-}"
 KEY_SECRET=""
 TOKENS_SECRET="ai-proxy-device-keys"
+SETUP_FILE="$PWD/pagemind-ai.json"
 DRY_RUN=0
 ASSUME_YES=0
 SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -44,9 +46,10 @@ while [[ $# -gt 0 ]]; do
     --model) MODEL="$2"; shift 2 ;;
     --key-secret) KEY_SECRET="$2"; shift 2 ;;
     --tokens-secret) TOKENS_SECRET="$2"; shift 2 ;;
+    --setup-file) SETUP_FILE="$2"; shift 2 ;;
     --dry-run) DRY_RUN=1; shift ;;
     --yes|-y) ASSUME_YES=1; shift ;;
-    -h|--help) sed -n '2,22p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,23p' "$0"; exit 0 ;;
     *) die "unknown option: $1 (see --help)" ;;
   esac
 done
@@ -70,6 +73,16 @@ ask() {  # ask VAR "Prompt" [default]
   if [[ -n "$default" ]]; then prompt="$prompt [$default]"; fi
   read -r -p "$prompt: " reply
   printf -v "$var" '%s' "${reply:-$default}"
+}
+
+# Writes the e-reader setup file (server URL + API key). Readable only by you.
+write_setup_file() {  # write_setup_file PATH URL KEY
+  local path="$1" url="$2" key="$3"
+  (umask 077 && python3 -c 'import json,sys; json.dump({"serverUrl": sys.argv[1], "apiKey": sys.argv[2]}, open(sys.argv[3], "w"))' "$url" "$key" "$path")
+  echo "Setup file written: $path"
+  echo "  Copy it to the root of the e-reader's SD card and restart the reader."
+  echo "  PageMind imports it, encrypts the key and deletes the file."
+  echo "  Then delete this copy on your computer: it contains the key in plain text."
 }
 
 command -v gcloud >/dev/null || die "gcloud is not installed: https://cloud.google.com/sdk/docs/install"
@@ -196,11 +209,11 @@ for attempt in 1 2 3 4 5 6 7 8 9; do
 done
 
 echo
-echo "Done. On your e-reader, set:"
-echo "  AI server URL: $URL"
+echo "Done. Server URL: $URL"
 if [[ -n "$NEW_DEVICE_KEY" ]]; then
-  echo "  API key:       $NEW_DEVICE_KEY"
-  echo "This key is shown only once. It is stored in secret '$TOKENS_SECRET'."
+  write_setup_file "$SETUP_FILE" "$URL" "$NEW_DEVICE_KEY"
+  echo "Or enter the URL and this key in the reader's web settings page (shown once):"
+  echo "  API key: $NEW_DEVICE_KEY"
 else
-  echo "  API key:       your existing device key (./rotate-key.sh add creates a new one)"
+  echo "Existing device keys were kept. For a new key and setup file: ./rotate-key.sh add"
 fi
