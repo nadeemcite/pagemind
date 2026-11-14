@@ -64,6 +64,7 @@ class OllamaProvider:
 
         headers = {"Authorization": f"Bearer {settings.ollama_api_key}"} if settings.ollama_api_key else None
         self._model = settings.ollama_model
+        self._think = settings.ollama_think
         self._client = AsyncClient(host=settings.ollama_host, headers=headers, timeout=settings.provider_timeout_s)
 
     async def complete(self, system: str, user: str, max_tokens: int) -> Answer:
@@ -78,6 +79,7 @@ class OllamaProvider:
                     {"role": "user", "content": user},
                 ],
                 options={"num_predict": max_tokens},
+                think=self._think,
             )
         except (ollama.ResponseError, httpx.HTTPError) as e:
             raise ProviderError(f"Ollama error: {e.__class__.__name__}") from e

@@ -53,6 +53,7 @@ long), `422` (bad request body), `429` (rate limit), or `502` (provider failed).
 | `OLLAMA_HOST` | `https://ollama.com` | Ollama cloud, or your own Ollama server URL |
 | `OLLAMA_API_KEY` | — | Ollama cloud key (secret); not needed for your own server |
 | `OLLAMA_MODEL` | — | **Required for Ollama.** Model name available on that host |
+| `OLLAMA_THINK` | `false` | Let thinking models reason first (slower; uses the output budget) |
 | `MAX_INPUT_CHARS` | `4000` | Longest selected text |
 | `MAX_CONTEXT_CHARS` | `2000` | Longest surrounding text |
 | `MAX_OUTPUT_TOKENS` | `400` | Answer length cap |

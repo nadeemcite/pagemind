@@ -24,6 +24,10 @@ class Settings:
     ollama_host: str = field(default_factory=lambda: os.environ.get("OLLAMA_HOST", "https://ollama.com").strip())
     ollama_api_key: str = field(default_factory=lambda: os.environ.get("OLLAMA_API_KEY", "").strip())
     ollama_model: str = field(default_factory=lambda: os.environ.get("OLLAMA_MODEL", "").strip())
+    # Thinking models spend the output budget on hidden reasoning; short answers do not need it.
+    ollama_think: bool = field(
+        default_factory=lambda: os.environ.get("OLLAMA_THINK", "false").strip().lower() in ("1", "true", "yes")
+    )
 
     # Comma-separated tokens; each device sends one as "Authorization: Bearer <token>".
     device_tokens: tuple[str, ...] = field(

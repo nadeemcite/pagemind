@@ -60,6 +60,12 @@ class RateLimiter:
 
 
 def create_app(settings: Settings | None = None, provider: Provider | None = None) -> FastAPI:
+    if not log.handlers:
+        handler = logging.StreamHandler()
+        handler.setFormatter(logging.Formatter("%(levelname)s %(name)s: %(message)s"))
+        log.addHandler(handler)
+        log.setLevel(logging.INFO)
+
     settings = settings or Settings()
     problems = settings.problems()
     if problems:
