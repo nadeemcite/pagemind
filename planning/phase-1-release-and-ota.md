@@ -1,6 +1,6 @@
 # Phase 1: Fork identity, releases and OTA
 
-**Status:** In progress
+**Status:** Gate review
 
 ## Goal
 
@@ -71,7 +71,7 @@ CrossPoint.
 | D1 | Flash release `0.0.1` over USB | Boots; About shows fork name and version; books and progress intact |
 | D2 | Agent publishes `0.0.2`; then Settings → Check for updates | Offers `0.0.2`, installs, reboots into it |
 | D3 | Check for updates again | "Up to date"; never offers an official CrossPoint version |
-| D4 | Recovery | Hold the recovery button at boot (X4 Pro: Down); the device still boots the other firmware slot |
+| D4 | Recovery | Hold Down while powering on (X4 Pro); the SD-card firmware picker opens (recovery mode, `src/main.cpp`), so a `.bin` on the SD card can always be flashed |
 
 ## Gate
 
@@ -88,7 +88,7 @@ Promise for later phases: **OTA updates only ever install this fork's releases.*
 | A4 | 2026-11-15 | fdf2e8c0 | Pass | Run 43634876458 (12 min); release `PageMind 0.0.1` not prerelease; SHA-256 OK; esptool: ESP32-S3 image, checksum and hash valid |
 | A5 | 2026-11-15 | fdf2e8c0 | Pass | `./bin/clang-format-fix -g` no changes |
 | D1 | 2026-11-15 | fdf2e8c0 | Pass | Owner: flashed `pagemind_x4pro_release` over USB after backing up `/.crosspoint`; boot shows PageMind 0.0.1; About shows `PageMind 0.0.1 (CrossPoint 2.0.0)`; books and progress intact; Hindi renders |
-| D2 | | | | |
-| D3 | | | | |
-| D4 | | | | |
+| D2 | 2026-11-15 | 0.0.2 tag | Pass | Owner: Settings → Check for updates offered 0.0.2, installed over Wi-Fi, rebooted; About shows `PageMind 0.0.2 (CrossPoint 2.0.0)` |
+| D3 | 2026-11-15 | 0.0.2 tag | Pass | Owner: second check reports up to date; no official CrossPoint version offered |
+| D4 | 2026-11-15 | 0.0.2 tag | Pass | Owner: Down at power-on opens "Select firmware file (.bin)" recovery picker |
 | Owner sign-off | | | | |
