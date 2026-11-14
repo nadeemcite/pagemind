@@ -3,6 +3,8 @@
 #include <array>
 #include <utility>
 
+#include "ai/AiSettingsStore.h"
+
 void forEachBaseSetting(SettingVisitor visit, void* context) {
   // Load and save walk this list, so every condition here must be fixed before
   // settings load. Runtime probes belong in isHiddenOnDevice().
@@ -236,6 +238,39 @@ void forEachBaseSetting(SettingVisitor visit, void* context) {
   emit(SettingInfo::Value(StrId::STR_WARMTH, &CrossPointSettings::frontlightWarmth, {0, 100, 5}, "frontlightWarmth"));
 #endif
   emit(SettingInfo::Toggle(StrId::STR_FRONTLIGHT, &CrossPointSettings::frontlightOn, "frontlightOn"));
+
+  // --- AI Assistant (PageMind, uses AiSettingsStore; key is write-only on the web) ---
+  emit(SettingInfo::DynamicEnum(
+      StrId::STR_AI_ASK_AI, {StrId::STR_STATE_OFF, StrId::STR_STATE_ON},
+      [] { return static_cast<uint8_t>(AI_SETTINGS.isEnabled() ? 1 : 0); },
+      [](uint8_t v) {
+        AI_SETTINGS.setEnabled(v != 0);
+        AI_SETTINGS.saveToFile();
+      },
+      "aiEnabled", StrId::STR_AI_ASSISTANT));
+  emit(SettingInfo::DynamicString(
+      StrId::STR_AI_SERVER_URL, [] { return AI_SETTINGS.getServerUrl(); },
+      [](const std::string& v) {
+        AI_SETTINGS.setServerUrl(v);
+        AI_SETTINGS.saveToFile();
+      },
+      "aiServerUrl", StrId::STR_AI_ASSISTANT));
+  emit(SettingInfo::DynamicString(
+           StrId::STR_AI_API_KEY, [] { return AI_SETTINGS.getApiKey(); },
+           [](const std::string& v) {
+             // The web page sends this only when edited; "" comes from its Clear button.
+             AI_SETTINGS.setApiKey(v);
+             AI_SETTINGS.saveToFile();
+           },
+           "aiApiKey", StrId::STR_AI_ASSISTANT)
+           .withObfuscated());
+  emit(SettingInfo::DynamicString(
+      StrId::STR_AI_ANSWER_LANGUAGE, [] { return AI_SETTINGS.getAnswerLanguage(); },
+      [](const std::string& v) {
+        AI_SETTINGS.setAnswerLanguage(v);
+        AI_SETTINGS.saveToFile();
+      },
+      "aiAnswerLanguage", StrId::STR_AI_ASSISTANT));
 
   // --- KOReader Sync (web-only, uses KOReaderCredentialStore) ---
   emit(SettingInfo::DynamicString(

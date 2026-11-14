@@ -46,6 +46,26 @@ survives reboots and firmware updates.
 5. **Translations**
    - New `StrId` strings in `lib/I18n/translations/english.yaml` (Hindi optional).
 
+## Implementation notes (decided during the phase)
+
+- Key derivation follows the existing `lib/Epub/BookKey.cpp` scheme,
+  `sha256("ai-api-key:" || deviceSecret())`, instead of HKDF: one random 32-byte
+  secret with a distinct label needs no extra extraction step, and it keeps one
+  scheme in the codebase. Stored form: `sb1:` + base64(nonce | ciphertext | tag);
+  the label is authenticated as additional data.
+- Files: `src/ai/SecretBox.{h,cpp}`, `src/ai/AiSettingsStore.{h,cpp}`
+  (`/.crosspoint/ai.json`), `src/activities/settings/AiSettingsActivity.{h,cpp}`.
+  Upstream hooks: `SettingsActivity.{h,cpp}` (menu row), `main.cpp` (load at boot),
+  `SettingsList.cpp` (web settings), `english.yaml` (strings), `test/CMakeLists.txt`.
+- "Test connection" moves to Phase 4, which adds the HTTP client.
+- Host tests build the real wolfCrypt 5.7.2 (AES-GCM, SHA-256) and ArduinoJson 7.4.2
+  with CMake FetchContent, the same releases as the firmware.
+- A5 (web API never returns the key) is covered by code review plus device check D1:
+  the setting uses `.withObfuscated()`, for which `CrossPointWebServer` returns
+  `value: null` and `hasPassword`. A host test of the web handler would need the
+  whole web server stubbed.
+- Web "Clear" empties the key; an empty entry on the device keyboard keeps it.
+
 ## Tests and evals
 
 ### Automated (agent)
