@@ -87,7 +87,7 @@ Promise for later phases: **OTA updates only ever install this fork's releases.*
 | A3 | 2026-11-15 | fdf2e8c0 | Pass | 1014/1014 host tests |
 | A4 | 2026-11-15 | fdf2e8c0 | Pass | Run 43634876458 (12 min); release `PageMind 0.0.1` not prerelease; SHA-256 OK; esptool: ESP32-S3 image, checksum and hash valid |
 | A5 | 2026-11-15 | fdf2e8c0 | Pass | `./bin/clang-format-fix -g` no changes |
-| D1 | | | | |
+| D1 | 2026-11-15 | fdf2e8c0 | Pass | Owner: flashed `pagemind_x4pro_release` over USB after backing up `/.crosspoint`; boot shows PageMind 0.0.1; About shows `PageMind 0.0.1 (CrossPoint 2.0.0)`; books and progress intact; Hindi renders |
 | D2 | | | | |
 | D3 | | | | |
 | D4 | | | | |
