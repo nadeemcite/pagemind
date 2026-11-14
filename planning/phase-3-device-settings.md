@@ -46,6 +46,22 @@ survives reboots and firmware updates.
 5. **Translations**
    - New `StrId` strings in `lib/I18n/translations/english.yaml` (Hindi optional).
 
+## Scope change (2026-11-15, approved by owner before the work)
+
+Typing the URL and a 40+ character key on the e-ink keyboard is slow and
+error-prone. Setup order becomes:
+
+1. **SD-card setup file (new):** `deploy.sh` and `rotate-key.sh add` write
+   `pagemind-ai.json` (server URL + API key). The user copies it to the SD card
+   root. At boot PageMind imports it, seals the key, turns Ask AI on and deletes
+   the file. Code: `src/ai/AiSetupImport.{h,cpp}`; parsing in `AiSettingsStore`.
+2. **Web settings page:** paste URL and key (already built).
+3. **Device keyboard:** fallback only.
+
+New checks: **A7** (setup-file parsing host tests) and **D6** (copy the file to
+the SD card, reboot: settings appear, the file is gone). A "Set up from phone"
+QR button is a possible later improvement, not in this phase.
+
 ## Implementation notes (decided during the phase)
 
 - Key derivation follows the existing `lib/Epub/BookKey.cpp` scheme,
@@ -77,6 +93,7 @@ survives reboots and firmware updates.
 | A3 | Nonce uniqueness | 1,000 encryptions of the same key → 1,000 different ciphertexts |
 | A4 | Store load/save | Host test: save → load restores URL/enabled; damaged JSON falls back to defaults |
 | A5 | Web API never returns the key | Test the settings JSON builder: key field has `value: null` and `hasPassword: true` |
+| A7 | Setup-file import | Host test: valid file → URL, key, language set and Ask AI on; invalid URL, missing key, damaged or oversized file → rejected, nothing changed |
 | A6 | Builds and existing tests | `pio run -e x4pro`; all host tests pass; clang-format clean |
 
 ### Device (owner)
@@ -87,6 +104,7 @@ survives reboots and firmware updates.
 | D2 | Open `/.crosspoint/` AI settings file on a computer | No readable key in the file |
 | D3 | Enter settings on the device itself (on-screen keyboard) | Works in all 4 orientations |
 | D4 | OTA update to a new build (Phase 1 pipeline) | Settings survive the update |
+| D6 | SD-card setup file | Copy `pagemind-ai.json` from `deploy.sh` to the SD card root, reboot: AI Assistant shows the URL and "Saved", Ask AI is on, the file is deleted |
 | D5 | Memory | Internal heap and PSRAM free/largest block unchanged after opening and saving settings 20 times |
 
 ## Gate
@@ -105,9 +123,11 @@ or a clear "not configured" state.**
 | A4 | 2026-11-15 | e1218911 | Pass | `AiSettingsTest` 10/10: JSON round trip, plain key never in file, unreadable key flagged without crash, damaged JSON → defaults, URL checks |
 | A5 | 2026-11-15 | e1218911 | Pass (review) | `aiApiKey` uses `.withObfuscated()`; `CrossPointWebServer.cpp:1641` returns `value: null` + `hasPassword`. Confirmed on device in D1 |
 | A6 | 2026-11-15 | e1218911 | Pass | `pagemind_x4pro_release` builds (RAM +96 B, flash +10.6 KB vs Phase 1); host tests 1034/1034; clang-format clean |
+| A7 | | | | |
 | D1 | | | | |
 | D2 | | | | |
 | D3 | | | | |
 | D4 | | | | |
 | D5 | | | | |
+| D6 | | | | |
 | Owner sign-off | | | | |
