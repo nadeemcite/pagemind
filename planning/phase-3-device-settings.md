@@ -1,6 +1,6 @@
 # Phase 3: Device settings and secure key storage
 
-**Status:** Not started
+**Status:** In progress
 
 ## Goal
 

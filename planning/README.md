@@ -25,8 +25,8 @@ X4 Pro ──HTTPS, API key──▶ user's Cloud Run proxy ──provider key�
 | # | Phase | Main output | Status |
 |---|---|---|---|
 | 1 | [Fork identity, releases and OTA](phase-1-release-and-ota.md) | Fork builds and updates itself from its own GitHub releases | Complete |
-| 2 | [BYOC server: deploy tooling, contract, evals](phase-2-byoc-server.md) | A user can deploy the proxy in minutes; API contract frozen; answer-quality evals | In progress |
-| 3 | [Device settings and secure key storage](phase-3-device-settings.md) | Server URL and API key settings, key encrypted on the device | Not started |
+| 2 | [BYOC server: deploy tooling, contract, evals](phase-2-byoc-server.md) | A user can deploy the proxy in minutes; API contract frozen; answer-quality evals | Complete |
+| 3 | [Device settings and secure key storage](phase-3-device-settings.md) | Server URL and API key settings, key encrypted on the device | In progress |
 | 4 | [Device AI client](phase-4-ai-client.md) | Firmware can call the proxy and parse answers, with no UI yet | Not started |
 | 5 | [Ask AI user experience and public release](phase-5-ask-ai-ui.md) | Select text → Ask AI → answer screen; documented public release | Not started |
 

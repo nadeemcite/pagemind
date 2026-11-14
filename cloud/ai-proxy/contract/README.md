@@ -4,7 +4,7 @@ The contract between the PageMind firmware and the AI proxy. The server tests
 (`tests/test_contract.py`) and the firmware host tests (Phase 4) both read the
 files in this folder, so the two sides cannot drift apart.
 
-**Status: frozen at the end of Phase 2.** Changing it afterwards needs a new
+**Status: frozen (Phase 2 complete, 2026-11-15).** Changing it afterwards needs a new
 version (`/v2/...`, `"api": 2`) and a note in `planning/phase-2-byoc-server.md`.
 
 ## Endpoints

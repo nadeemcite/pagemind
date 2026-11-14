@@ -1,6 +1,6 @@
 # Phase 2: BYOC server, deploy tooling, API contract and evals
 
-**Status:** In progress
+**Status:** Complete
 
 ## Goal
 
@@ -92,7 +92,7 @@ gate needs a new contract version and a note in this file.
 | L2 | 2026-11-15 | e61c5f3a | Pass | Second run reused secrets and service account (1 secret version, 1 account), new revision, no errors |
 | L3 | 2026-11-15 | e61c5f3a | Pass | Wrong key and no key → 401; `rotate-key.sh add` key → 200; after `revoke` → 401; original key still 200 |
 | L4 | 2026-11-15 | e61c5f3a | Pass | 4001-char text → 413 `text_too_long`; 40 KB body → 413 `body_too_large`; requests 11–12 in one minute → 429 `rate_limited` |
-| L5 | | | Pending | OpenAI not configured; owner to decide: skip or provide a key |
+| L5 | 2026-11-15 | cc8f9167 | Skipped | Owner decision: OpenAI not configured. OpenAI code path covered only by automated tests; run `evals/run_evals.py` against an OpenAI deploy before relying on it |
 | L6 | 2026-11-15 | e61c5f3a | Pass | Ollama `glm-5.3-flash`: 33/33 (100%), p50 1.1 s, p95 2.1 s; spoiler and injection answers checked by hand. Report `cloud/ai-proxy/evals/reports/20261114T211034Z-ollama-glm-5.3-flash.json` |
 | L7 | 2026-11-15 | e61c5f3a | Pass | 191 Cloud Logging entries: 42 structured `ask` entries with sizes/timing only; no book text, answers, keys or `Bearer` found |
-| Owner sign-off | | | | |
+| Owner sign-off | 2026-11-15 | cc8f9167 | Complete | Owner approved; API contract v1 frozen |
