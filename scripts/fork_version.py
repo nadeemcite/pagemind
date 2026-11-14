@@ -1,8 +1,8 @@
 """
-PlatformIO pre-build script for NCrossPoint (ncp_*) environments.
+PlatformIO pre-build script for PageMind (pagemind_*) environments.
 
 Replaces CROSSPOINT_VERSION with the fork version from platformio.fork.ini
-([ncrosspoint] version) and adds CROSSPOINT_UPSTREAM_VERSION from
+([pagemind] version) and adds CROSSPOINT_UPSTREAM_VERSION from
 platformio.ini ([crosspoint] version). Development envs get "-dev-<sha>".
 
 OTA compares CROSSPOINT_VERSION with release tags as major.minor.patch,
@@ -36,7 +36,7 @@ def is_version_define(define):
 
 def setup(env):
     project_dir = env['PROJECT_DIR']
-    fork_version = read_option(os.path.join(project_dir, 'platformio.fork.ini'), 'ncrosspoint', 'version')
+    fork_version = read_option(os.path.join(project_dir, 'platformio.fork.ini'), 'pagemind', 'version')
     upstream_version = read_option(os.path.join(project_dir, 'platformio.ini'), 'crosspoint', 'version')
     if env.GetProjectOption('custom_fork_release', 'no') != 'yes':
         fork_version = f'{fork_version}-dev-{short_sha(project_dir)}'
@@ -54,7 +54,7 @@ def setup(env):
         return version_env.Object(node)
 
     env.AddBuildMiddleware(add_version)
-    print(f'NCrossPoint build version: {fork_version} (CrossPoint {upstream_version})')
+    print(f'PageMind build version: {fork_version} (CrossPoint {upstream_version})')
 
 
 Import('env')  # noqa: F821  # type: ignore[name-defined]

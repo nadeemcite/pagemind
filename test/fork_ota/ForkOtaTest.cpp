@@ -14,7 +14,8 @@ std::string releaseJson(const std::string& tag, const std::vector<std::string>& 
   std::string json = R"({"tag_name":")" + tag + R"(","prerelease":false,"assets":[)";
   for (size_t i = 0; i < assets.size(); i++) {
     if (i) json += ",";
-    json += R"({"name":")" + assets[i] + R"(","size":5443264,"browser_download_url":"https://github.com/nadeemcite/ncrosspoint/releases/download/)" +
+    json += R"({"name":")" + assets[i] +
+            R"(","size":5443264,"browser_download_url":"https://github.com/nadeemcite/pagemind/releases/download/)" +
             tag + "/" + assets[i] + R"("})";
   }
   return json + "]}";
@@ -46,14 +47,14 @@ Check runCheck(const std::string& json, const char* boardSuffix) {
 }  // namespace
 
 TEST(ForkOta, ReleasesUrlPointsAtFork) {
-  EXPECT_STREQ(FORK_OTA_RELEASES_URL, "https://api.github.com/repos/nadeemcite/ncrosspoint/releases/latest");
+  EXPECT_STREQ(FORK_OTA_RELEASES_URL, "https://api.github.com/repos/nadeemcite/pagemind/releases/latest");
   EXPECT_EQ(std::string(FORK_OTA_RELEASES_URL).find("crosspoint-reader/crosspoint-reader"), std::string::npos);
 }
 
 TEST(ForkOta, AssetName) {
   char out[48];
   ASSERT_TRUE(fork_identity::otaAssetName(out, sizeof(out), "0.1.0", "-x4pro"));
-  EXPECT_STREQ(out, "ncrosspoint-0.1.0-x4pro.bin");
+  EXPECT_STREQ(out, "pagemind-0.1.0-x4pro.bin");
 }
 
 TEST(ForkOta, AssetNameTooLongFails) {
@@ -61,14 +62,14 @@ TEST(ForkOta, AssetNameTooLongFails) {
   EXPECT_FALSE(fork_identity::otaAssetName(out, sizeof(out), "0.1.0", "-x4pro"));
 }
 
-TEST(ForkOta, DisplayVersion) { EXPECT_STREQ(FORK_DISPLAY_VERSION, "NCrossPoint 0.0.1 (CrossPoint 2.0.0)"); }
+TEST(ForkOta, DisplayVersion) { EXPECT_STREQ(FORK_DISPLAY_VERSION, "PageMind 0.0.1 (CrossPoint 2.0.0)"); }
 
 TEST(ForkOta, FindsForkAssetForThisBoard) {
-  const auto json = releaseJson("0.0.2", {"ncrosspoint-0.0.2-sticky.bin", "ncrosspoint-0.0.2-x4pro.bin"});
+  const auto json = releaseJson("0.0.2", {"pagemind-0.0.2-sticky.bin", "pagemind-0.0.2-x4pro.bin"});
   const Check c = runCheck(json, "-x4pro");
   EXPECT_TRUE(c.tagFound);
   ASSERT_TRUE(c.firmwareFound);
-  EXPECT_EQ(c.url, "https://github.com/nadeemcite/ncrosspoint/releases/download/0.0.2/ncrosspoint-0.0.2-x4pro.bin");
+  EXPECT_EQ(c.url, "https://github.com/nadeemcite/pagemind/releases/download/0.0.2/pagemind-0.0.2-x4pro.bin");
 }
 
 TEST(ForkOta, IgnoresOfficialCrossPointAssets) {
@@ -79,6 +80,6 @@ TEST(ForkOta, IgnoresOfficialCrossPointAssets) {
 }
 
 TEST(ForkOta, IgnoresOtherBoards) {
-  const auto json = releaseJson("0.0.2", {"ncrosspoint-0.0.2-sticky.bin"});
+  const auto json = releaseJson("0.0.2", {"pagemind-0.0.2-sticky.bin"});
   EXPECT_FALSE(runCheck(json, "-x4pro").firmwareFound);
 }

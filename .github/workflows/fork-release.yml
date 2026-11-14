@@ -1,8 +1,8 @@
-name: NCrossPoint release
+name: PageMind release
 
-# Push a tag equal to [ncrosspoint] version in platformio.fork.ini (e.g. 0.1.0,
+# Push a tag equal to [pagemind] version in platformio.fork.ini (e.g. 0.1.0,
 # no "v") to build the firmware and publish a GitHub release. Devices running
-# NCrossPoint update from the latest non-prerelease release.
+# PageMind update from the latest non-prerelease release.
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - env: ncp_x4pro_release
+          - env: pagemind_x4pro_release
             device: x4pro
     steps:
       - uses: actions/checkout@v6
@@ -61,7 +61,7 @@ jobs:
       - name: Prepare firmware asset
         id: asset
         run: |
-          asset="ncrosspoint-${GITHUB_REF_NAME}-${{ matrix.device }}.bin"
+          asset="pagemind-${GITHUB_REF_NAME}-${{ matrix.device }}.bin"
           cp ".pio/build/${{ matrix.env }}/firmware.bin" "$asset"
           sha256sum "$asset" | tee "$asset.sha256"
           echo "name=$asset" >> "$GITHUB_OUTPUT"
@@ -72,6 +72,6 @@ jobs:
           ASSET: ${{ steps.asset.outputs.name }}
         run: |
           gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || \
-            gh release create "$GITHUB_REF_NAME" --title "NCrossPoint ${GITHUB_REF_NAME}" \
-              --notes "NCrossPoint ${GITHUB_REF_NAME} for Xteink X4 Pro. Based on CrossPoint Reader; not an official CrossPoint release. Install: see FORK.md."
+            gh release create "$GITHUB_REF_NAME" --title "PageMind ${GITHUB_REF_NAME}" \
+              --notes "PageMind ${GITHUB_REF_NAME} for Xteink X4 Pro. Based on CrossPoint Reader; not an official CrossPoint release. Install: see FORK.md."
           gh release upload "$GITHUB_REF_NAME" "$ASSET" "$ASSET.sha256" --clobber

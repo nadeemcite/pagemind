@@ -31,7 +31,7 @@ CrossPoint.
      (default: no).
 3. **Release pipeline**
    - New workflow `.github/workflows/fork-release.yml` (new file, so upstream
-     workflow changes never conflict): on a numeric tag like `0.1.0`, build `ncp_x4pro_release`, name the asset to
+     workflow changes never conflict): on a numeric tag like `0.1.0`, build `pagemind_x4pro_release`, name the asset to
      match the OTA pattern, publish a GitHub release with notes.
    - Disable upstream release workflows in the fork (they publish CrossPoint names).
 4. **Docs**
@@ -44,10 +44,12 @@ CrossPoint.
   compares `major.minor.patch` numerically and GitHub's `releases/latest` skips
   pre-releases. Test releases are therefore real releases `0.0.1` and `0.0.2`.
 - Fork values live in `src/fork/ForkIdentity.h`; build targets in `platformio.fork.ini`
-  (`ncp_x4pro`, `ncp_x4pro_release`); `scripts/fork_version.py` sets the version.
+  (`pagemind_x4pro`, `pagemind_x4pro_release`); `scripts/fork_version.py` sets the version.
 - Upstream file hooks: `OtaUpdater.cpp` (URL + asset name), `AboutActivity.cpp`,
   `BootActivity.cpp`, `SleepActivity.cpp` (name), `platformio.ini` (`extra_configs`),
   `test/CMakeLists.txt` (one line).
+- Name changed from NCrossPoint to **PageMind** (repo `nadeemcite/pagemind`) before any
+  device installed a release, so no OTA transition was needed. Checks A1–A5 were rerun.
 - A2 uses a new test folder `test/fork_ota` instead of editing the upstream test.
 
 ## Tests and evals
@@ -56,10 +58,10 @@ CrossPoint.
 
 | ID | Check | How |
 |---|---|---|
-| A1 | Firmware builds | `pio run -e ncp_x4pro_release` succeeds; firmware contains the fork OTA URL and no upstream releases URL |
-| A2 | Release JSON parsing finds the fork asset name | Host test `test/fork_ota`: fork release JSON (asset `ncrosspoint-0.0.2-x4pro.bin`) is found; official CrossPoint assets and other boards are ignored |
+| A1 | Firmware builds | `pio run -e pagemind_x4pro_release` succeeds; firmware contains the fork OTA URL and no upstream releases URL |
+| A2 | Release JSON parsing finds the fork asset name | Host test `test/fork_ota`: fork release JSON (asset `pagemind-0.0.2-x4pro.bin`) is found; official CrossPoint assets and other boards are ignored |
 | A3 | All host tests pass | CMake/CTest command in `test/README` |
-| A4 | Release workflow works | Push tag `0.0.1`; workflow publishes release `0.0.1` with `ncrosspoint-0.0.1-x4pro.bin` and its `.sha256`; downloaded file matches the checksum |
+| A4 | Release workflow works | Push tag `0.0.1`; workflow publishes release `0.0.1` with `pagemind-0.0.1-x4pro.bin` and its `.sha256`; downloaded file matches the checksum |
 | A5 | Formatting | `./bin/clang-format-fix -g` reports no changes |
 
 ### Device (owner)
@@ -80,7 +82,7 @@ Promise for later phases: **OTA updates only ever install this fork's releases.*
 
 | Check | Date | Commit | Result | Log / notes |
 |---|---|---|---|---|
-| A1 | 2026-11-14 | 199166e4 | Pass | `ncp_x4pro_release`: RAM 34.1%, flash 83.3%; fork OTA URL present, upstream URL absent |
+| A1 | 2026-11-14 | 199166e4 | Pass | `pagemind_x4pro_release`: RAM 34.1%, flash 83.3%; fork OTA URL present, upstream URL absent |
 | A2 | 2026-11-14 | 199166e4 | Pass | `test/fork_ota`: 7/7 |
 | A3 | 2026-11-14 | 199166e4 | Pass | 1014/1014 host tests |
 | A4 | 2026-11-14 | 199166e4 | Pass | Run 43633048878 (13.5 min); release `0.0.1` not prerelease; SHA-256 OK; esptool: ESP32-S3 image, checksum and hash valid |
