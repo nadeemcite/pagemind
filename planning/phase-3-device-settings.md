@@ -99,12 +99,12 @@ or a clear "not configured" state.**
 
 | Check | Date | Commit | Result | Log / notes |
 |---|---|---|---|---|
-| A1 | | | | |
-| A2 | | | | |
-| A3 | | | | |
-| A4 | | | | |
-| A5 | | | | |
-| A6 | | | | |
+| A1 | 2026-11-15 | e1218911 | Pass | `AiSecretBoxTest` (real wolfCrypt 5.7.2): round trip incl. lengths 1–512, empty/too-long rejected |
+| A2 | 2026-11-15 | e1218911 | Pass | Every flipped byte, other device secret, other label, missing secret, truncated/malformed input → clean failure, output cleared |
+| A3 | 2026-11-15 | e1218911 | Pass | 1,000 seals of the same key → 1,000 distinct values |
+| A4 | 2026-11-15 | e1218911 | Pass | `AiSettingsTest` 10/10: JSON round trip, plain key never in file, unreadable key flagged without crash, damaged JSON → defaults, URL checks |
+| A5 | 2026-11-15 | e1218911 | Pass (review) | `aiApiKey` uses `.withObfuscated()`; `CrossPointWebServer.cpp:1641` returns `value: null` + `hasPassword`. Confirmed on device in D1 |
+| A6 | 2026-11-15 | e1218911 | Pass | `pagemind_x4pro_release` builds (RAM +96 B, flash +10.6 KB vs Phase 1); host tests 1034/1034; clang-format clean |
 | D1 | | | | |
 | D2 | | | | |
 | D3 | | | | |
