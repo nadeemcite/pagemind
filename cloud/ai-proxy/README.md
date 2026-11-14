@@ -21,7 +21,7 @@ Contract v1, with JSON schemas and example files: [`contract/README.md`](contrac
 
 | Endpoint | Auth | Returns |
 |---|---|---|
-| `GET /healthz` | none | `{"ok": true}` |
+| `GET /health` | none | `{"ok": true}` |
 | `GET /v1/info` | `Authorization: Bearer <api key>` | server limits, provider and model (also a key check) |
 | `POST /v1/ask` | `Authorization: Bearer <api key>` | `{"answer": "...", "model": "...", "truncated": false}` |
 

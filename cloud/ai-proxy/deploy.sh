@@ -152,9 +152,21 @@ if [[ $LOGGED_IN -eq 1 ]] && "${G[@]}" iam service-accounts describe "$RUNTIME_S
 else
   run "${G[@]}" iam service-accounts create "$RUNTIME_SA_NAME" --display-name "PageMind AI proxy runtime"
 fi
+# A new service account can take up to a minute to become usable for IAM bindings.
+grant_secret_access() {
+  local secret="$1" attempt
+  for attempt in 1 2 3 4 5 6 7 8; do
+    if run_quiet "${G[@]}" secrets add-iam-policy-binding "$secret" \
+         --member "serviceAccount:$RUNTIME_SA" --role roles/secretmanager.secretAccessor 2>/dev/null; then
+      return 0
+    fi
+    echo "    service account not ready yet, retrying in 10s ($attempt/8)"
+    sleep 10
+  done
+  die "could not grant $RUNTIME_SA access to secret $secret"
+}
 for s in "$KEY_SECRET" "$TOKENS_SECRET"; do
-  run_quiet "${G[@]}" secrets add-iam-policy-binding "$s" \
-    --member "serviceAccount:$RUNTIME_SA" --role roles/secretmanager.secretAccessor
+  grant_secret_access "$s"
 done
 
 info "Deploying to Cloud Run (builds the container with Cloud Build; takes a few minutes)"
@@ -174,8 +186,14 @@ if [[ $DRY_RUN -eq 1 ]]; then
 fi
 
 URL="$("${G[@]}" run services describe "$SERVICE" --region "$REGION" --format 'value(status.url)')"
-info "Checking $URL/healthz"
-curl -fsS --max-time 30 "$URL/healthz" && echo
+# A new service's public access can take a minute to apply; retry before reporting a failure.
+info "Checking $URL/health"
+for attempt in 1 2 3 4 5 6 7 8 9; do
+  if curl -fsS --max-time 30 "$URL/health"; then echo; break; fi
+  [[ $attempt -lt 9 ]] || die "service did not answer on $URL/health; check: gcloud run services logs read $SERVICE --region $REGION --project $PROJECT"
+  echo "    not reachable yet, retrying in 10s ($attempt/8)"
+  sleep 10
+done
 
 echo
 echo "Done. On your e-reader, set:"

@@ -1,6 +1,6 @@
 """HTTP API used by the e-reader (contract v1, see contract/README.md).
 
-GET  /healthz                              -> {"ok": true}
+GET  /health                              -> {"ok": true}
 GET  /v1/info   (Authorization: Bearer)    -> server limits; doubles as a key check
 POST /v1/ask    (Authorization: Bearer)    -> {"answer": "...", "model": "...", "truncated": false}
 
@@ -148,8 +148,8 @@ def create_app(settings: Settings | None = None, provider: Provider | None = Non
                     return hashlib.sha256(token.encode()).hexdigest()[:12]
         raise HTTPException(status_code=401, detail="unauthorized")
 
-    @app.get("/healthz")
-    async def healthz() -> dict:
+    @app.get("/health")
+    async def health() -> dict:
         return {"ok": True}
 
     @app.get("/v1/info", response_model=InfoResponse)

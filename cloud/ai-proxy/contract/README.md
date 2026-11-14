@@ -11,12 +11,15 @@ version (`/v2/...`, `"api": 2`) and a note in `planning/phase-2-byoc-server.md`.
 
 | Method and path | Auth | Success | Schema |
 |---|---|---|---|
-| `GET /healthz` | none | `200 {"ok": true}` | — |
+| `GET /health` | none | `200 {"ok": true}` | — |
 | `GET /v1/info` | `Authorization: Bearer <api key>` | `200` server limits | `info-response.schema.json` |
 | `POST /v1/ask` | `Authorization: Bearer <api key>` | `200` answer | request `ask-request.schema.json`, response `ask-response.schema.json` |
 
 The device calls `/v1/info` for "Test connection": a `200` proves the URL and key
 are right, and gives the limits it must trim text to.
+
+Not `/healthz`: Cloud Run reserves some paths ending in `z` and answers them
+with its own 404.
 
 ## Requests
 
@@ -42,6 +45,12 @@ Every error is `{"error": "<code>"}`:
 Any other status (for example a Cloud Run 503 during a cold start, or 5xx from
 Google's front end) has no guaranteed body; the device treats it as
 "server unavailable".
+
+Only a JSON body with an `error` code above comes from the proxy. Google's front
+end can also answer with an HTML page, for example `401` while a new service's
+public access is still being applied, or `404` for a reserved path. The device
+must treat any response without a valid JSON `error` body as "server
+unavailable", never as "wrong API key".
 
 ## Fixtures
 

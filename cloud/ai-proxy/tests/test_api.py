@@ -31,7 +31,7 @@ def make_client(provider=None, **overrides) -> tuple[TestClient, FakeProvider]:
 
 def test_health_needs_no_token():
     client, _ = make_client()
-    assert client.get("/healthz").json() == {"ok": True}
+    assert client.get("/health").json() == {"ok": True}
 
 
 def test_ask_returns_answer():
