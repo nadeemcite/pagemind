@@ -58,11 +58,11 @@ CrossPoint.
 
 | ID | Check | How |
 |---|---|---|
-| A1 | 2026-11-15 | fdf2e8c0 | Pass | `pagemind_x4pro_release`: RAM 34.1%, flash 83.3%; only the PageMind OTA URL present |
-| A2 | 2026-11-15 | fdf2e8c0 | Pass | `test/fork_ota`: 7/7 |
-| A3 | 2026-11-15 | fdf2e8c0 | Pass | 1014/1014 host tests |
-| A4 | 2026-11-15 | fdf2e8c0 | Pass | Run 43634876458 (12 min); release `PageMind 0.0.1` not prerelease; SHA-256 OK; esptool: ESP32-S3 image, checksum and hash valid |
-| A5 | 2026-11-15 | fdf2e8c0 | Pass | `./bin/clang-format-fix -g` no changes |
+| A1 | Firmware builds | `pio run -e pagemind_x4pro_release` succeeds; firmware contains the fork OTA URL and no upstream releases URL |
+| A2 | Release JSON parsing finds the fork asset name | Host test `test/fork_ota`: fork release JSON (asset `pagemind-0.0.2-x4pro.bin`) is found; official CrossPoint assets and other boards are ignored |
+| A3 | All host tests pass | CMake/CTest command in `test/README` |
+| A4 | Release workflow works | Push tag `0.0.1`; workflow publishes release `0.0.1` with `pagemind-0.0.1-x4pro.bin` and its `.sha256`; downloaded file matches the checksum |
+| A5 | Formatting | `./bin/clang-format-fix -g` reports no changes |
 
 ### Device (owner)
 
@@ -82,11 +82,11 @@ Promise for later phases: **OTA updates only ever install this fork's releases.*
 
 | Check | Date | Commit | Result | Log / notes |
 |---|---|---|---|---|
-| A1 | 2026-11-14 | 199166e4 | Pass | `pagemind_x4pro_release`: RAM 34.1%, flash 83.3%; fork OTA URL present, upstream URL absent |
-| A2 | 2026-11-14 | 199166e4 | Pass | `test/fork_ota`: 7/7 |
-| A3 | 2026-11-14 | 199166e4 | Pass | 1014/1014 host tests |
-| A4 | 2026-11-14 | 199166e4 | Pass | Run 43633048878 (13.5 min); release `0.0.1` not prerelease; SHA-256 OK; esptool: ESP32-S3 image, checksum and hash valid |
-| A5 | 2026-11-14 | 199166e4 | Pass | `./bin/clang-format-fix -g` no changes |
+| A1 | 2026-11-15 | fdf2e8c0 | Pass | `pagemind_x4pro_release`: RAM 34.1%, flash 83.3%; only the PageMind OTA URL present |
+| A2 | 2026-11-15 | fdf2e8c0 | Pass | `test/fork_ota`: 7/7 |
+| A3 | 2026-11-15 | fdf2e8c0 | Pass | 1014/1014 host tests |
+| A4 | 2026-11-15 | fdf2e8c0 | Pass | Run 43634876458 (12 min); release `PageMind 0.0.1` not prerelease; SHA-256 OK; esptool: ESP32-S3 image, checksum and hash valid |
+| A5 | 2026-11-15 | fdf2e8c0 | Pass | `./bin/clang-format-fix -g` no changes |
 | D1 | | | | |
 | D2 | | | | |
 | D3 | | | | |
