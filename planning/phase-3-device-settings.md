@@ -128,6 +128,6 @@ or a clear "not configured" state.**
 | D2 | | | | |
 | D3 | 2026-11-15 | b2fcb846 (0.0.2-dev) | Pass | Owner: AI Assistant screen and on-screen keyboard entry work on device |
 | D4 | | | | |
-| D5 | | | | |
+| D5 | 2026-11-15 | de5cb988 (0.0.2-dev) | Pass | Owner: ~20 open/edit/back rounds. Home before: 159,500 B free, largest block 114,676 B; Home after: 159,492 B, 114,676 B; PSRAM unchanged. Serial dropped 04:51:40–04:54:05 (no reboot; uptime continuous) while most rounds ran, so the result rests on before/after Home readings |
 | D6 | | | | |
 | Owner sign-off | | | | |
