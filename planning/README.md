@@ -65,8 +65,8 @@ Status values: `Not started` → `In progress` → `Gate review` → `Complete`.
 | Decision | Status | Needed by |
 |---|---|---|
 | Firmware name (repo name, release files, About screen, OTA) | **Open** | Phase 1 |
-| Google Cloud project and region for the owner's own proxy | **Open** | Phase 2 gate |
-| First provider and model for evals | **Open** | Phase 2 gate |
+| Google Cloud project and region for the owner's own proxy | `nadeem-personal`, `us-central1` | Done |
+| First provider and model for evals | Ollama cloud, `glm-5.3-flash:cloud` (exact model name to confirm at first deploy) | Done |
 | Target devices for public releases | X4 Pro only at first | Phase 1 |
 | Upstream base | `upstream/develop` + PR #3787 (Indic) | Done |
 | Proxy stack | Python FastAPI on Cloud Run, OpenAI + Ollama | Done |
