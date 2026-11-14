@@ -80,11 +80,11 @@ Promise for later phases: **OTA updates only ever install this fork's releases.*
 
 | Check | Date | Commit | Result | Log / notes |
 |---|---|---|---|---|
-| A1 | | | | |
-| A2 | | | | |
-| A3 | | | | |
-| A4 | | | | |
-| A5 | | | | |
+| A1 | 2026-11-14 | 199166e4 | Pass | `ncp_x4pro_release`: RAM 34.1%, flash 83.3%; fork OTA URL present, upstream URL absent |
+| A2 | 2026-11-14 | 199166e4 | Pass | `test/fork_ota`: 7/7 |
+| A3 | 2026-11-14 | 199166e4 | Pass | 1014/1014 host tests |
+| A4 | 2026-11-14 | 199166e4 | Pass | Run 43633048878 (13.5 min); release `0.0.1` not prerelease; SHA-256 OK; esptool: ESP32-S3 image, checksum and hash valid |
+| A5 | 2026-11-14 | 199166e4 | Pass | `./bin/clang-format-fix -g` no changes |
 | D1 | | | | |
 | D2 | | | | |
 | D3 | | | | |
