@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pagemind/ai-proxy/v1/error",
+  "title": "Error response (contract v1)",
+  "type": "object",
+  "required": ["error"],
+  "properties": {
+    "error": {
+      "enum": ["unauthorized", "invalid_request", "body_too_large", "text_too_long",
+               "context_too_long", "rate_limited", "provider_error"]
+    }
+  }
+}

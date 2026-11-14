@@ -41,6 +41,8 @@ class Settings:
     max_context_chars: int = field(default_factory=lambda: _int("MAX_CONTEXT_CHARS", 2000))
     max_output_tokens: int = field(default_factory=lambda: _int("MAX_OUTPUT_TOKENS", 400))
     requests_per_minute: int = field(default_factory=lambda: _int("REQUESTS_PER_MINUTE", 10))
+    # Raw request body cap, checked before JSON parsing (UTF-8 and JSON escapes make bytes > chars).
+    max_body_bytes: int = field(default_factory=lambda: _int("MAX_BODY_BYTES", 32768))
     provider_timeout_s: int = field(default_factory=lambda: _int("PROVIDER_TIMEOUT_S", 30))
 
     def problems(self) -> list[str]:

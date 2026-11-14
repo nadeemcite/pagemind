@@ -1,0 +1,49 @@
+# AI proxy API contract v1
+
+The contract between the PageMind firmware and the AI proxy. The server tests
+(`tests/test_contract.py`) and the firmware host tests (Phase 4) both read the
+files in this folder, so the two sides cannot drift apart.
+
+**Status: frozen at the end of Phase 2.** Changing it afterwards needs a new
+version (`/v2/...`, `"api": 2`) and a note in `planning/phase-2-byoc-server.md`.
+
+## Endpoints
+
+| Method and path | Auth | Success | Schema |
+|---|---|---|---|
+| `GET /healthz` | none | `200 {"ok": true}` | — |
+| `GET /v1/info` | `Authorization: Bearer <api key>` | `200` server limits | `info-response.schema.json` |
+| `POST /v1/ask` | `Authorization: Bearer <api key>` | `200` answer | request `ask-request.schema.json`, response `ask-response.schema.json` |
+
+The device calls `/v1/info` for "Test connection": a `200` proves the URL and key
+are right, and gives the limits it must trim text to.
+
+## Requests
+
+- Body is UTF-8 JSON, at most 32,768 bytes (server setting `MAX_BODY_BYTES`).
+- `text` is required. Lengths are counted in Unicode characters.
+- Unknown fields are rejected by the schema; the server ignores them, so the
+  device must not send any.
+
+## Errors
+
+Every error is `{"error": "<code>"}`:
+
+| Status | Code | Device message (meaning) |
+|---|---|---|
+| 401 | `unauthorized` | Wrong or revoked API key |
+| 413 | `body_too_large` | Request too big |
+| 413 | `text_too_long` | Selection too long |
+| 413 | `context_too_long` | Context too long (device trimming bug) |
+| 422 | `invalid_request` | Malformed request (device bug) |
+| 429 | `rate_limited` | Too many requests, wait a minute |
+| 502 | `provider_error` | AI provider failed, try again |
+
+Any other status (for example a Cloud Run 503 during a cold start, or 5xx from
+Google's front end) has no guaranteed body; the device treats it as
+"server unavailable".
+
+## Fixtures
+
+`fixtures/requests/*.json` are valid requests, `fixtures/responses/*.json` valid
+`200` bodies, and `fixtures/errors/<status>-<code>.json` every error body.

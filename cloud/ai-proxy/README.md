@@ -1,4 +1,4 @@
-# CrossPoint AI proxy
+# PageMind AI proxy
 
 A small server that the e-reader calls for "Ask AI". The device sends the selected
 text; the proxy adds the prompt, calls the AI provider, and returns a short
@@ -17,29 +17,17 @@ Why a proxy:
 
 ## API
 
-`POST /v1/ask` with `Authorization: Bearer <device token>`
+Contract v1, with JSON schemas and example files: [`contract/README.md`](contract/README.md).
 
-```json
-{
-  "task": "explain",            // explain | define | translate | ask
-  "text": "selected text",      // required, up to MAX_INPUT_CHARS
-  "context": "nearby text",     // optional, up to MAX_CONTEXT_CHARS
-  "question": "why?",           // only used by task "ask"
-  "language": "Hindi",          // language of the answer (optional)
-  "book_title": "...", "book_author": "..."   // optional
-}
-```
+| Endpoint | Auth | Returns |
+|---|---|---|
+| `GET /healthz` | none | `{"ok": true}` |
+| `GET /v1/info` | `Authorization: Bearer <api key>` | server limits, provider and model (also a key check) |
+| `POST /v1/ask` | `Authorization: Bearer <api key>` | `{"answer": "...", "model": "...", "truncated": false}` |
 
-Response `200`:
-
-```json
-{ "answer": "plain text", "model": "model-name", "truncated": false }
-```
-
-Errors return `{"error": "..."}` with status `401` (bad token), `413` (text too
-long), `422` (bad request body), `429` (rate limit), or `502` (provider failed).
-
-`GET /healthz` returns `{"ok": true}` without a token.
+`/v1/ask` body: `task` (`explain`, `define`, `translate`, `ask`), `text` (required),
+and optional `context`, `question`, `language`, `book_title`, `book_author`.
+Errors are `{"error": "<code>"}`; the codes are listed in the contract.
 
 ## Configuration (environment variables)
 
@@ -58,6 +46,7 @@ long), `422` (bad request body), `429` (rate limit), or `502` (provider failed).
 | `MAX_CONTEXT_CHARS` | `2000` | Longest surrounding text |
 | `MAX_OUTPUT_TOKENS` | `400` | Answer length cap |
 | `REQUESTS_PER_MINUTE` | `10` | Per device token |
+| `MAX_BODY_BYTES` | `32768` | Largest request body, checked before parsing |
 | `PROVIDER_TIMEOUT_S` | `30` | Provider request timeout |
 
 The service refuses to start if required settings are missing.
@@ -84,58 +73,57 @@ curl -s localhost:8080/v1/ask -H 'Authorization: Bearer dev123' \
 
 ## Deploy to Google Cloud Run
 
-One-time setup (replace `PROJECT_ID`; pick a region near you, e.g. `asia-south1`):
+You need a Google Cloud project with billing turned on, `gcloud` installed and
+logged in (`gcloud auth login`), and an API key from your provider.
 
 ```bash
-gcloud auth login
-gcloud config set project PROJECT_ID
-gcloud services enable run.googleapis.com cloudbuild.googleapis.com \
-  artifactregistry.googleapis.com secretmanager.googleapis.com
-
-# A random device token (keep it; you will enter it on the e-reader)
-python3 -c "import secrets; print(secrets.token_urlsafe(32))"
-
-# Store secrets (you will be prompted to paste each value; nothing goes in shell history)
-gcloud secrets create device-tokens --data-file=-
-gcloud secrets create openai-api-key --data-file=-     # if using OpenAI
-gcloud secrets create ollama-api-key --data-file=-     # if using Ollama cloud
-
-# Let Cloud Run's runtime account read them
-PROJECT_NUMBER=$(gcloud projects describe PROJECT_ID --format='value(projectNumber)')
-for s in device-tokens openai-api-key; do
-  gcloud secrets add-iam-policy-binding $s \
-    --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
-    --role=roles/secretmanager.secretAccessor
-done
+cd cloud/ai-proxy
+./deploy.sh
 ```
 
-Deploy (from the repo root; run again after any change):
+The script asks for the project, provider (`ollama` or `openai`) and model, then:
+
+1. enables Cloud Run, Cloud Build, Artifact Registry and Secret Manager;
+2. stores your provider key in Secret Manager (you paste it; it is never shown),
+   or reuses an existing secret (`--key-secret NAME`);
+3. creates a device API key and stores it in secret `ai-proxy-device-keys`;
+4. creates service account `ai-proxy-runtime`, allowed to read only those two secrets;
+5. deploys the service and prints the **server URL** and **device API key** to
+   enter on the e-reader.
+
+Run it again after changes; it reuses what exists. `./deploy.sh --dry-run`
+prints every command without changing anything. All options: `./deploy.sh --help`.
+
+Example (existing Ollama key in secret `ollama_api_key`):
 
 ```bash
-gcloud run deploy ai-proxy \
-  --source cloud/ai-proxy \
-  --region asia-south1 \
-  --allow-unauthenticated \
-  --max-instances 1 --min-instances 0 \
-  --memory 512Mi --cpu 1 --timeout 60 \
-  --set-env-vars PROVIDER=openai,OPENAI_MODEL=<model> \
-  --set-secrets DEVICE_TOKENS=device-tokens:latest,OPENAI_API_KEY=openai-api-key:latest
+./deploy.sh --project my-project --region us-central1 \
+  --provider ollama --model glm-5.3-flash --key-secret ollama_api_key
 ```
 
-For Ollama, use
-`--set-env-vars PROVIDER=ollama,OLLAMA_MODEL=<model>` and
-`--set-secrets DEVICE_TOKENS=device-tokens:latest,OLLAMA_API_KEY=ollama-api-key:latest`.
-
-`--allow-unauthenticated` lets the device reach the URL without Google sign-in
-(an e-reader cannot do that). Every `/v1/ask` request still needs a valid
-device token.
-
-The command prints the service URL (`https://ai-proxy-....run.app`). Test it:
+### Device API keys
 
 ```bash
-curl -s https://ai-proxy-....run.app/v1/ask -H "Authorization: Bearer <device token>" \
-  -H 'Content-Type: application/json' -d '{"task":"explain","text":"Hello world"}'
+./rotate-key.sh list            # key ids (first characters only)
+./rotate-key.sh add             # new key, printed once
+./rotate-key.sh revoke pm_AbCdEf  # remove a key (lost or old device)
 ```
+
+`--allow-unauthenticated` lets the e-reader reach the URL without a Google
+sign-in. Every `/v1/*` request still needs a device API key.
+
+## Evals
+
+Answer-quality checks against a deployed proxy (33 cases: English and Hindi,
+all four tasks, spoiler and prompt-injection cases):
+
+```bash
+AI_PROXY_KEY=<device key> uv run python evals/run_evals.py --url https://ai-proxy-....run.app
+```
+
+Each answer is scored for plain text, length, answer language and expected or
+forbidden words. Reports go to `evals/reports/`. The Phase 2 gate needs at least
+90% passing and p95 latency of at most 10 seconds.
 
 ### Cost and safety
 
@@ -144,5 +132,4 @@ curl -s https://ai-proxy-....run.app/v1/ask -H "Authorization: Bearer <device to
   waits a few seconds for a cold start.
 - Set a **spending limit** in your OpenAI/Ollama account and a **budget alert**
   in Google Cloud Billing.
-- To revoke a device: add a new version of the `device-tokens` secret without
-  its token, then redeploy.
+- To revoke a device: `./rotate-key.sh revoke <key id>`.

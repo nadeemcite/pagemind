@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pagemind/ai-proxy/v1/info-response",
+  "title": "GET /v1/info 200 response (contract v1)",
+  "type": "object",
+  "required": ["api", "tasks", "max_input_chars", "max_context_chars", "max_question_chars", "provider", "model"],
+  "properties": {
+    "api": {"const": 1},
+    "tasks": {"type": "array", "items": {"type": "string"}},
+    "max_input_chars": {"type": "integer", "minimum": 1},
+    "max_context_chars": {"type": "integer", "minimum": 0},
+    "max_question_chars": {"type": "integer", "minimum": 0},
+    "provider": {"type": "string"},
+    "model": {"type": "string"}
+  }
+}

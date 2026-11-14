@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pagemind/ai-proxy/v1/ask-response",
+  "title": "POST /v1/ask 200 response (contract v1)",
+  "type": "object",
+  "required": ["answer", "model", "truncated"],
+  "properties": {
+    "answer": {"type": "string", "minLength": 1},
+    "model": {"type": "string"},
+    "truncated": {"type": "boolean"}
+  }
+}

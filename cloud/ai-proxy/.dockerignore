@@ -4,3 +4,7 @@ __pycache__/
 tests/
 *.pyc
 .env
+evals/
+contract/
+*.sh
+README.md

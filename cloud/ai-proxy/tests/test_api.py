@@ -57,6 +57,7 @@ def test_rejects_long_text():
     client, provider = make_client(max_input_chars=10)
     r = client.post("/v1/ask", json={"text": "x" * 11}, headers=AUTH)
     assert r.status_code == 413
+    assert r.json() == {"error": "text_too_long"}
     assert provider.calls == []
 
 
@@ -70,7 +71,7 @@ def test_provider_error_is_502():
     client, _ = make_client(provider=FakeProvider(fail=True))
     r = client.post("/v1/ask", json={"text": "x"}, headers=AUTH)
     assert r.status_code == 502
-    assert r.json() == {"error": "AI provider error"}
+    assert r.json() == {"error": "provider_error"}
 
 
 def test_invalid_config_fails_at_start():
@@ -83,3 +84,54 @@ def test_question_only_used_for_ask_task():
     ask = build_user_prompt(Task.ASK, "text", question="why?")
     assert "why?" not in explain
     assert "why?" in ask
+
+
+def test_info_needs_token_and_reports_limits():
+    client, _ = make_client(max_input_chars=123)
+    assert client.get("/v1/info").status_code == 401
+    r = client.get("/v1/info", headers=AUTH)
+    assert r.status_code == 200
+    body = r.json()
+    assert body["api"] == 1
+    assert body["max_input_chars"] == 123
+    assert body["tasks"] == ["explain", "define", "translate", "ask"]
+
+
+def test_unknown_task_is_422():
+    client, provider = make_client()
+    r = client.post("/v1/ask", json={"task": "summarize", "text": "x"}, headers=AUTH)
+    assert r.status_code == 422
+    assert r.json() == {"error": "invalid_request"}
+    assert provider.calls == []
+
+
+def test_body_over_limit_rejected_before_parsing():
+    client, provider = make_client(max_body_bytes=100)
+    r = client.post("/v1/ask", content=b'{"text":"' + b"x" * 200 + b'"}', headers={**AUTH, "Content-Type": "application/json"})
+    assert r.status_code == 413
+    assert r.json() == {"error": "body_too_large"}
+    assert provider.calls == []
+
+
+def test_chunked_body_over_limit_rejected():
+    client, provider = make_client(max_body_bytes=100)
+
+    def chunks():
+        yield b'{"text":"'
+        for _ in range(10):
+            yield b"x" * 20
+        yield b'"}'
+
+    r = client.post("/v1/ask", content=chunks(), headers={**AUTH, "Content-Type": "application/json"})
+    assert r.status_code == 413
+    assert provider.calls == []
+
+
+def test_logs_never_contain_text(capsys):
+    client, _ = make_client()
+    secret_text = "UNIQUE-BOOK-PASSAGE-42"
+    client.post("/v1/ask", json={"text": secret_text, "context": secret_text}, headers=AUTH)
+    captured = capsys.readouterr()
+    assert '"message": "ask"' in captured.err
+    assert secret_text not in captured.err
+    assert "An answer." not in captured.err

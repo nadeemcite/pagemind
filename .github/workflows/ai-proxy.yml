@@ -1,0 +1,40 @@
+name: AI proxy
+
+# Tests, shell checks and a container build for cloud/ai-proxy.
+# Runs on pushes to this repository only (not on pull requests from forks).
+
+on:
+  push:
+    branches: [personal]
+    paths: ['cloud/ai-proxy/**', '.github/workflows/ai-proxy.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cloud/ai-proxy
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "latest"
+          enable-cache: false
+
+      - name: Tests
+        run: uv run --python 3.13 pytest -q
+
+      - name: Shell scripts
+        run: shellcheck deploy.sh rotate-key.sh
+
+      - name: Deploy script dry run
+        run: ./deploy.sh --dry-run --project ci-dry-run --provider ollama --model test-model
+
+      - name: Container build
+        run: docker build -t ai-proxy:ci .

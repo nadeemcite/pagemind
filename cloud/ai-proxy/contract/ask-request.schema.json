@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pagemind/ai-proxy/v1/ask-request",
+  "title": "POST /v1/ask request (contract v1)",
+  "type": "object",
+  "required": ["text"],
+  "additionalProperties": false,
+  "properties": {
+    "task": {"enum": ["explain", "define", "translate", "ask"], "default": "explain"},
+    "text": {"type": "string", "minLength": 1, "maxLength": 4000},
+    "context": {"type": "string", "maxLength": 2000},
+    "question": {"type": "string", "maxLength": 500},
+    "language": {"type": "string", "maxLength": 40},
+    "book_title": {"type": "string", "maxLength": 200},
+    "book_author": {"type": "string", "maxLength": 200}
+  }
+}
