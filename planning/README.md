@@ -64,7 +64,7 @@ Status values: `Not started` → `In progress` → `Gate review` → `Complete`.
 
 | Decision | Status | Needed by |
 |---|---|---|
-| Firmware name (repo name, release files, About screen, OTA) | **Open** | Phase 1 |
+| Firmware name (repo name, release files, About screen, OTA) | **NCrossPoint** (repo `nadeemcite/ncrosspoint`) | Done |
 | Google Cloud project and region for the owner's own proxy | `nadeem-personal`, `us-central1` | Done |
 | First provider and model for evals | Ollama cloud, `glm-5.3-flash:cloud` (exact model name to confirm at first deploy) | Done |
 | Target devices for public releases | X4 Pro only at first | Phase 1 |
