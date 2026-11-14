@@ -1,6 +1,6 @@
 # Phase 1: Fork identity, releases and OTA
 
-**Status:** Gate review
+**Status:** Complete
 
 ## Goal
 
@@ -91,4 +91,4 @@ Promise for later phases: **OTA updates only ever install this fork's releases.*
 | D2 | 2026-11-15 | 0.0.2 tag | Pass | Owner: Settings → Check for updates offered 0.0.2, installed over Wi-Fi, rebooted; About shows `PageMind 0.0.2 (CrossPoint 2.0.0)` |
 | D3 | 2026-11-15 | 0.0.2 tag | Pass | Owner: second check reports up to date; no official CrossPoint version offered |
 | D4 | 2026-11-15 | 0.0.2 tag | Pass | Owner: Down at power-on opens "Select firmware file (.bin)" recovery picker |
-| Owner sign-off | | | | |
+| Owner sign-off | 2026-11-15 | fc0999f3 | Complete | Owner approved; test releases 0.0.1 and 0.0.2 kept |

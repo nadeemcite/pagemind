@@ -1,6 +1,6 @@
 # Phase 2: BYOC server, deploy tooling, API contract and evals
 
-**Status:** Not started
+**Status:** In progress
 
 ## Goal
 
