@@ -83,16 +83,16 @@ gate needs a new contract version and a note in this file.
 
 | Check | Date | Commit | Result | Log / notes |
 |---|---|---|---|---|
-| A1 | | | | |
-| A2 | | | | |
-| A3 | | | | |
-| A4 | | | | |
-| A5 | | | | |
-| L1 | | | | |
-| L2 | | | | |
-| L3 | | | | |
-| L4 | | | | |
-| L5 | | | | |
-| L6 | | | | |
-| L7 | | | | |
+| A1 | 2026-11-15 | e61c5f3a | Pass | `uv run pytest`: 46/46 (API, contract, evals scorer) |
+| A2 | 2026-11-15 | e61c5f3a | Pass | All fixtures validate; server responses and every error code match fixtures (`tests/test_contract.py`) |
+| A3 | 2026-11-15 | e61c5f3a | Pass | Container built by CI `docker build` and by Cloud Build during deploy |
+| A4 | 2026-11-15 | e61c5f3a | Pass | `ai-proxy.yml` run 43640161099 success |
+| A5 | 2026-11-15 | e61c5f3a | Pass | `deploy.sh --dry-run` lists all 6 changing commands; shellcheck clean (also in CI) |
+| L1 | 2026-11-15 | e61c5f3a | Pass | Fresh deploy in `nadeem-personal`/`us-central1` after removing all proxy resources: 111 s, `/health` OK. First attempt found 3 bugs, fixed: new service account not ready (retry), `/healthz` reserved by Cloud Run (now `/health`), public access delay (health retry) |
+| L2 | 2026-11-15 | e61c5f3a | Pass | Second run reused secrets and service account (1 secret version, 1 account), new revision, no errors |
+| L3 | 2026-11-15 | e61c5f3a | Pass | Wrong key and no key → 401; `rotate-key.sh add` key → 200; after `revoke` → 401; original key still 200 |
+| L4 | 2026-11-15 | e61c5f3a | Pass | 4001-char text → 413 `text_too_long`; 40 KB body → 413 `body_too_large`; requests 11–12 in one minute → 429 `rate_limited` |
+| L5 | | | Pending | OpenAI not configured; owner to decide: skip or provide a key |
+| L6 | 2026-11-15 | e61c5f3a | Pass | Ollama `glm-5.3-flash`: 33/33 (100%), p50 1.1 s, p95 2.1 s; spoiler and injection answers checked by hand. Report `cloud/ai-proxy/evals/reports/20261114T211034Z-ollama-glm-5.3-flash.json` |
+| L7 | 2026-11-15 | e61c5f3a | Pass | 191 Cloud Logging entries: 42 structured `ask` entries with sizes/timing only; no book text, answers, keys or `Bearer` found |
 | Owner sign-off | | | | |
