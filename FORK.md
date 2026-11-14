@@ -9,8 +9,10 @@ built for the Xteink X4 Pro (`pio run -e x4pro`). It is not meant to be merged u
 |---|---|---|
 | Indic script shaping (upstream PR [#3787](https://github.com/crosspoint-reader/crosspoint-reader/pull/3787)) | merged into `personal` | merged |
 | AI proxy server (Cloud Run) | [`cloud/ai-proxy/`](cloud/ai-proxy/README.md) | ready to deploy |
-| "Ask AI" on selected text (firmware) | — | planned |
-| OTA updates from this fork instead of upstream | — | planned |
+| "Ask AI" on selected text (firmware) | [`planning/`](planning/README.md) | planned (phases 3–5) |
+| OTA updates from this fork instead of upstream | [`planning/`](planning/README.md) | planned (phase 1) |
+
+The implementation plan, with its five phases and test gates, is in [`planning/`](planning/README.md).
 
 ## Branches and remotes
 
