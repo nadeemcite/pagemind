@@ -123,10 +123,10 @@ or a clear "not configured" state.**
 | A4 | 2026-11-15 | e1218911 | Pass | `AiSettingsTest` 10/10: JSON round trip, plain key never in file, unreadable key flagged without crash, damaged JSON → defaults, URL checks |
 | A5 | 2026-11-15 | e1218911 | Pass (review) | `aiApiKey` uses `.withObfuscated()`; `CrossPointWebServer.cpp:1641` returns `value: null` + `hasPassword`. Confirmed on device in D1 |
 | A6 | 2026-11-15 | e1218911 | Pass | `pagemind_x4pro_release` builds (RAM +96 B, flash +10.6 KB vs Phase 1); host tests 1034/1034; clang-format clean |
-| A7 | | | | |
-| D1 | | | | |
+| A7 | 2026-11-15 | e6c11d3b | Pass | `AiSettingsTest` setup-file cases 4/4 (valid file; 9 invalid files change nothing; oversized rejected); host tests 1038/1038 |
+| D1 | 2026-11-15 | b2fcb846 (0.0.2-dev) | Pass | Owner: all AI Assistant steps work on device (web settings entry, key shown as "(unchanged)", values kept after reboot) |
 | D2 | | | | |
-| D3 | | | | |
+| D3 | 2026-11-15 | b2fcb846 (0.0.2-dev) | Pass | Owner: AI Assistant screen and on-screen keyboard entry work on device |
 | D4 | | | | |
 | D5 | | | | |
 | D6 | | | | |
