@@ -114,7 +114,7 @@ below, and `v0.1.0` is published.
 | D1 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: English book, Explain/Define/Translate/Ask a question all answer; Back returns to the page. Server log has all four tasks. Context check: page 6 at 18 pt = 16 lines, 71 words, 407 B, sent whole as context |
 | D2 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: Hindi book, all four tasks answer; Devanagari renders correctly in the answer viewer |
 | D3 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: selection, task picker and answer screen work in all 4 orientations |
-| D4 | | | | |
+| D4 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner, 8-step input matrix: single picker per tap; tap outside / Back return to the book; keyboard Back returns to the picker; one request per confirm; answer paging; one Back returns to the same page. Home key in the picker goes to Home (accepted by owner as expected Home behaviour) |
 | D5 | | | | |
 | D6 | | | | |
 | D7 | | | | |
