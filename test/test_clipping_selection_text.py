@@ -301,6 +301,7 @@ struct ClipSelectionActivity {
   enum class Mode { Clip, Lookup, DefinitionLookup };
   Mode mode = Mode::Clip;
   bool lookupAvailable = true;
+  bool askAiAvailable = false;  // PageMind
   Renderer renderer;
   Input mappedInput;
   std::vector<std::unique_ptr<Page>> pages;
