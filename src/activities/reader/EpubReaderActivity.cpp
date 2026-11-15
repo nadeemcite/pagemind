@@ -24,6 +24,7 @@
 #include <limits>
 
 #include "../../util/BookmarkFile.h"
+#include "AiAskActivity.h"
 #include "BookmarkEntry.h"
 #include "ChapterBuildGate.h"
 #include "ClipSelectionActivity.h"
@@ -53,6 +54,8 @@
 #include "SilentRestart.h"
 #include "activities/network/WifiSelectionActivity.h"
 #include "activities/settings/TextSettingsActivity.h"
+#include "ai/AiContext.h"
+#include "ai/AiSettingsStore.h"
 #include "clippings/ClippingText.h"
 #include "clippings/ClippingsManager.h"
 #include "components/UITheme.h"
@@ -548,6 +551,10 @@ void EpubReaderActivity::startClipSelection(const int initialX, const int initia
       requestUpdate();
       return;
     }
+    if (clipping.action == ClippingResult::Action::AskAi) {
+      startAskAi(clipping.text, bookTitle, author);
+      return;
+    }
     if (clipping.action == ClippingResult::Action::Lookup) {
       auto page = section ? section->loadPage(section->currentPage) : nullptr;
       if (!page) {
@@ -651,6 +658,25 @@ void EpubReaderActivity::openFootnoteSelect(const bool reopenMenuOnCancel) {
     navigateToHref(footnoteResult.href, true);
     requestUpdate();
   });
+}
+
+void EpubReaderActivity::startAskAi(const std::string& selection, const std::string& bookTitle,
+                                    const std::string& author) {
+  ai::AskRequest request;
+  request.text = selection;
+  // Context: only the page on screen (no spoilers), logical text, windowed around the selection.
+  if (section) request.context = ai::contextAround(section->getTextFromSectionFile(), selection, 2000);
+  request.bookTitle = bookTitle;
+  request.bookAuthor = author;
+  request.language = AI_SETTINGS.getAnswerLanguage().empty() ? I18N.getLanguageName(I18N.getLanguage())
+                                                             : AI_SETTINGS.getAnswerLanguage();
+  auto activity = makeUniqueNoThrow<AiAskActivity>(renderer, mappedInput, std::move(request));
+  if (!activity) {
+    LOG_ERR("AI", "OOM: Ask AI activity");
+    requestUpdate();
+    return;
+  }
+  startActivityForResult(std::move(activity), [this](const ActivityResult&) { requestUpdate(); });
 }
 
 void EpubReaderActivity::openClippings() {

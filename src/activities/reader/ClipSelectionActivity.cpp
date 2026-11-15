@@ -16,6 +16,7 @@
 #include "CrossPointSettings.h"
 #include "MappedInputManager.h"
 #include "activities/ActivityResult.h"
+#include "ai/AiSettingsStore.h"
 #include "clippings/ClippingText.h"
 #include "clippings/SelectionGeometry.h"
 #include "components/UIScale.h"
@@ -31,7 +32,8 @@ constexpr int TOUCH_DRAG_MOVEMENT_PX = 4;
 constexpr unsigned long TOUCH_PAGE_ADVANCE_HOLD_MS = 1000;
 constexpr int TOUCH_PAGE_END_DWELL_SLOP_PX = 8;
 constexpr ClippingResult::Action SELECTION_ACTIONS[] = {ClippingResult::Action::Lookup, ClippingResult::Action::Clip,
-                                                        ClippingResult::Action::Bookmark};
+                                                        ClippingResult::Action::Bookmark,
+                                                        ClippingResult::Action::AskAi};
 
 const char* cleanWordStart(const char* text) {
   if (!text) return "";
@@ -75,6 +77,7 @@ void ClipSelectionActivity::onEnter() {
   std::string dictionaryPath;
   lookupAvailable =
       mode == Mode::DefinitionLookup || DictionaryRegistry::resolveBasePath(SETTINGS.dictionaryName, dictionaryPath);
+  askAiAvailable = mode == Mode::Clip && AI_SETTINGS.isConfigured();
   fontId = SETTINGS.getReaderFontId();
   lineHeight = renderer.getLineHeight(fontId);
   const bool extracted = extractWords();
@@ -686,7 +689,7 @@ Rect ClipSelectionActivity::actionRect() const {
   const int font = uiScaleSpec().smallFontId;
   const int labelWidth =
       std::max({renderer.getTextWidth(font, tr(STR_LOOKUP)), renderer.getTextWidth(font, tr(STR_CLIP)),
-                renderer.getTextWidth(font, tr(STR_BOOKMARK_OPTION))});
+                renderer.getTextWidth(font, tr(STR_BOOKMARK_OPTION)), renderer.getTextWidth(font, tr(STR_AI_ASK_AI))});
   const int padding = metrics.menuSpacing;
   const int count = actionCount();
   const int width = std::min(safe.width, count * (labelWidth + padding * 2) + padding * (count + 1));

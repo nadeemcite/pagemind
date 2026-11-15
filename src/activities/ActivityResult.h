@@ -41,7 +41,7 @@ struct PageResult {
 };
 
 struct ClippingResult {
-  enum class Action : uint8_t { Clip, Lookup, Bookmark };
+  enum class Action : uint8_t { Clip, Lookup, Bookmark, AskAi };
   Action action = Action::Clip;
   std::string text;
   uint16_t startPageOffset = 0;

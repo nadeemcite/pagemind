@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "ai/AiContext.h"
 #include "ai/AiProtocol.h"
 
 namespace fs = std::filesystem;
@@ -158,9 +159,9 @@ TEST(AiClient, ResponseFixturesParse) {
 
 TEST(AiClient, ErrorFixturesMapToErrors) {
   const std::pair<const char*, Error> expected[] = {
-      {"401-unauthorized.json", Error::BadKey},          {"413-body_too_large.json", Error::TextTooLong},
-      {"413-text_too_long.json", Error::TextTooLong},    {"413-context_too_long.json", Error::ClientBug},
-      {"422-invalid_request.json", Error::ClientBug},    {"429-rate_limited.json", Error::RateLimited},
+      {"401-unauthorized.json", Error::BadKey},           {"413-body_too_large.json", Error::TextTooLong},
+      {"413-text_too_long.json", Error::TextTooLong},     {"413-context_too_long.json", Error::ClientBug},
+      {"422-invalid_request.json", Error::ClientBug},     {"429-rate_limited.json", Error::RateLimited},
       {"502-provider_error.json", Error::ProviderFailed},
   };
   ASSERT_EQ(fixtures("errors").size(), std::size(expected)) << "a fixture without an expected mapping";
@@ -198,7 +199,8 @@ TEST(AiClient, HostileBodies) {
     EXPECT_EQ(ai::parseAskResponse(200, b, a), Error::BadResponse) << b;
     EXPECT_TRUE(a.text.empty());
   }
-  const std::string huge = R"({"answer":")" + std::string(ai::MAX_RESPONSE_BYTES, 'x') + R"(","model":"m","truncated":false})";
+  const std::string huge =
+      R"({"answer":")" + std::string(ai::MAX_RESPONSE_BYTES, 'x') + R"(","model":"m","truncated":false})";
   EXPECT_EQ(ai::parseAskResponse(200, huge, a), Error::BadResponse);
   ai::Info info;
   EXPECT_EQ(ai::parseInfoResponse(200, R"({"api":2,"max_input_chars":10,"max_context_chars":1})", info),
@@ -230,4 +232,54 @@ TEST(AiClient, CountsCodePointsLikeTheServer) {
   JsonDocument out;
   deserializeJson(out, ai::buildAskBody(req, ai::Limits{}));
   EXPECT_EQ(utf8Chars(out["text"].as<const char*>()), 4000u);
+}
+
+// Phase 5 A1: context comes only from the page, stays within limits, keeps the selection.
+TEST(AiContext, ShortPageReturnedWhole) {
+  EXPECT_EQ(ai::contextAround("A short page.", "short", 2000), "A short page.");
+  EXPECT_EQ(ai::contextAround("", "x", 2000), "");
+}
+
+TEST(AiContext, WindowContainsSelectionAndStaysWithinLimit) {
+  std::string page;
+  for (int i = 0; i < 400; i++) page += "word" + std::to_string(i) + " ";
+  const std::string sel = "word350 word351";
+  const std::string ctx = ai::contextAround(page, sel, 300);
+  EXPECT_LE(utf8Chars(ctx), 300u);
+  EXPECT_NE(ctx.find(sel), std::string::npos);
+  EXPECT_NE(ctx.find("word340"), std::string::npos) << "most context comes from before the selection";
+  EXPECT_EQ(ctx.find("word399"), std::string::npos) << "only a little after the selection";
+}
+
+TEST(AiContext, SelectionAtPageStartAndEnd) {
+  std::string page;
+  for (int i = 0; i < 400; i++) page += "w" + std::to_string(i) + " ";
+  EXPECT_NE(ai::contextAround(page, "w0 w1", 200).find("w0 w1"), std::string::npos);
+  EXPECT_NE(ai::contextAround(page, "w398 w399", 200).find("w398 w399"), std::string::npos);
+}
+
+TEST(AiContext, WhitespaceDifferencesStillFindSelection) {
+  std::string page;
+  for (int i = 0; i < 300; i++) page += "pad ";
+  page += "the quick brown fox";
+  for (int i = 0; i < 300; i++) page += " tail";
+  const std::string ctx = ai::contextAround(page, "the quick\nbrown   fox", 200);
+  EXPECT_NE(ctx.find("the quick brown fox"), std::string::npos);
+}
+
+TEST(AiContext, NotFoundFallsBackToPageStart) {
+  const std::string page(5000, 'a');
+  const std::string ctx = ai::contextAround(page, "zzz", 100);
+  EXPECT_EQ(ctx, std::string(100, 'a'));
+}
+
+TEST(AiContext, HindiNeverSplitAndWithinLimit) {
+  std::string page;
+  for (int i = 0; i < 500; i++) page += "जुम्मन शेख और अलगू चौधरी में गाढ़ी मित्रता थी। ";
+  for (size_t limit : {10u, 57u, 200u, 2000u}) {
+    const std::string ctx = ai::contextAround(page, "मित्रता", limit);
+    EXPECT_TRUE(validUtf8(ctx)) << limit;
+    EXPECT_LE(utf8Chars(ctx), limit) << limit;
+  }
+  EXPECT_NE(ai::contextAround(page, "मित्रता", 200).find("मित्रता"), std::string::npos);
 }

@@ -3,6 +3,7 @@ FetchContent_GetProperties(arduinojson_src)
 add_executable(AiClientTest
   AiClientTest.cpp
   ${REPO_ROOT}/src/ai/AiProtocol.cpp
+  ${REPO_ROOT}/src/ai/AiContext.cpp
 )
 target_include_directories(AiClientTest PRIVATE
   ${arduinojson_src_SOURCE_DIR}/src

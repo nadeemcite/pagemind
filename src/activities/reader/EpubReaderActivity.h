@@ -152,6 +152,8 @@ class EpubReaderActivity final : public ReaderActivity {
   bool makeRoomForChapterBuild();
   static constexpr uint32_t BUILD_ROOM_WAIT_MS = 5000;
   static constexpr uint32_t BUILD_ROOM_STEP_MS = 50;
+  // PageMind: Ask AI about a text selection (context from the page on screen).
+  void startAskAi(const std::string& selection, const std::string& bookTitle, const std::string& author);
   bool inputOverPage() const override { return overlay != Overlay::None || ReaderActivity::inputOverPage(); }
   // "Connecting Bluetooth…" or "Bluetooth failed" in place of the status bar title.
   mutable LinkNoteTitle linkNoteTitle;
