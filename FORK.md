@@ -2,6 +2,9 @@
 
 PageMind is a custom firmware for the Xteink X4 Pro, based on
 [CrossPoint Reader](https://github.com/crosspoint-reader/crosspoint-reader).
+It adds **Ask AI**: select a passage while reading and get it explained, a word
+defined in context, a translation, or an answer to your own question, on the
+e-reader, from an AI server that you run yourself.
 It is **not** an official CrossPoint release: please report PageMind problems
 in this repository, not to the CrossPoint project.
 
@@ -11,8 +14,9 @@ in this repository, not to the CrossPoint project.
 |---|---|---|
 | Indic script shaping (upstream PR [#3787](https://github.com/crosspoint-reader/crosspoint-reader/pull/3787)) | merged into `personal` | merged |
 | Own name, releases and OTA updates | `src/fork/`, `platformio.fork.ini`, `.github/workflows/fork-release.yml` | phase 1 |
-| AI proxy server (Cloud Run) | [`cloud/ai-proxy/`](cloud/ai-proxy/README.md) | ready to deploy |
-| "Ask AI" on selected text (firmware) | [`planning/`](planning/README.md) | planned (phases 3–5) |
+| Ask AI on selected text | `src/ai/`, `src/activities/reader/AiAskActivity.*` | done |
+| AI Assistant settings, encrypted API key, SD-card setup file | `src/ai/`, Settings → Network → AI Assistant | done |
+| Your own AI server on Google Cloud Run (OpenAI or Ollama) | [`cloud/ai-proxy/`](cloud/ai-proxy/README.md) | done |
 
 The implementation plan, with its five phases and test gates, is in [`planning/`](planning/README.md).
 
@@ -37,11 +41,54 @@ Books, fonts, settings and reading progress on the SD card are kept.
 > [CrossPoint's warning](https://github.com/crosspoint-reader/crosspoint-reader#usb-locked-devices-xteink-unlocker)
 > first and proceed at your own risk.
 
-## Ask AI setup
+## Ask AI
 
-1. Deploy your own AI server: [`cloud/ai-proxy`](cloud/ai-proxy/README.md) (`./deploy.sh`).
-2. Copy the `pagemind-ai.json` it writes to the SD card root and restart the reader.
-   Or paste the URL and key in the reader's web settings page (Settings → AI Assistant).
+**Using it:** in a book, hold a word and drag to select a passage, then tap
+**Ask AI** in the action bar and pick a task:
+
+| Task | What you get |
+|---|---|
+| Explain | The passage in simple words |
+| Define | The meaning of a word or phrase as used here |
+| Translate | The passage in your answer language |
+| Ask a question | Type a question about the passage |
+
+The reader joins Wi-Fi if needed, shows the answer in a paged view in your reading
+font (Indic scripts included), and **Back** returns you to the same page. If Ask AI
+had to turn Wi-Fi on, the book reopens after a short restart on the way back.
+
+**Setting it up** (once):
+
+1. **Deploy your own AI server** to Google Cloud Run with
+   [`cloud/ai-proxy/deploy.sh`](cloud/ai-proxy/README.md#deploy-to-google-cloud-run).
+   You need a Google Cloud project with billing turned on and an API key from
+   OpenAI or Ollama. The script prints the server URL and writes `pagemind-ai.json`.
+2. **Give the reader the URL and key**, easiest first:
+   - copy `pagemind-ai.json` to the root of the SD card and restart the reader
+     (it imports the file, encrypts the key, turns Ask AI on and deletes the file);
+   - or start File Transfer, open the reader's address in a browser, and paste the
+     URL and key under **Settings → AI Assistant**;
+   - or type them on the reader: **Settings → Network → AI Assistant**.
+3. **Check it:** Settings → Network → AI Assistant → **Test connection**.
+
+**Answer language:** set it under AI Assistant; empty means the reader's UI language.
+
+**Privacy:** when you use Ask AI, the reader sends the selected text, the text of
+the page on screen (never pages ahead, so no spoilers), the book title and author,
+and your answer language to **your own** server, which forwards it to the AI
+provider you chose (OpenAI or Ollama, under their terms). Nothing goes to the
+PageMind project. Your server's logs keep only sizes and timing, never book text or
+answers. The API key is stored encrypted with a secret that never leaves the reader.
+The reader checks your server's HTTPS certificate before sending anything.
+
+**Cost:** you pay your own Google Cloud and AI provider bills. Cloud Run sleeps
+when unused, so occasional use usually fits in or near its free tier; the stored
+container images may cost a few cents a month. AI costs depend on your provider and
+model. Set a spending limit at your provider and a
+budget alert in Google Cloud. Your server allows 10 questions per minute per key.
+
+**Limits:** Xteink X4 Pro only for now; Ask AI needs Wi-Fi; the first question after
+a long pause can take a few seconds longer while the server wakes up.
 
 ## Updates
 

@@ -115,7 +115,7 @@ below, and `v0.1.0` is published.
 | D2 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: Hindi book, all four tasks answer; Devanagari renders correctly in the answer viewer |
 | D3 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: selection, task picker and answer screen work in all 4 orientations |
 | D4 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner, 8-step input matrix: single picker per tap; tap outside / Back return to the book; keyboard Back returns to the picker; one request per confirm; answer paging; one Back returns to the same page. Home key in the picker goes to Home (accepted by owner as expected Home behaviour) |
-| D5 | | | | |
+| D5 | | | Deferred | Owner deferred on 2026-11-15 (busy on the network). Needed before the Phase 5 gate. None of the cases need the router off: case 1 uses the reader's own Wi-Fi being off after wake |
 | D6 | | | | |
 | D7 | | | | |
 | Final eval | | | | |
