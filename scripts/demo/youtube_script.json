@@ -1,0 +1,19 @@
+{
+  "voice_id": "T0g46EMa6SuaXrJnMXrK",
+  "voice_name": "Craig - Calm & Friendly",
+  "model_id": "eleven_multilingual_v2",
+  "segments": [
+    {"id": "01-hook", "card": "hook", "text": "You're reading. You hit one sentence you don't get. And just like that, you've lost the whole page."},
+    {"id": "02-problem", "card": "problem", "text": "For many of us, especially if focus is already hard, as many people with A.D.H.D. describe, one confusing line is all it takes. Dense classics. Technical books. A language you're still learning. You stop, you guess, or you reach for your phone."},
+    {"id": "03-trap", "card": "trap", "text": "And the phone is the trap. You open it to look up one word, and ten minutes later, you're somewhere else. The help you needed pulled you out of the book."},
+    {"id": "04-idea", "card": "idea", "text": "So what if the help lived on the page itself? E-readers are just starting to get this. Kindle recently began rolling out an Ask feature, but you can't control where your data goes. There's another way."},
+    {"id": "05a-select", "card": "select", "text": "Select the passage. Tap Ask A.I."},
+    {"id": "05b-picker", "card": "picker", "text": "Choose: explain it, define a word in context, translate it, or ask your own question."},
+    {"id": "05c-answer", "card": "explain", "text": "Seconds later, a plain-language answer, right on e-ink."},
+    {"id": "05d-back", "card": "define", "text": "No apps. No feed. No notifications. Tap back, and you're on the same line."},
+    {"id": "06-languages", "card": "languages", "text": "It works across languages too. Translate a Hindi story into English, or get explanations in Spanish."},
+    {"id": "07-privacy", "card": "privacy", "text": "And it's private by design. It's open source, it runs on your own cloud with your own A.I. key, and it only sends the page you're on. So, no spoilers."},
+    {"id": "08-takeaway", "card": "takeaway", "text": "A.I. doesn't have to pull you away from what matters. Sometimes, the best use of A.I. is keeping you exactly where you are."},
+    {"id": "09-outro", "card": "outro", "text": "It's called PageMind, for the Xteink X4 Pro. It's free, and the link is in the description."}
+  ]
+}
