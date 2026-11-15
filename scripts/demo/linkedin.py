@@ -151,6 +151,8 @@ The hard part: this isn't a phone. It's a microcontroller with no Linux or Andro
 🌍 Text: Hindi and other scripts are trimmed safely, never mid-character, and shaped properly thanks to an open-source Indic shaper from the community.
 ✅ Process: planned in 5 phases, each checked with automated tests and on real hardware.
 
+🤝 Built with Claude Code as my pair programmer: I drove the design, the hardware testing and every decision; it wrote a lot of the code.
+
 Weekend Builds #{episode}. Hobby, open source, built on the CrossPoint Reader firmware. Code in the comments 👇
 
 #WeekendBuilds #EmbeddedSystems #ESP32 #eink #AI
