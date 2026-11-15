@@ -134,7 +134,7 @@ Complete when A1–A4 and D1–D4 pass and the README slots are filled.
 | A2 | 2026-11-15 | see git log | Pass | 8 bad storyboards (no scenes, unknown book/step, bad range/task, two actions, duplicate name, unknown composite shot) rejected before connecting |
 | A3 | 2026-11-15 | see git log | Pass | Demo strings: demo build 3, `pagemind_x4pro` 0, `pagemind_x4pro_release` 0 |
 | A4 | 2026-11-15 | see git log | Pass | Demo, dev and release builds succeed; host tests 1053/1053; clang-format clean; `CMD:SCREENSHOT` path untouched (demo handler runs first only in demo builds) |
-| D1 | | | | |
+| D1 | 2026-11-15 | dcb092a2 | Pass | Run 3: all 7 scenes unattended (Dickens chapter I: reading, selection with Ask AI button, picker, Explain, Define "incredulity"; Premchand page, Hindi → English translation); correct orientation; composites, 25 s MP4 and GIF made. Runs 1–2 found wrong pages and Hindi answers; fixed with GOTO and LANG |
 | D2 | | | | |
 | D3 | | | | |
 | D4 | | | | |
