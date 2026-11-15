@@ -1,6 +1,6 @@
 # Demo capture tooling
 
-**Status:** Not started (planned 2026-11-15, after Phase 5 work; Phase 5 D5 still open)
+**Status:** In progress
 
 ## Goal
 
@@ -84,6 +84,15 @@ copies to the SD card once.
 The four screenshot slots in `README.md` are filled from `demo/out/`; the images
 live in `docs/images/pagemind/` (sized for the web, a few hundred KB in total).
 
+## Implementation notes
+
+- Demo books: *A Tale of Two Cities* (Project Gutenberg) and Premchand's Hindi
+  stories (public domain, from the CrossInk-Indic test set), kept in `demo/books/`
+  (git-ignored) and copied to `/PageMind Demo/` on the SD card. The owner's own
+  books are copyrighted and are not used.
+- `STATE` (current screen name) replaces `WAIT`: the script waits for the expected
+  screen, then for the e-ink refresh; `SHOT` holds the render lock while sending.
+
 ## Work order
 
 1. Demo build target and `DemoCommands` (OPEN, PAGE, BACK, WAIT, SCREENSHOT reuse).
@@ -121,10 +130,10 @@ Complete when A1–A4 and D1–D4 pass and the README slots are filled.
 
 | Check | Date | Commit | Result | Log / notes |
 |---|---|---|---|---|
-| A1 | | | | |
-| A2 | | | | |
-| A3 | | | | |
-| A4 | | | | |
+| A1 | 2026-11-15 | see git log | Pass | `scripts/demo/test_demo.py`: random framebuffers match the `ScreenshotUtil.cpp` pixel loop in all 4 orientations; short buffer rejected |
+| A2 | 2026-11-15 | see git log | Pass | 8 bad storyboards (no scenes, unknown book/step, bad range/task, two actions, duplicate name, unknown composite shot) rejected before connecting |
+| A3 | 2026-11-15 | see git log | Pass | Demo strings: demo build 3, `pagemind_x4pro` 0, `pagemind_x4pro_release` 0 |
+| A4 | 2026-11-15 | see git log | Pass | Demo, dev and release builds succeed; host tests 1053/1053; clang-format clean; `CMD:SCREENSHOT` path untouched (demo handler runs first only in demo builds) |
 | D1 | | | | |
 | D2 | | | | |
 | D3 | | | | |
