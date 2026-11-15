@@ -69,6 +69,13 @@ scripts. Then the fork gets its first public release with documentation.
   pagination) is covered by the existing upstream viewer; device check D1/D2
   verify long English and Hindi answers.
 
+## Scope change (2026-11-15, owner decision before release)
+
+- **D7 (fresh-user eval) is out of scope** for this phase: no second person is
+  available. To be repeated when someone can follow the docs from scratch.
+- **`0.1.0` is published before D5** (error cases), which the owner deferred. D5 is
+  checked on the released build afterwards; a failure there means a `0.1.1` fix.
+
 ## Tests and evals
 
 ### Automated (agent)
@@ -117,7 +124,7 @@ below, and `v0.1.0` is published.
 | D4 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner, 8-step input matrix: single picker per tap; tap outside / Back return to the book; keyboard Back returns to the picker; one request per confirm; answer paging; one Back returns to the same page. Home key in the picker goes to Home (accepted by owner as expected Home behaviour) |
 | D5 | | | Deferred | Owner deferred on 2026-11-15 (busy on the network). Needed before the Phase 5 gate. None of the cases need the router off: case 1 uses the reader's own Wi-Fi being off after wake |
 | D6 | | | | |
-| D7 | | | | |
+| D7 | 2026-11-15 | | Out of scope | Owner: no second person available; repeat later |
 | Final eval | | | | |
 | `v0.1.0` published | | | | |
 | Owner sign-off | | | | |
