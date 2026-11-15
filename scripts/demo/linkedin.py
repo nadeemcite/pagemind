@@ -83,6 +83,31 @@ def scene(out: Path, shot: str, caption: str) -> Image.Image:
     return c
 
 
+UNDER_THE_HOOD = [
+    ("ESP32-S3 microcontroller", "320 KB fast RAM, no Linux or Android underneath"),
+    ("No memory leaks", "25 AI requests in a row, memory back where it started (measured)"),
+    ("HTTPS checked on the chip", "real certificate verification against built-in roots"),
+    ("Key encrypted on the device", "AES-256-GCM with a secret that never leaves it"),
+    ("Wi-Fi only when you ask", "then off again, network memory returned"),
+]
+
+
+def hood_card(episode: int) -> Image.Image:
+    c = Image.new("RGB", (W, H), BG)
+    d = ImageDraw.Draw(c)
+    y = pill(d, 120, f"Weekend Builds #{episode}", font(36, True)) + 50
+    y = centered(d, y, "Under the hood", font(80, True))
+    y = centered(d, y + 4, "The AI was the easy part.", font(40), MUTED) + 50
+    title_f, body_f = font(46, True), font(32)
+    left = 110
+    for title, body in UNDER_THE_HOOD:
+        d.ellipse((left - 46, y + 12, left - 22, y + 36), fill=ACCENT)
+        d.text((left, y), title, font=title_f, fill=INK)
+        d.text((left, y + title_f.size * 1.2), body, font=body_f, fill=MUTED)
+        y += title_f.size * 1.2 + body_f.size * 1.25 + 44
+    return c
+
+
 def end_card(episode: int, out: Path) -> Image.Image:
     c = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(c)
@@ -115,18 +140,20 @@ def make_video(slides: list[tuple[Image.Image, float]], path: Path, tmp: Path) -
                     "-movflags", "+faststart", str(path)], check=True)
 
 
-POST = """My $99 e-reader now explains what I'm reading. 🤯
-Select a passage, tap Ask AI, and get the answer right on the e-ink page. Built over a weekend.
+POST = """My e-reader now explains what I'm reading, on a chip with 320 KB of fast RAM. 🤯
+Select a passage, tap Ask AI, read the answer on e-ink. The AI was the easy part.
 
-📖 Explain, define, translate, or ask anything about the passage
-🌍 Any language: I tried Hindi, English and Spanish
-🔒 Runs on my own cloud. Only the current page is sent, so no spoilers
+The hard part: this isn't a phone. It's a microcontroller with no Linux or Android underneath, just bare firmware, and every byte counts.
 
-Weekend Builds #{episode}. Pure hobby, open source, built on the CrossPoint Reader firmware. Link in the comments 👇
+🧠 Memory: 25 AI requests in a row, and free memory came back to where it started. No leaks, measured on the device.
+🔐 Security: HTTPS with real certificate checks on the chip, and the API key encrypted with a secret that never leaves the device.
+📡 Battery: Wi-Fi switches on only when you ask, then off again, and the device restarts quietly to give the network memory back.
+🌍 Text: Hindi and other scripts are cut safely and shaped properly, never mid-character.
+✅ Process: built in 5 gated phases. Each one had to pass automated tests and checks on real hardware before the next began.
 
-Next weekend: [teaser] 👀
+Weekend Builds #{episode}. Hobby, open source, built on the CrossPoint Reader firmware. Code in the comments 👇
 
-#WeekendBuilds #eink #AI #OpenSource #Xteink
+#WeekendBuilds #EmbeddedSystems #ESP32 #eink #AI
 """
 
 COMMENT = """Code, setup guide and full demo: https://{repo}
@@ -153,6 +180,7 @@ def main() -> int:
             slides.append((scene(out, shot, cap(shot)), 1.8))
         else:
             slides.append((scene(out, shot, cap(shot)), 2.6))
+    slides.append((hood_card(args.episode), 5.0))
     slides.append((end_card(args.episode, out), 3.5))
 
     make_video(slides, kit / f"pagemind-weekend-builds-{args.episode}.mp4", kit / "frames")
@@ -160,6 +188,13 @@ def main() -> int:
     # Carousel: every slide except the untapped duplicates of tapped scenes.
     keep = [img for img, secs in slides if secs != 1.3]
     keep[0].save(kit / "carousel.pdf", save_all=True, append_images=keep[1:], resolution=150)
+    hood = slides[-2][0]
+    hood.save(kit / "under-the-hood.png", optimize=True)
+    # Behind-the-scenes carousel for a follow-up post: title, hood, key screens, end.
+    pick = [title_card(args.episode, out), hood, scene(out, "02-select", cap("02-select")),
+            scene(out, "04-explain", cap("04-explain")), scene(out, "08-answer-spanish", cap("08-answer-spanish")),
+            end_card(args.episode, out)]
+    pick[0].save(kit / "behind-the-scenes.pdf", save_all=True, append_images=pick[1:], resolution=150)
     (kit / "post.txt").write_text(POST.format(episode=args.episode))
     (kit / "first-comment.txt").write_text(COMMENT.format(repo=REPO))
     total = sum(s for _, s in slides) - 0.35 * (len(slides) - 1)
