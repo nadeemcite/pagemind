@@ -105,6 +105,11 @@ Read for 30 minutes with 10 Ask AI uses across English and Hindi books. Record f
 each: task, wait time, answer useful (yes/no). Target: at least 8 of 10 useful, no
 crash, no lost reading position.
 
+## Notes after release
+
+- 2026-11-15: owner updated the X4 Pro to `0.1.0` with Settings → Check for updates
+  (the update path to a real release works).
+
 ## Gate
 
 The phase is complete when A1–A4, D1–D7 and the final eval pass and are recorded

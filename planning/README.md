@@ -76,11 +76,7 @@ Status values: `Not started` → `In progress` → `Gate review` → `Complete`.
 - **OTA certificate verification.** OTA downloads use HTTPS without checking the
   server certificate (inherited from CrossPoint; found in Phase 4). Fix: verify
   against GitHub's roots like the AI client does.
-- **Demo capture tooling (next, after Phase 5).** Development-only serial commands
-  (open a book at a page, run Ask AI with given text and task, back, screenshot),
-  a storyboard file and `scripts/demo_capture.py` that drives the X4 Pro and saves
-  PNGs, optionally assembled into a captioned MP4 with ffmpeg. For a promo video
-  without manual screenshots. To be planned as its own item.
+- **Demo capture tooling:** planned in [demo-capture.md](demo-capture.md).
 - **Dev key cleanup.** Revoke the unused device key `pm_3tkphlY…` and delete
   `~/projects/xteink-research/setup/pagemind-ai.json` (owner: later, dev only).
 - **"Set up from phone" QR button** in AI Assistant (idea from Phase 3).
