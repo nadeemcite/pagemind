@@ -36,3 +36,7 @@ flake.*
 
 # PageMind e-reader setup file (contains an API key)
 pagemind-ai.json
+
+# PageMind demo capture: downloaded books and generated output
+demo/books/
+demo/out/

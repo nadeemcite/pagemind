@@ -1,0 +1,75 @@
+# PageMind demo capture storyboard (scripts/demo_capture.py).
+# Books are public domain; copy demo/books/*.epub to "/PageMind Demo/" on the SD card.
+# Word indices in `select` count words on the page from 0. Adjust `page` and
+# `select` after a first run by looking at demo/out/raw/*.png.
+
+output: out
+settle_seconds: 2.5
+
+books:
+  english: /PageMind Demo/A Tale of Two Cities.epub
+  hindi: /PageMind Demo/Panch Parmeshwar - Premchand.epub
+
+scenes:
+  - name: reading
+    caption: Reading as usual
+    steps:
+      - open: english
+      - page: 12
+      - shot: 01-reading
+
+  - name: select
+    caption: Select a passage and tap Ask AI
+    steps:
+      - select: [0, 24]
+      - shot: 02-select
+
+  - name: picker
+    caption: Choose what you need
+    steps:
+      - picker: true
+      - shot: 03-picker
+      - back: true
+
+  - name: explain
+    caption: The answer, right on the page
+    steps:
+      - open: english
+      - select: [0, 24]
+      - ask: explain
+      - shot: 04-explain
+      - back: true
+
+  - name: define
+    caption: Words defined in context
+    steps:
+      - open: english
+      - select: [10, 10]
+      - ask: define
+      - shot: 05-define
+      - back: true
+
+  - name: hindi-page
+    caption: Works in Hindi too
+    steps:
+      - open: hindi
+      - page: 1
+      - shot: 06-hindi-page
+
+  - name: hindi-explain
+    caption: Explained in plain words
+    steps:
+      - select: [0, 20]
+      - ask: explain
+      - shot: 07-hindi-explain
+      - back: true
+
+composites:
+  hero: [01-reading, 04-explain]
+  steps: [02-select, 03-picker, 04-explain, 05-define]
+  hindi: [06-hindi-page, 07-hindi-explain]
+
+captions:
+  hero: Ask your e-reader about what you are reading
+  steps: Select, ask, read
+  hindi: Indic scripts, shaped properly

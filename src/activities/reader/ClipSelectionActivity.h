@@ -44,6 +44,14 @@ class ClipSelectionActivity final : public Activity {
   void render(RenderLock&&) override;
   bool isReaderActivity() const override { return true; }
   bool handleHomeGesture() override;
+#if PAGEMIND_DEMO
+  // Select words first..last (indices on the first page) once words are laid out.
+  void demoSetRange(int first, int last) {
+    demoFirst = first;
+    demoLast = last;
+  }
+  bool demoCommand(const char* command) override;
+#endif
 
  private:
   struct WordBox {
@@ -104,6 +112,10 @@ class ClipSelectionActivity final : public Activity {
   const Mode mode;
   bool lookupAvailable = false;
   bool askAiAvailable = false;  // PageMind: AI configured and in Clip mode
+#if PAGEMIND_DEMO
+  int demoFirst = -1;
+  int demoLast = -1;
+#endif
   OptionPopup actionPopup;
   // ponytail: retain 16 button frames during refresh; increase only if overflow is observed.
   std::array<uint8_t, 16> pendingButtons{};

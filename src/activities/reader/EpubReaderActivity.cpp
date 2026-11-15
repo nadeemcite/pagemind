@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cstring>
 #include <functional>
 #include <iterator>
 #include <limits>
@@ -59,6 +60,7 @@
 #include "clippings/ClippingText.h"
 #include "clippings/ClippingsManager.h"
 #include "components/UITheme.h"
+#include "demo/DemoCommands.h"
 #include "fontIds.h"
 #include "util/BookmarkUtil.h"
 #include "util/ButtonNavigator.h"
@@ -525,6 +527,10 @@ void EpubReaderActivity::startClipSelection(const int initialX, const int initia
   auto activity = makeUniqueNoThrow<ClipSelectionActivity>(renderer, mappedInput, std::move(pages), marginLeft,
                                                            marginTop, initialX, initialY, mode);
   if (activity && restoreSelection.valid) activity->setInitialSelection(restoreSelection);
+#if PAGEMIND_DEMO
+  int demoFirst = 0, demoLast = 0;
+  if (activity && demo::takeSelectRange(demoFirst, demoLast)) activity->demoSetRange(demoFirst, demoLast);
+#endif
   if (!activity) {
     LOG_ERR("CLIP", "Failed to allocate clipping selection activity");
     requestUpdate();
@@ -659,6 +665,16 @@ void EpubReaderActivity::openFootnoteSelect(const bool reopenMenuOnCancel) {
     requestUpdate();
   });
 }
+
+#if PAGEMIND_DEMO
+bool EpubReaderActivity::demoCommand(const char* command) {
+  if (strcmp(command, "SELECT") == 0) {
+    startClipSelection(-1, -1, ClipSelectionActivity::Mode::Clip);
+    return true;
+  }
+  return false;
+}
+#endif
 
 void EpubReaderActivity::startAskAi(const std::string& selection, const std::string& bookTitle,
                                     const std::string& author) {

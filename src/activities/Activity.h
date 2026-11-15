@@ -55,6 +55,10 @@ class Activity {
   virtual bool isHomeActivity() const { return false; }
   virtual bool handleHomeGesture() { return false; }
   virtual ScreenshotInfo getScreenshotInfo() const { return {}; }
+#if PAGEMIND_DEMO
+  // PageMind demo capture (src/demo/DemoCommands.cpp). True when handled.
+  virtual bool demoCommand(const char* /*command*/) { return false; }
+#endif
 
   // Start a new activity without destroying the current one
   // Note: requestUpdate() will be invoked automatically once resultHandler finishes

@@ -124,6 +124,10 @@ class ActivityManager {
   bool handleForcedRefresh();
   bool skipLoopDelay() const;
   ScreenshotInfo getScreenshotInfo() const;
+#if PAGEMIND_DEMO
+  bool demoCommand(const char* command);
+  const char* demoActivityName() const;
+#endif
   void prepareForSleep();
 
   // If immediate is true, the update will be triggered immediately.

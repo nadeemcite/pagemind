@@ -46,6 +46,7 @@
 #include "ai/AiSettingsStore.h"
 #include "ai/AiSetupImport.h"
 #include "components/UITheme.h"
+#include "demo/DemoCommands.h"
 #include "fontIds.h"
 #include "platform/UsbSerialJtagHandoff.h"
 #include "util/ButtonNavigator.h"
@@ -911,7 +912,11 @@ void loop() {
     if (line.startsWith("CMD:")) {
       String cmd = line.substring(4);
       cmd.trim();
-      if (cmd == "SCREENSHOT") {
+#if PAGEMIND_DEMO
+      if (demo::handle(cmd.c_str())) {
+      } else
+#endif
+          if (cmd == "SCREENSHOT") {
         const uint32_t bufferSize = display.getBufferSize();
         logSerial.printf("SCREENSHOT_START:%d\n", bufferSize);
         uint8_t* buf = display.getFrameBuffer();

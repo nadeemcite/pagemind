@@ -17,6 +17,7 @@
 #include "activities/util/KeyboardEntryActivity.h"
 #include "ai/AiSettingsStore.h"
 #include "components/UITheme.h"
+#include "demo/DemoCommands.h"
 #include "fontIds.h"
 
 namespace {
@@ -31,6 +32,13 @@ AiAskActivity::AiAskActivity(GfxRenderer& renderer, MappedInputManager& mappedIn
 
 void AiAskActivity::onEnter() {
   Activity::onEnter();
+#if PAGEMIND_DEMO
+  const int preset = demo::takePresetTask();
+  if (preset >= 0) {
+    onTaskPicked(preset);
+    return;
+  }
+#endif
   pickTask();
 }
 
@@ -59,16 +67,16 @@ void AiAskActivity::onTaskPicked(const int index) {
     startAsking();
     return;
   }
-  startActivityForResult(std::make_unique<KeyboardEntryActivity>(renderer, mappedInput, tr(STR_AI_QUESTION), "",
-                                                                 500, InputType::Text),
-                         [this](const ActivityResult& result) {
-                           if (result.isCancelled || std::get<KeyboardResult>(result.data).text.empty()) {
-                             pickTask();
-                             return;
-                           }
-                           request.question = std::get<KeyboardResult>(result.data).text;
-                           startAsking();
-                         });
+  startActivityForResult(
+      std::make_unique<KeyboardEntryActivity>(renderer, mappedInput, tr(STR_AI_QUESTION), "", 500, InputType::Text),
+      [this](const ActivityResult& result) {
+        if (result.isCancelled || std::get<KeyboardResult>(result.data).text.empty()) {
+          pickTask();
+          return;
+        }
+        request.question = std::get<KeyboardResult>(result.data).text;
+        startAsking();
+      });
 }
 
 void AiAskActivity::startAsking() {
@@ -108,8 +116,8 @@ void AiAskActivity::showAnswer(ai::Answer&& answer) {
   std::string title = std::string(tr(STR_AI_ASK_AI)) + " · " + I18N.get(TASK_NAMES[static_cast<int>(request.task)]);
   std::string text = std::move(answer.text);
   if (answer.truncated) text += std::string("\n\n") + tr(STR_AI_ANSWER_TRUNCATED);
-  auto viewer = makeUniqueNoThrow<DictionaryDefinitionActivity>(renderer, mappedInput, std::move(title),
-                                                                 std::move(text));
+  auto viewer =
+      makeUniqueNoThrow<DictionaryDefinitionActivity>(renderer, mappedInput, std::move(title), std::move(text));
   if (!viewer) {
     LOG_ERR("AI", "OOM: answer viewer");
     error = ai::Error::OutOfMemory;

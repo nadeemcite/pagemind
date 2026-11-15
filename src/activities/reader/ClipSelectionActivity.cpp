@@ -11,6 +11,7 @@
 #include <algorithm>
 #include <climits>
 #include <cstdlib>
+#include <cstring>
 
 #include "ClippingStore.h"
 #include "CrossPointSettings.h"
@@ -112,6 +113,13 @@ void ClipSelectionActivity::onEnter() {
         selected = static_cast<int>(i);
     }
   }
+#if PAGEMIND_DEMO
+  for (size_t i = 0; demoFirst >= 0 && i < wordCount; ++i) {
+    if (words[i].pageOffset != 0) continue;
+    if (words[i].pageWordIndex == demoFirst) rangeStart = static_cast<int>(i);
+    if (words[i].pageWordIndex == demoLast) selected = static_cast<int>(i);
+  }
+#endif
   currentPageOffset = words[selected].pageOffset;
   if (initialX >= 0) {
     const int hit = wordAt(initialX, initialY);
@@ -404,6 +412,14 @@ bool ClipSelectionActivity::buildSelectedText(const int first, const int last, s
   }
   return true;
 }
+
+#if PAGEMIND_DEMO
+bool ClipSelectionActivity::demoCommand(const char* command) {
+  if (strcmp(command, "ASK") != 0 || !askAiAvailable || rangeStart < 0) return false;
+  confirmSelection(ClippingResult::Action::AskAi);
+  return true;
+}
+#endif
 
 void ClipSelectionActivity::confirmSelection(const ClippingResult::Action action) {
   if (rangeStart < 0) {

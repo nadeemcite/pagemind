@@ -459,6 +459,17 @@ bool ActivityManager::handleForcedRefresh() { return currentActivity && currentA
 
 bool ActivityManager::skipLoopDelay() const { return currentActivity && currentActivity->skipLoopDelay(); }
 
+#if PAGEMIND_DEMO
+bool ActivityManager::demoCommand(const char* command) {
+  return pendingAction == PendingAction::None && currentActivity && currentActivity->demoCommand(command);
+}
+
+const char* ActivityManager::demoActivityName() const {
+  if (pendingAction != PendingAction::None) return "(changing)";
+  return currentActivity ? currentActivity->name.c_str() : "(none)";
+}
+#endif
+
 ScreenshotInfo ActivityManager::getScreenshotInfo() const {
   if (currentActivity) {
     return currentActivity->getScreenshotInfo();
