@@ -1,6 +1,6 @@
 # Phase 4: Device AI client
 
-**Status:** Gate review
+**Status:** Complete
 
 ## Goal
 
@@ -116,4 +116,4 @@ errors, never blocks the UI, and leaves Wi-Fi and memory as it found them.**
 | D6 | 2026-11-15 | bcb1c256 (0.0.3-dev) | Pass | 25 asks (all 200, avg 2,075 ms) then ~4 min idle on the test screen: free 101,096 → 101,700 B, largest block 53,236 → 57,332 B, PSRAM 7,219,652 B both ends. Dip to 97,804 B during the run recovers in ~260 B steps (lwIP closed-connection state, ~2 min). Lowest free during a request 86,152 B (TLS floor 40,000 B). An earlier run without the idle wait was inconclusive and is superseded |
 | D7 | 2026-11-15 | bcb1c256 (0.0.3-dev) | Pass | Each exit from the test screen does a silent restart (uptime resets), so Wi-Fi is off; the device auto-slept on its own during testing |
 | D8 | 2026-11-15 | bcb1c256 (0.0.3-dev) | Pass | URL `https://www.digicert.com`: `wolfSSL_connect failed: -188` (ASN_NO_SIGNER_E) on TLS 1.3 and 1.2 retry; status 0, no HTTP request sent; screen "Could not connect to the AI server". Restored URL → 200 |
-| Owner sign-off | | | | |
+| Owner sign-off | 2026-11-15 | d0cffa9a | Complete | Owner approved |

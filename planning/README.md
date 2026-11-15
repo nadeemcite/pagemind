@@ -27,8 +27,8 @@ X4 Pro ──HTTPS, API key──▶ user's Cloud Run proxy ──provider key�
 | 1 | [Fork identity, releases and OTA](phase-1-release-and-ota.md) | Fork builds and updates itself from its own GitHub releases | Complete |
 | 2 | [BYOC server: deploy tooling, contract, evals](phase-2-byoc-server.md) | A user can deploy the proxy in minutes; API contract frozen; answer-quality evals | Complete |
 | 3 | [Device settings and secure key storage](phase-3-device-settings.md) | Server URL and API key settings, key encrypted on the device | Complete |
-| 4 | [Device AI client](phase-4-ai-client.md) | Firmware can call the proxy and parse answers, with no UI yet | Gate review |
-| 5 | [Ask AI user experience and public release](phase-5-ask-ai-ui.md) | Select text → Ask AI → answer screen; documented public release | Not started |
+| 4 | [Device AI client](phase-4-ai-client.md) | Firmware can call the proxy and parse answers, with no UI yet | Complete |
+| 5 | [Ask AI user experience and public release](phase-5-ask-ai-ui.md) | Select text → Ask AI → answer screen; documented public release | In progress |
 
 Why this order:
 
@@ -76,6 +76,8 @@ Status values: `Not started` → `In progress` → `Gate review` → `Complete`.
 - **OTA certificate verification.** OTA downloads use HTTPS without checking the
   server certificate (inherited from CrossPoint; found in Phase 4). Fix: verify
   against GitHub's roots like the AI client does.
+- **Dev key cleanup.** Revoke the unused device key `pm_3tkphlY…` and delete
+  `~/projects/xteink-research/setup/pagemind-ai.json` (owner: later, dev only).
 - **"Set up from phone" QR button** in AI Assistant (idea from Phase 3).
 
 ## Rules that apply to every phase

@@ -1,6 +1,6 @@
 # Phase 5: Ask AI user experience and public release
 
-**Status:** Not started
+**Status:** In progress
 
 ## Goal
 
