@@ -665,7 +665,13 @@ void EpubReaderActivity::startAskAi(const std::string& selection, const std::str
   ai::AskRequest request;
   request.text = selection;
   // Context: only the page on screen (no spoilers), logical text, windowed around the selection.
-  if (section) request.context = ai::contextAround(section->getTextFromSectionFile(), selection, 2000);
+  if (section) {
+    const std::string pageText = section->getTextFromSectionFile();
+    request.context = ai::contextAround(pageText, selection, 2000);
+    LOG_DBG("AI", "Ask AI: page %d, page text %u B, selection %u B, context %u B", section->currentPage,
+            static_cast<unsigned>(pageText.size()), static_cast<unsigned>(selection.size()),
+            static_cast<unsigned>(request.context.size()));
+  }
   request.bookTitle = bookTitle;
   request.bookAuthor = author;
   request.language = AI_SETTINGS.getAnswerLanguage().empty() ? I18N.getLanguageName(I18N.getLanguage())
