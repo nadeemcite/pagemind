@@ -10,7 +10,7 @@ class AiSettingsActivity final : public UiListActivity {
  public:
   explicit AiSettingsActivity(GfxRenderer& renderer, MappedInputManager& mappedInput);
 
-  static constexpr int MENU_ITEMS = 4;
+  static constexpr int MENU_ITEMS = 5;
 
  private:
   int listCount() const override { return MENU_ITEMS; }

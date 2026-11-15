@@ -7,6 +7,7 @@
 #include <string>
 
 #include "MappedInputManager.h"
+#include "AiTestActivity.h"
 #include "activities/util/KeyboardEntryActivity.h"
 #include "ai/AiSettingsStore.h"
 #include "components/UITheme.h"
@@ -18,9 +19,11 @@ constexpr int IDX_ENABLED = 0;
 constexpr int IDX_SERVER_URL = 1;
 constexpr int IDX_API_KEY = 2;
 constexpr int IDX_LANGUAGE = 3;
+constexpr int IDX_TEST = 4;
 
 constexpr StrId menuNames[AiSettingsActivity::MENU_ITEMS] = {StrId::STR_AI_ASK_AI, StrId::STR_AI_SERVER_URL,
-                                                             StrId::STR_AI_API_KEY, StrId::STR_AI_ANSWER_LANGUAGE};
+                                                             StrId::STR_AI_API_KEY, StrId::STR_AI_ANSWER_LANGUAGE,
+                                                             StrId::STR_AI_TEST_CONNECTION};
 
 void save() { AI_SETTINGS.saveToFile(); }
 }  // namespace
@@ -73,6 +76,8 @@ void AiSettingsActivity::activateIndex(const int index) {
           AI_SETTINGS.setAnswerLanguage(std::get<KeyboardResult>(result.data).text);
           save();
         });
+  } else if (index == IDX_TEST) {
+    startActivityForResult(std::make_unique<AiTestActivity>(renderer, mappedInput), [](const ActivityResult&) {});
   }
 }
 
@@ -105,6 +110,7 @@ void AiSettingsActivity::buildScreen(UiScreen& screen) {
                                                              : tr(STR_NOT_SET);
   rowValues_[IDX_LANGUAGE] =
       AI_SETTINGS.getAnswerLanguage().empty() ? std::string(tr(STR_AI_DEVICE_LANGUAGE)) : AI_SETTINGS.getAnswerLanguage();
+  rowValues_[IDX_TEST].clear();
 
   for (int i = 0; i < MENU_ITEMS; i++) {
     rowItems_[i].value = rowValues_[i].empty() ? nullptr : rowValues_[i].c_str();

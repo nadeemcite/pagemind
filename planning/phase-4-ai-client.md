@@ -89,7 +89,7 @@ handling. No reader UI yet: it is triggered from a debug entry point.
 | D4 | Server stopped (scale to zero, wrong URL) | Timeout/connection error, no hang, no reboot |
 | D5 | Rate limit (11 quick calls) | 11th maps to "too many requests" |
 | D6 | Memory | 20 calls in a row: internal heap and largest block return to the starting value (±1 KB); no PSRAM growth |
-| D8 | Untrusted certificate | Server URL set to an `https` host with a certificate outside the bundle (agent picks one) → clear certificate error, no key sent |
+| D8 | Untrusted certificate | Server URL set to an `https` host with a certificate outside the bundle (agent picks one) → "could not connect" on screen, serial log shows the wolfSSL verify error; the request (and key) is never sent. The SDK exposes no TLS error code, so the screen cannot say "certificate" specifically |
 | D7 | Power | Wi-Fi is off after each call; the device still auto-sleeps normally |
 
 ## Gate
