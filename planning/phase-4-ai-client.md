@@ -108,12 +108,12 @@ errors, never blocks the UI, and leaves Wi-Fi and memory as it found them.**
 | A4 | 2026-11-15 | 19e1f708 | Pass | Trimming 1/2/3/4-byte UTF-8 at every length never splits a character; counts code points like the server |
 | A5 | 2026-11-15 | 19e1f708 | Pass | `pagemind_x4pro` builds (RAM 34.1%, flash 84.5%, +21 KB vs Phase 3); host tests 1047/1047; clang-format clean |
 | A6 | 2026-11-15 | 19e1f708 | Pass | `scripts/check_ai_roots.py`: bundle (7 roots) verifies `ai-proxy-cyshxss5ta-uc.a.run.app`; `www.digicert.com` rejected |
-| D1 | | | | |
+| D1 | 2026-11-15 | bcb1c256 (0.0.3-dev) | Pass | Owner: Test connection shows Connected, ollama/glm-5.3-flash, answer. Serial: TLS 1.3 handshake with certificate verification ok (~488 ms); /v1/info 200 (4,975 ms cold start, ~900 ms warm); asks ~2.0 s. Touch fix: Ask again button added (button hints are hidden on touch boards) |
 | D2 | | | | |
 | D3 | | | | |
 | D4 | | | | |
-| D5 | | | | |
-| D6 | | | | |
+| D5 | 2026-11-15 | bcb1c256 (0.0.3-dev) | Pass | Asks 1–10 → 200, asks 11–14 in the same minute → 429 `rate_limited` shown as "Too many requests"; later asks 200 again |
+| D6 | 2026-11-15 | bcb1c256 (0.0.3-dev) | Pass | 25 asks (all 200, avg 2,075 ms) then ~4 min idle on the test screen: free 101,096 → 101,700 B, largest block 53,236 → 57,332 B, PSRAM 7,219,652 B both ends. Dip to 97,804 B during the run recovers in ~260 B steps (lwIP closed-connection state, ~2 min). Lowest free during a request 86,152 B (TLS floor 40,000 B). An earlier run without the idle wait was inconclusive and is superseded |
 | D7 | | | | |
 | D8 | | | | |
 | Owner sign-off | | | | |
