@@ -84,7 +84,7 @@ def scene(out: Path, shot: str, caption: str) -> Image.Image:
 
 
 UNDER_THE_HOOD = [
-    ("ESP32-S3 microcontroller", "320 KB fast RAM, no Linux or Android underneath"),
+    ("ESP32-S3 microcontroller", "about 260 KB of usable fast RAM, no Linux or Android"),
     ("No memory leaks", "25 AI requests in a row, memory back where it started (measured)"),
     ("HTTPS checked on the chip", "real certificate verification against built-in roots"),
     ("Key encrypted on the device", "AES-256-GCM with a secret that never leaves it"),
@@ -140,7 +140,7 @@ def make_video(slides: list[tuple[Image.Image, float]], path: Path, tmp: Path) -
                     "-movflags", "+faststart", str(path)], check=True)
 
 
-POST = """My e-reader now explains what I'm reading, on a chip with 320 KB of fast RAM. 🤯
+POST = """My e-reader now explains what I'm reading, on a chip with about 260 KB of usable fast RAM. 🤯
 Select a passage, tap Ask AI, read the answer on e-ink. The AI was the easy part.
 
 The hard part: this isn't a phone. It's a microcontroller with no Linux or Android underneath, just bare firmware, and every byte counts.
@@ -148,8 +148,8 @@ The hard part: this isn't a phone. It's a microcontroller with no Linux or Andro
 🧠 Memory: 25 AI requests in a row, and free memory came back to where it started. No leaks, measured on the device.
 🔐 Security: HTTPS with real certificate checks on the chip, and the API key encrypted with a secret that never leaves the device.
 📡 Battery: Wi-Fi switches on only when you ask, then off again, and the device restarts quietly to give the network memory back.
-🌍 Text: Hindi and other scripts are cut safely and shaped properly, never mid-character.
-✅ Process: built in 5 gated phases. Each one had to pass automated tests and checks on real hardware before the next began.
+🌍 Text: Hindi and other scripts are trimmed safely, never mid-character, and shaped properly thanks to an open-source Indic shaper from the community.
+✅ Process: planned in 5 phases, each checked with automated tests and on real hardware.
 
 Weekend Builds #{episode}. Hobby, open source, built on the CrossPoint Reader firmware. Code in the comments 👇
 

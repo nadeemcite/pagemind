@@ -19,7 +19,7 @@ class SecretBoxTest : public ::testing::Test {
 };
 
 TEST_F(SecretBoxTest, RoundTrip) {
-  const std::string key = "pm_3tkphlYexampleExampleExample0123456789";
+  const std::string key = "pm_exampleKeyExampleKeyExampleKey0123456789";
   const std::string sealed = secretbox::seal(LABEL, key);
   ASSERT_FALSE(sealed.empty());
   EXPECT_EQ(sealed.rfind("sb1:", 0), 0u);

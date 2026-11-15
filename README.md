@@ -71,8 +71,8 @@ flowchart LR
 ## Get started
 
 You need an **Xteink X4 Pro**, a **Google Cloud** project with billing turned on,
-and an API key from **OpenAI** or **[Ollama](https://ollama.com)**. Setup takes
-about 15 minutes.
+and an API key from **OpenAI** or **[Ollama](https://ollama.com)**. Setup usually takes
+under half an hour.
 
 ### 1. Install PageMind on the reader
 
