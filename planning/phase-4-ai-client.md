@@ -102,12 +102,12 @@ errors, never blocks the UI, and leaves Wi-Fi and memory as it found them.**
 
 | Check | Date | Commit | Result | Log / notes |
 |---|---|---|---|---|
-| A1 | | | | |
-| A2 | | | | |
-| A3 | | | | |
-| A4 | | | | |
-| A5 | | | | |
-| A6 | | | | |
+| A1 | 2026-11-15 | 19e1f708 | Pass | `AiClientTest`: requests built from every contract request fixture match `ask-request.schema.json` (fields, enum, code-point lengths); quotes, newlines, backslash, Hindi round-trip |
+| A2 | 2026-11-15 | 19e1f708 | Pass | Every response and error fixture maps to the expected answer or error (7 error codes) |
+| A3 | 2026-11-15 | 19e1f708 | Pass | Connection failure, Google HTML 401/404, 503, wrong codes, 9 malformed 200 bodies, invalid UTF-8, 16 KB+ body → clean errors |
+| A4 | 2026-11-15 | 19e1f708 | Pass | Trimming 1/2/3/4-byte UTF-8 at every length never splits a character; counts code points like the server |
+| A5 | 2026-11-15 | 19e1f708 | Pass | `pagemind_x4pro` builds (RAM 34.1%, flash 84.5%, +21 KB vs Phase 3); host tests 1047/1047; clang-format clean |
+| A6 | 2026-11-15 | 19e1f708 | Pass | `scripts/check_ai_roots.py`: bundle (7 roots) verifies `ai-proxy-cyshxss5ta-uc.a.run.app`; `www.digicert.com` rejected |
 | D1 | | | | |
 | D2 | | | | |
 | D3 | | | | |
