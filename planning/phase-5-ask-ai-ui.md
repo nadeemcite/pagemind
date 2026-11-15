@@ -112,8 +112,8 @@ below, and `v0.1.0` is published.
 | A3 | | | | |
 | A4 | | | | |
 | D1 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: English book, Explain/Define/Translate/Ask a question all answer; Back returns to the page. Server log has all four tasks. Context check: page 6 at 18 pt = 16 lines, 71 words, 407 B, sent whole as context |
-| D2 | | | | |
-| D3 | | | | |
+| D2 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: Hindi book, all four tasks answer; Devanagari renders correctly in the answer viewer |
+| D3 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: selection, task picker and answer screen work in all 4 orientations |
 | D4 | | | | |
 | D5 | | | | |
 | D6 | | | | |
