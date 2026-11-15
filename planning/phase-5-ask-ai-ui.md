@@ -42,6 +42,33 @@ scripts. Then the fork gets its first public release with documentation.
      privacy note (selected text goes to your own server and your provider), cost note.
    - Release `v0.1.0` through the Phase 1 pipeline with release notes.
 
+## Decisions (2026-11-15, before the work)
+
+- **Entry point:** a fourth button **Ask AI** in the selection action bar (after
+  Look up, Clip, Bookmark), shown only in Clip mode when AI is configured. The
+  X4 Pro is a touch board, where this bar is how actions are chosen. Button-only
+  boards reach the bar's other actions through Confirm; Ask AI for them is left
+  for later (X4 Pro is the only release target).
+- **Flow:** `src/activities/reader/AiAskActivity`: task picker (OptionPopup:
+  Explain, Define, Translate, Ask a question → keyboard), Wi-Fi if needed,
+  "Asking AI…", then the answer in the existing `DictionaryDefinitionActivity`
+  plain-text viewer (paged, reader font, Indic shaping). Errors show the Phase 4
+  messages with Retry / Back.
+- **Context:** the current page's logical text (`Section::getTextFromSectionFile`,
+  which returns `wordText()`, not PR #3787's shaped display form), windowed around
+  the selection by `ai::contextAround` and capped at the server limit. Only the
+  page on screen is sent, so there are no spoilers.
+- **Answer language:** the AI Assistant setting, or the device UI language name
+  when it is empty.
+- **Wi-Fi lifetime:** like `KOReaderSyncActivity`: if this flow turned Wi-Fi on,
+  leaving it disconnects and does `silentRestartToReader()`, reopening the book at
+  the same place and returning network heap. If Wi-Fi was already on, nothing
+  restarts.
+- **Checks adjusted:** A2 (button visibility) becomes code review plus device
+  check, because `ClipSelectionActivity` cannot run on the host. A3 (answer
+  pagination) is covered by the existing upstream viewer; device check D1/D2
+  verify long English and Hindi answers.
+
 ## Tests and evals
 
 ### Automated (agent)
