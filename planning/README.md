@@ -71,6 +71,13 @@ Status values: `Not started` → `In progress` → `Gate review` → `Complete`.
 | Upstream base | `upstream/develop` + PR #3787 (Indic) | Done |
 | Proxy stack | Python FastAPI on Cloud Run, OpenAI + Ollama | Done |
 
+## Backlog (not scheduled)
+
+- **OTA certificate verification.** OTA downloads use HTTPS without checking the
+  server certificate (inherited from CrossPoint; found in Phase 4). Fix: verify
+  against GitHub's roots like the AI client does.
+- **"Set up from phone" QR button** in AI Assistant (idea from Phase 3).
+
 ## Rules that apply to every phase
 
 - **Small upstream footprint:** new code goes in new files (`src/ai/`, `cloud/`,

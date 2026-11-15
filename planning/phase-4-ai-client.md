@@ -42,6 +42,30 @@ handling. No reader UI yet: it is triggered from a debug entry point.
      builds with `ENABLE_SERIAL_LOG`: sends a fixed request and logs status, latency,
      heap before/after. Never logs the key or the answer text in release builds.
 
+## Decisions (2026-11-15, approved by owner before the work)
+
+- **TLS verification (option A).** CrossPoint skips certificate checks on every
+  HTTPS client (`setInsecure()`; the SDK has no CA bundle, see
+  `freeink-sdk/libs/network/SecureNet/include/SecureHttpClient.h:69-71`). The AI
+  client instead verifies against built-in roots (`src/ai/AiTrustedRoots.h`):
+  GTS Root R1–R4 and GlobalSign Root CA (Cloud Run: `*.a.run.app` → WR2 → GTS Root
+  R1, cross-signed by GlobalSign), ISRG Root X1/X2 (Let's Encrypt, custom domains).
+  No server change. Redirects stay off, so the key never goes to another host.
+- **OTA verification is a known gap** (same `setInsecure()`); tracked in the
+  backlog in `planning/README.md`, not part of this phase.
+- **Test entry point:** instead of a serial `CMD:AI_TEST`, a **Test connection**
+  row in Settings → Network → AI Assistant (moved here from Phase 3). It joins
+  Wi-Fi with the standard selection screen, calls `/v1/info` and one sample
+  `/v1/ask`, and shows status, model, latency and the lowest free heap. Confirm
+  repeats the ask. It follows `OtaUpdateActivity`: the request runs on the loop
+  task after the "working" frame is painted, and leaving turns Wi-Fi off and does
+  a silent restart to give back network heap. Phase 5 revisits this for the
+  in-book flow.
+- **Added check A6:** the root bundle verifies the live Cloud Run chain and
+  rejects an unrelated chain (`openssl verify`, `scripts/check_ai_roots.py`).
+- **Added check D8:** an `https` server whose certificate is not from these roots
+  is rejected with a clear "certificate" error.
+
 ## Tests and evals
 
 ### Automated (agent)
@@ -52,6 +76,7 @@ handling. No reader UI yet: it is triggered from a debug entry point.
 | A2 | Response parsing | Every Phase 2 response and error fixture parses to the expected `AiAnswer` / `AiError` |
 | A3 | Hostile input | Truncated JSON, wrong types, 1 MB body, missing fields, invalid UTF-8 → clean `AiError`, no crash (host test with sanitizers if available) |
 | A4 | UTF-8-safe trimming | Trimming Devanagari/emoji text at many lengths never splits a character |
+| A6 | Root bundle | `scripts/check_ai_roots.py`: bundle verifies the live `*.a.run.app` chain; an unrelated chain fails |
 | A5 | Builds and existing tests | `pio run -e x4pro`; all host tests pass; clang-format clean |
 
 ### Device (owner, with agent-prepared steps)
@@ -64,6 +89,7 @@ handling. No reader UI yet: it is triggered from a debug entry point.
 | D4 | Server stopped (scale to zero, wrong URL) | Timeout/connection error, no hang, no reboot |
 | D5 | Rate limit (11 quick calls) | 11th maps to "too many requests" |
 | D6 | Memory | 20 calls in a row: internal heap and largest block return to the starting value (±1 KB); no PSRAM growth |
+| D8 | Untrusted certificate | Server URL set to an `https` host with a certificate outside the bundle (agent picks one) → clear certificate error, no key sent |
 | D7 | Power | Wi-Fi is off after each call; the device still auto-sleeps normally |
 
 ## Gate
@@ -81,6 +107,7 @@ errors, never blocks the UI, and leaves Wi-Fi and memory as it found them.**
 | A3 | | | | |
 | A4 | | | | |
 | A5 | | | | |
+| A6 | | | | |
 | D1 | | | | |
 | D2 | | | | |
 | D3 | | | | |
@@ -88,4 +115,5 @@ errors, never blocks the UI, and leaves Wi-Fi and memory as it found them.**
 | D5 | | | | |
 | D6 | | | | |
 | D7 | | | | |
+| D8 | | | | |
 | Owner sign-off | | | | |
