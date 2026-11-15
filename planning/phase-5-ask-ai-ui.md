@@ -115,9 +115,9 @@ below, and `v0.1.0` is published.
 | Check | Date | Commit | Result | Log / notes |
 |---|---|---|---|---|
 | A1 | 2026-11-15 | 9b71480c | Pass | `AiClientTest` context cases 6/6: short page whole, window holds the selection and stays within the limit, page start/end, whitespace differences, not-found fallback, Hindi never split |
-| A2 | | | | |
-| A3 | | | | |
-| A4 | | | | |
+| A2 | 2026-11-15 | 9b71480c | Pass (review) | `askAiAvailable = mode == Mode::Clip && AI_SETTINGS.isConfigured()`; action count and labels extend Lookup/Clip/Bookmark. Confirmed on device in D1/D4 |
+| A3 | 2026-11-15 | 9b71480c | Pass (reuse) | Answers use upstream `DictionaryDefinitionActivity` paging; long English and Hindi answers paged correctly on device (D1, D2, D4 step 6) |
+| A4 | 2026-11-15 | 0.1.0 tag | Pass | Release build ok; host tests 1053/1053 (incl. fixed `clipping_selection_text` stub); clang-format clean |
 | D1 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: English book, Explain/Define/Translate/Ask a question all answer; Back returns to the page. Server log has all four tasks. Context check: page 6 at 18 pt = 16 lines, 71 words, 407 B, sent whole as context |
 | D2 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: Hindi book, all four tasks answer; Devanagari renders correctly in the answer viewer |
 | D3 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: selection, task picker and answer screen work in all 4 orientations |
@@ -126,5 +126,5 @@ below, and `v0.1.0` is published.
 | D6 | | | | |
 | D7 | 2026-11-15 | | Out of scope | Owner: no second person available; repeat later |
 | Final eval | | | | |
-| `v0.1.0` published | | | | |
+| `v0.1.0` published | 2026-11-15 | 0.1.0 tag | Pass | Release `PageMind 0.1.0: Ask AI` (not prerelease, latest); SHA-256 OK; ESP32-S3 image valid; contains `PageMind 0.1.0 (CrossPoint 2.0.0)`, `/v1/ask`, PageMind OTA URL; release notes added. Tag is plain `0.1.0` (upstream tags no longer fetched) |
 | Owner sign-off | | | | |
