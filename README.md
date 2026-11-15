@@ -11,7 +11,7 @@
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-2b2b2b"></a>
 </p>
 
-<!-- SCREENSHOT: hero image, the reader showing a book page next to an Ask AI answer (from the demo capture) -->
+<p align="center"><img src="docs/images/pagemind/hero.png" alt="A book page on the e-reader next to the Ask AI answer explaining it" width="760"></p>
 
 ---
 
@@ -34,7 +34,9 @@ It is **not** an official CrossPoint release. Please report PageMind problems
 | 🌐 | **Translate** | The passage in the language you choose |
 | 💬 | **Ask a question** | An answer to your own question about the passage |
 
-<!-- SCREENSHOT: the four steps side by side: selection, Ask AI button, task picker, answer -->
+<p align="center"><img src="docs/images/pagemind/steps.png" alt="Select a passage, tap Ask AI, choose Explain, read the answer" width="900"></p>
+
+<p align="center"><img src="docs/images/pagemind/pagemind-demo.gif" alt="30-second demo of Ask AI on the e-reader" width="640"></p>
 
 **Made for real books:**
 
@@ -44,7 +46,7 @@ It is **not** an official CrossPoint release. Please report PageMind problems
 - **Stays out of the way.** Wi-Fi turns on only when you ask, and turns off again.
 - **Plain text on e-ink.** Short answers, paged like a book, no clutter.
 
-<!-- SCREENSHOT: a Hindi passage with its answer -->
+<p align="center"><img src="docs/images/pagemind/languages.png" alt="A Hindi page, its English translation, and an answer in Spanish" width="760"></p>
 
 ## Your cloud, your data
 
@@ -103,8 +105,6 @@ The script asks for your project, provider and model, stores your provider key i
 Secret Manager, deploys the server, and writes **`pagemind-ai.json`** with the
 server URL and a key for your reader. Details and options:
 [cloud/ai-proxy](cloud/ai-proxy/README.md).
-
-<!-- SCREENSHOT: deploy.sh finishing in a terminal -->
 
 ### 3. Connect the reader
 
