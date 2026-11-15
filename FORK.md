@@ -123,6 +123,9 @@ Upstream release workflows are disabled in this repository's Actions settings.
   ```bash
   git remote add upstream https://github.com/crosspoint-reader/crosspoint-reader.git
   git remote add pr3787   https://github.com/ssafayet/crosspoint-reader.git
+  # Upstream's own release tags (0.1.0 … 2.0.0) clash with PageMind versions:
+  git config remote.upstream.tagOpt --no-tags
+  git config remote.pr3787.tagOpt --no-tags
   ```
 
 ## Syncing with upstream
