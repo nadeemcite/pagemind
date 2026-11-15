@@ -9,7 +9,7 @@
 
 // Settings → Network → AI Assistant → Test connection. Joins Wi-Fi if needed,
 // calls /v1/info and one sample /v1/ask, and shows the result with timing and
-// heap figures. Confirm asks again; Back leaves (Wi-Fi off, silent restart).
+// heap figures. Ask again repeats; Back leaves (Wi-Fi off, silent restart to Settings).
 class AiTestActivity final : public Activity {
  public:
   explicit AiTestActivity(GfxRenderer& renderer, MappedInputManager& mappedInput)

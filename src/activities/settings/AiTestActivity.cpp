@@ -63,11 +63,12 @@ void AiTestActivity::onEnter() {
 
 void AiTestActivity::onExit() {
   Activity::onExit();
-  // Same as ClockSyncActivity: give the network heap back with a silent restart.
+  // Like ClockSyncActivity, give the network heap back with a silent restart,
+  // but come back to Settings rather than Home.
   if (tearDownWifiOnExit && WiFi.getMode() != WIFI_MODE_NULL) {
     WiFi.disconnect(false);
     delay(30);
-    silentRestart();
+    silentRestartToSettings();
   }
 }
 
