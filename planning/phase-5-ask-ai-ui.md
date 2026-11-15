@@ -107,11 +107,11 @@ below, and `v0.1.0` is published.
 
 | Check | Date | Commit | Result | Log / notes |
 |---|---|---|---|---|
-| A1 | | | | |
+| A1 | 2026-11-15 | 9b71480c | Pass | `AiClientTest` context cases 6/6: short page whole, window holds the selection and stays within the limit, page start/end, whitespace differences, not-found fallback, Hindi never split |
 | A2 | | | | |
 | A3 | | | | |
 | A4 | | | | |
-| D1 | | | | |
+| D1 | 2026-11-15 | 78ffc363 (0.0.3-dev) | Pass | Owner: English book, Explain/Define/Translate/Ask a question all answer; Back returns to the page. Server log has all four tasks. Context check: page 6 at 18 pt = 16 lines, 71 words, 407 B, sent whole as context |
 | D2 | | | | |
 | D3 | | | | |
 | D4 | | | | |
