@@ -24,6 +24,7 @@ namespace {
 int presetTask = -1;
 int selectFirst = -1;
 int selectLast = -1;
+std::string detail;
 
 void reply(const char* status, const char* command, const char* detail = "") {
   logSerial.printf("DEMO:%s %s%s%s\n", status, command, detail[0] ? " " : "", detail);
@@ -65,6 +66,8 @@ bool takeSelectRange(int& first, int& last) {
   return true;
 }
 
+void setDetail(const std::string& d) { detail = d; }
+
 bool handle(const std::string& command) {
   const size_t space = command.find(' ');
   const std::string verb = command.substr(0, space);
@@ -87,6 +90,11 @@ bool handle(const std::string& command) {
                            : verb == "NEXT"    ? RemoteButton::Next
                                                : RemoteButton::Previous;
     reply(mappedInputManager.injectRemoteClick(b) ? "OK" : "ERR", verb.c_str());
+  } else if (verb == "WHERE") {
+    // Screen rectangle of a control, for tap markers: "WHERE askai" or "WHERE option <i>".
+    detail.clear();
+    const bool ok = activityManager.demoCommand(command.c_str()) && !detail.empty();
+    reply(ok ? "OK" : "ERR", "WHERE", detail.c_str());
   } else if (verb == "GOTO" || verb == "PAGE") {
     reply(activityManager.demoCommand(command.c_str()) ? "OK" : "ERR", verb.c_str());
   } else if (verb == "LANG") {

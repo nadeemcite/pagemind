@@ -37,4 +37,8 @@ class AiAskActivity final : public Activity {
   void runAsk();
   void showAnswer(ai::Answer&& answer);
   void showError();
+#if PAGEMIND_DEMO
+ public:
+  bool demoCommand(const char* command) override;
+#endif
 };

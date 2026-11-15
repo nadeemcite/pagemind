@@ -289,6 +289,21 @@ class OptionPopup {
 
   bool isActive() const { return active; }
 
+#if PAGEMIND_DEMO
+  // Screen rectangle of option `index` from the last published layout.
+  bool demoOptionRect(int index, freeink::ui::Rect& out) const {
+    if (!active || !uiReady) return false;
+    const freeink::ui::Interaction* data = interactions.publishedData();
+    for (size_t i = 0; i < interactions.publishedCount(); i++) {
+      if (data[i].action == ACTION_OPTION && data[i].value == index) {
+        out = data[i].rect;
+        return true;
+      }
+    }
+    return false;
+  }
+#endif
+
   // Close without firing the callback (the surface under the popup is going
   // away, e.g. its host screen closes from outside the popup's own input).
   void dismiss() {

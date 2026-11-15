@@ -20,6 +20,9 @@ int takePresetTask();
 // screen. False when none; taking it clears it.
 bool takeSelectRange(int& first, int& last);
 
+// Activities answer "WHERE ..." by setting the reply detail, e.g. "x y w h".
+void setDetail(const std::string& detail);
+
 }  // namespace demo
 
 #endif

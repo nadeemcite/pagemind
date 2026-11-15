@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <climits>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
@@ -22,6 +23,7 @@
 #include "clippings/SelectionGeometry.h"
 #include "components/UIScale.h"
 #include "components/UITheme.h"
+#include "demo/DemoCommands.h"
 #include "util/DictionaryRegistry.h"
 #include "util/WordSelectionInput.h"
 
@@ -415,6 +417,16 @@ bool ClipSelectionActivity::buildSelectedText(const int first, const int last, s
 
 #if PAGEMIND_DEMO
 bool ClipSelectionActivity::demoCommand(const char* command) {
+  if (strcmp(command, "WHERE askai") == 0) {
+    if (!askAiAvailable || rangeStart < 0) return false;
+    const int count = actionCount();
+    const Rect r =
+        selectionGeometry::button(actionRect(), count - 1, UITheme::getInstance().getMetrics().menuSpacing, count);
+    char buf[48];
+    snprintf(buf, sizeof(buf), "%d %d %d %d", r.x, r.y, r.width, r.height);
+    demo::setDetail(buf);
+    return true;
+  }
   if (strcmp(command, "ASK") != 0 || !askAiAvailable || rangeStart < 0) return false;
   confirmSelection(ClippingResult::Action::AskAi);
   return true;

@@ -25,7 +25,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from demo.frames import device_frame, framebuffer_to_image, on_background  # noqa: E402
 
-STEP_KINDS = {"open", "page", "goto", "language", "select", "picker", "ask", "back", "wait_for", "sleep", "shot"}
+STEP_KINDS = {"open", "page", "goto", "language", "mark", "select", "picker", "ask", "back", "wait_for", "sleep", "shot"}
 TASKS = {"explain", "define", "translate", "ask"}
 
 
@@ -64,6 +64,9 @@ def load_storyboard(path: Path) -> dict:
             if kind == "goto" and not (isinstance(value, list) and len(value) == 2
                                        and all(isinstance(v, int) and v >= 0 for v in value)):
                 raise StoryboardError(f"{where}: goto needs [spine, page]")
+            if kind == "mark" and not (value == "askai" or (isinstance(value, str) and value.startswith("option ")
+                                                            and value[7:].isdigit())):
+                raise StoryboardError(f"{where}: mark needs 'askai' or 'option <n>'")
             if kind == "language" and not isinstance(value, str):
                 raise StoryboardError(f"{where}: language needs a name like English")
     for name in ("hero", "steps", "hindi"):
@@ -147,6 +150,7 @@ def run(board: dict, dev: Device, out: Path) -> list[dict]:
         dev.command("BACK")
         time.sleep(2)
     manifest = []
+    taps = []  # controls to mark as tapped on the next shot
     for scene in board["scenes"]:
         print(f"== {scene['name']}")
         for step in scene.get("steps") or []:
@@ -162,6 +166,8 @@ def run(board: dict, dev: Device, out: Path) -> list[dict]:
                 time.sleep(5)  # the chapter may be laid out first
             elif kind == "language":
                 dev.command(f"LANG {value}")
+            elif kind == "mark":
+                taps.append([int(v) for v in dev.command(f"WHERE {value}").split()])
             elif kind == "select":
                 dev.command(f"SELECT {value[0]} {value[1]}")
                 dev.wait_for("ClipSelection", 20)
@@ -183,9 +189,12 @@ def run(board: dict, dev: Device, out: Path) -> list[dict]:
                 img = dev.screenshot()
                 raw = raw_dir / f"{value}.png"
                 img.save(raw)
-                device_frame(img).save(framed_dir / f"{value}.png")
+                device_frame(img, taps=taps).save(framed_dir / f"{value}.png")
+                if taps:
+                    device_frame(img).save(framed_dir / f"{value}-plain.png")
                 manifest.append({"scene": scene["name"], "shot": value, "caption": scene.get("caption", ""),
-                                 "file": str(raw.relative_to(out))})
+                                 "file": str(raw.relative_to(out)), "taps": taps})
+                taps = []
                 print(f"   saved {raw.name}")
             else:
                 print(f"   {kind}: {value}")
@@ -217,23 +226,31 @@ def video(manifest: list[dict], out: Path, seconds: float = 4.0) -> None:
     frames = out / "video"
     frames.mkdir(exist_ok=True)
     size = (1920, 1080)
-    paths = []
-    for i, m in enumerate(manifest):
-        img = Image.open(out / "framed" / f"{m['shot']}.png")
+    slides = []  # (path, seconds)
+
+    def slide(name: str, caption: str, secs: float) -> None:
+        img = Image.open(out / "framed" / f"{name}.png")
         scale = (size[1] * 0.78) / img.height
         img = img.resize((round(img.width * scale), round(img.height * scale)))
-        slide = on_background([img], caption=m.get("caption", ""), size=size)
-        p = frames / f"slide{i:02d}.png"
-        slide.save(p)
-        paths.append(p)
-    fade = 0.5
+        p = frames / f"slide{len(slides):02d}.png"
+        on_background([img], caption=caption, size=size).save(p)
+        slides.append((p, secs))
+
+    for m in manifest:
+        if m.get("taps"):
+            slide(f"{m['shot']}-plain", m.get("caption", ""), seconds * 0.45)
+            slide(m["shot"], m.get("caption", ""), seconds * 0.7)
+        else:
+            slide(m["shot"], m.get("caption", ""), seconds)
+    fade = 0.4
     inputs, filters = [], []
-    for i, p in enumerate(paths):
-        inputs += ["-loop", "1", "-t", str(seconds), "-i", str(p)]
+    for p, secs in slides:
+        inputs += ["-loop", "1", "-t", str(secs), "-i", str(p)]
     chain = "[0:v]"
-    for i in range(1, len(paths)):
-        offset = i * (seconds - fade)
-        filters.append(f"{chain}[{i}:v]xfade=transition=fade:duration={fade}:offset={offset}[v{i}]")
+    offset = 0.0
+    for i in range(1, len(slides)):
+        offset += slides[i - 1][1] - fade
+        filters.append(f"{chain}[{i}:v]xfade=transition=fade:duration={fade}:offset={offset:.2f}[v{i}]")
         chain = f"[v{i}]"
     filt = ";".join(filters) if filters else "[0:v]null[v0]"
     last = chain if filters else "[v0]"
@@ -254,6 +271,8 @@ def main() -> int:
     ap.add_argument("--out", type=Path)
     ap.add_argument("--video", action="store_true", help="also make an MP4 and GIF (needs ffmpeg)")
     ap.add_argument("--check", action="store_true", help="only validate the storyboard")
+    ap.add_argument("--rerender", action="store_true",
+                    help="redraw framed images, composites and video from the last run (no device)")
     args = ap.parse_args()
     try:
         board = load_storyboard(args.storyboard)
@@ -264,6 +283,20 @@ def main() -> int:
         print("storyboard ok")
         return 0
     out = args.out or (args.storyboard.parent / board.get("output", "out"))
+    if args.rerender:
+        from PIL import Image
+
+        manifest = json.loads((out / "manifest.json").read_text())
+        for m in manifest:
+            img = Image.open(out / m["file"])
+            device_frame(img, taps=m.get("taps")).save(out / "framed" / f"{m['shot']}.png")
+            if m.get("taps"):
+                device_frame(img).save(out / "framed" / f"{m['shot']}-plain.png")
+        composites(board, out)
+        if args.video:
+            video(manifest, out)
+        print(f"done: {out}")
+        return 0
     dev = Device(find_port(args.port))
     print(f"device screen: {dev.state()}")
     manifest = run(board, dev, out)

@@ -38,8 +38,37 @@ def load_font(size: int) -> ImageFont.ImageFont:
     return ImageFont.load_default()
 
 
-def device_frame(screen: Image.Image, scale: float = 1.0) -> Image.Image:
-    """Screen inside a simple e-reader bezel with a soft shadow, on a transparent background."""
+ACCENT = (232, 116, 59)
+
+
+def draw_tap(img: Image.Image, center: tuple[int, int], radius: int, label: str = "Tap") -> None:
+    """A tap marker: soft orange touch dot, ring and a small label above it."""
+    cx, cy = center
+    overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(overlay)
+    d.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), fill=ACCENT + (45,))
+    ring = max(3, radius // 7)
+    d.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), outline=ACCENT + (255,), width=ring)
+    dot = max(4, radius // 5)
+    d.ellipse((cx - dot, cy - dot, cx + dot, cy + dot), fill=ACCENT + (255,))
+    if label:
+        font = load_font(max(18, radius))
+        tw = d.textlength(label, font=font)
+        pad = font.size // 3
+        top = cy - radius - font.size - 3 * pad
+        if top < 0:
+            top = cy + radius + pad
+        box = (cx - tw / 2 - pad * 2, top, cx + tw / 2 + pad * 2, top + font.size + 2 * pad)
+        d.rounded_rectangle(box, radius=(box[3] - box[1]) / 2, fill=ACCENT + (255,))
+        d.text((cx - tw / 2, top + pad - font.size * 0.08), label, font=font, fill=(255, 255, 255, 255))
+    img.alpha_composite(overlay)
+
+
+def device_frame(screen: Image.Image, scale: float = 1.0, taps: list | None = None) -> Image.Image:
+    """Screen inside a simple e-reader bezel with a soft shadow, on a transparent background.
+
+    `taps` are (x, y, w, h) control rectangles in screen coordinates to mark as tapped.
+    """
     screen = screen.convert("RGB")
     if scale != 1.0:
         screen = screen.resize((round(screen.width * scale), round(screen.height * scale)), Image.Resampling.LANCZOS)
@@ -62,6 +91,12 @@ def device_frame(screen: Image.Image, scale: float = 1.0) -> Image.Image:
     body = ImageDraw.Draw(out)
     body.rounded_rectangle((margin, margin, margin + body_w, margin + body_h), radius=side, fill=(38, 38, 40))
     out.paste(screen, (margin + side, margin + side))
+    for x, y, w, h in taps or []:
+        # Wide controls (list options): tap towards the right so the label stays readable.
+        fx = 0.8 if w > 3 * h else 0.5
+        cx = margin + side + round((x + w * fx) * scale)
+        cy = margin + side + round((y + h / 2) * scale)
+        draw_tap(out, (cx, cy), round(max(18, min(w, h) * 0.6) * scale))
     return out
 
 

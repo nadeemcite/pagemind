@@ -22,12 +22,14 @@ scenes:
     caption: Select a passage and tap Ask AI
     steps:
       - select: [4, 27]
+      - mark: askai
       - shot: 02-select
 
   - name: picker
     caption: Choose what you need
     steps:
       - picker: true
+      - mark: option 0
       - shot: 03-picker
       - back: true
 
@@ -53,28 +55,39 @@ scenes:
       - shot: 05-define
       - back: true
 
-  - name: hindi-page
-    caption: Works in Hindi too
+  - name: other-language
+    caption: Read in any language
     steps:
       - open: hindi
       - goto: [1, 0]
-      - shot: 06-hindi-page
+      - shot: 06-other-language
 
-  - name: hindi-translate
-    caption: Translated, in context
+  - name: translate-english
+    caption: Translated into yours
     steps:
       - language: English
       - select: [7, 29]
       - ask: translate
-      - shot: 07-hindi-translate
+      - shot: 07-translate-english
+      - back: true
+
+  - name: answer-spanish
+    caption: Answers in the language you choose
+    steps:
+      - open: english
+      - goto: [2, 1]
+      - language: Spanish
+      - select: [4, 27]
+      - ask: explain
+      - shot: 08-answer-spanish
       - back: true
 
 composites:
   hero: [01-reading, 04-explain]
   steps: [02-select, 03-picker, 04-explain, 05-define]
-  hindi: [06-hindi-page, 07-hindi-translate]
+  languages: [06-other-language, 07-translate-english, 08-answer-spanish]
 
 captions:
   hero: Ask your e-reader about what you are reading
   steps: Select, ask, read
-  hindi: Indic scripts, shaped properly
+  languages: Any book, any language

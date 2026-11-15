@@ -6,6 +6,7 @@
 #include <Memory.h>
 #include <WiFi.h>
 
+#include <cstdio>
 #include <memory>
 #include <utility>
 
@@ -174,3 +175,16 @@ void AiAskActivity::render(RenderLock&&) {
   if (popup.processRender(renderer, mappedInput)) return;
   renderer.displayBuffer();
 }
+
+#if PAGEMIND_DEMO
+bool AiAskActivity::demoCommand(const char* command) {
+  int index = -1;
+  if (sscanf(command, "WHERE option %d", &index) != 1) return false;
+  freeink::ui::Rect r;
+  if (!popup.demoOptionRect(index, r)) return false;
+  char buf[48];
+  snprintf(buf, sizeof(buf), "%d %d %d %d", r.x, r.y, r.width, r.height);
+  demo::setDetail(buf);
+  return true;
+}
+#endif

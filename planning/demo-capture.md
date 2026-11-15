@@ -93,6 +93,17 @@ live in `docs/images/pagemind/` (sized for the web, a few hundred KB in total).
 - `STATE` (current screen name) replaces `WAIT`: the script waits for the expected
   screen, then for the e-ink refresh; `SHOT` holds the render lock while sending.
 
+## Changes after owner review (2026-11-15)
+
+- **Tap markers:** `CMD:WHERE askai` / `WHERE option <n>` return a control's screen
+  rectangle (selection action bar, popup interaction table); the storyboard's
+  `mark` step draws an orange tap marker there, and the video shows each tapped
+  screen first without, then with the marker.
+- **Languages, not only Hindi:** scenes "Read in any language" (Hindi page),
+  "Translated into yours" (Hindi → English) and "Answers in the language you
+  choose" (Dickens explained in Spanish); README composite `languages`.
+- `--rerender` redraws framed images, composites and video from the last run.
+
 ## Work order
 
 1. Demo build target and `DemoCommands` (OPEN, PAGE, BACK, WAIT, SCREENSHOT reuse).
@@ -135,7 +146,7 @@ Complete when A1–A4 and D1–D4 pass and the README slots are filled.
 | A3 | 2026-11-15 | see git log | Pass | Demo strings: demo build 3, `pagemind_x4pro` 0, `pagemind_x4pro_release` 0 |
 | A4 | 2026-11-15 | see git log | Pass | Demo, dev and release builds succeed; host tests 1053/1053; clang-format clean; `CMD:SCREENSHOT` path untouched (demo handler runs first only in demo builds) |
 | D1 | 2026-11-15 | dcb092a2 | Pass | Run 3: all 7 scenes unattended (Dickens chapter I: reading, selection with Ask AI button, picker, Explain, Define "incredulity"; Premchand page, Hindi → English translation); correct orientation; composites, 25 s MP4 and GIF made. Runs 1–2 found wrong pages and Hindi answers; fixed with GOTO and LANG |
-| D2 | | | | |
+| D2 | 2026-11-15 | see git log | Pass | Run 4 (tap markers, language scenes) repeated every scene unattended with the same screens; answers worded differently as expected; 30 s video |
 | D3 | | | | |
 | D4 | | | | |
 | Owner sign-off | | | | |
