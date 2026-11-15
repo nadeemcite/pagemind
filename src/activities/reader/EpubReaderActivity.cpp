@@ -19,6 +19,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cstdlib>
 #include <cstring>
 #include <functional>
 #include <iterator>
@@ -671,6 +672,27 @@ bool EpubReaderActivity::demoCommand(const char* command) {
   if (strcmp(command, "SELECT") == 0) {
     startClipSelection(-1, -1, ClipSelectionActivity::Mode::Clip);
     return true;
+  }
+  if (strncmp(command, "GOTO ", 5) == 0) {
+    int spine = -1, page = 0;
+    if (sscanf(command + 5, "%d %d", &spine, &page) < 1 || !epub || spine < 0 || spine >= epub->getSpineItemsCount() ||
+        page < 0) {
+      return false;
+    }
+    {
+      RenderLock lock;  // same as skipPages(): the next render lays out the new spine item
+      currentSpineIndex = spine;
+      nextPageNumber = page;
+      section.reset();
+    }
+    requestUpdate();
+    return true;
+  }
+  if (strncmp(command, "PAGE ", 5) == 0) {
+    const int pages = atoi(command + 5);
+    for (int i = 0; i < std::abs(pages); i++) pageTurn(pages > 0);
+    requestUpdate();
+    return pages != 0;
   }
   return false;
 }

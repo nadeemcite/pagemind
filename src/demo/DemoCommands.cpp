@@ -12,6 +12,7 @@
 #include "MappedInputManager.h"
 #include "activities/ActivityManager.h"
 #include "activities/RenderLock.h"
+#include "ai/AiSettingsStore.h"
 
 extern GfxRenderer renderer;
 extern MappedInputManager mappedInputManager;
@@ -40,8 +41,9 @@ void sendScreenshot() {
   RenderLock lock;  // wait for an in-progress render to finish
   const uint8_t* fb = renderer.getFrameBuffer();
   const uint32_t size = static_cast<uint32_t>(renderer.getDisplayWidthBytes()) * renderer.getDisplayHeight();
-  logSerial.printf("DEMO:SHOT %u %d %d %d %d\n", static_cast<unsigned>(size), static_cast<int>(renderer.getOrientation()),
-                   renderer.getDisplayWidth(), renderer.getDisplayHeight(), renderer.getDisplayWidthBytes());
+  logSerial.printf("DEMO:SHOT %u %d %d %d %d\n", static_cast<unsigned>(size),
+                   static_cast<int>(renderer.getOrientation()), renderer.getDisplayWidth(), renderer.getDisplayHeight(),
+                   renderer.getDisplayWidthBytes());
   logSerial.write(fb, size);
   logSerial.printf("\nDEMO:SHOT_END\n");
   logSerial.flush();
@@ -85,6 +87,12 @@ bool handle(const std::string& command) {
                            : verb == "NEXT"    ? RemoteButton::Next
                                                : RemoteButton::Previous;
     reply(mappedInputManager.injectRemoteClick(b) ? "OK" : "ERR", verb.c_str());
+  } else if (verb == "GOTO" || verb == "PAGE") {
+    reply(activityManager.demoCommand(command.c_str()) ? "OK" : "ERR", verb.c_str());
+  } else if (verb == "LANG") {
+    // In memory only: the user's saved answer language is not changed.
+    AI_SETTINGS.setAnswerLanguage(arg);
+    reply("OK", "LANG");
   } else if (verb == "SELECT") {
     int first = -1, last = -1;
     if (sscanf(arg.c_str(), "%d %d", &first, &last) != 2 || first < 0 || last < first) {

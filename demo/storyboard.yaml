@@ -15,13 +15,13 @@ scenes:
     caption: Reading as usual
     steps:
       - open: english
-      - page: 12
+      - goto: [2, 1]
       - shot: 01-reading
 
   - name: select
     caption: Select a passage and tap Ask AI
     steps:
-      - select: [0, 24]
+      - select: [4, 27]
       - shot: 02-select
 
   - name: picker
@@ -35,7 +35,9 @@ scenes:
     caption: The answer, right on the page
     steps:
       - open: english
-      - select: [0, 24]
+      - goto: [2, 1]
+      - language: English
+      - select: [4, 27]
       - ask: explain
       - shot: 04-explain
       - back: true
@@ -44,7 +46,9 @@ scenes:
     caption: Words defined in context
     steps:
       - open: english
-      - select: [10, 10]
+      - goto: [2, 1]
+      - language: English
+      - select: [39, 39]
       - ask: define
       - shot: 05-define
       - back: true
@@ -53,21 +57,22 @@ scenes:
     caption: Works in Hindi too
     steps:
       - open: hindi
-      - page: 1
+      - goto: [1, 0]
       - shot: 06-hindi-page
 
-  - name: hindi-explain
-    caption: Explained in plain words
+  - name: hindi-translate
+    caption: Translated, in context
     steps:
-      - select: [0, 20]
-      - ask: explain
-      - shot: 07-hindi-explain
+      - language: English
+      - select: [7, 29]
+      - ask: translate
+      - shot: 07-hindi-translate
       - back: true
 
 composites:
   hero: [01-reading, 04-explain]
   steps: [02-select, 03-picker, 04-explain, 05-define]
-  hindi: [06-hindi-page, 07-hindi-explain]
+  hindi: [06-hindi-page, 07-hindi-translate]
 
 captions:
   hero: Ask your e-reader about what you are reading

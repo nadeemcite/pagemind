@@ -25,7 +25,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from demo.frames import device_frame, framebuffer_to_image, on_background  # noqa: E402
 
-STEP_KINDS = {"open", "page", "select", "picker", "ask", "back", "wait_for", "sleep", "shot"}
+STEP_KINDS = {"open", "page", "goto", "language", "select", "picker", "ask", "back", "wait_for", "sleep", "shot"}
 TASKS = {"explain", "define", "translate", "ask"}
 
 
@@ -61,6 +61,11 @@ def load_storyboard(path: Path) -> dict:
                 raise StoryboardError(f"{where}: ask needs one of {sorted(TASKS)}")
             if kind == "page" and not isinstance(value, int):
                 raise StoryboardError(f"{where}: page needs a number like 3 or -1")
+            if kind == "goto" and not (isinstance(value, list) and len(value) == 2
+                                       and all(isinstance(v, int) and v >= 0 for v in value)):
+                raise StoryboardError(f"{where}: goto needs [spine, page]")
+            if kind == "language" and not isinstance(value, str):
+                raise StoryboardError(f"{where}: language needs a name like English")
     for name in ("hero", "steps", "hindi"):
         for shot in (data.get("composites") or {}).get(name, []):
             if not any(shot == s.get("shot") for sc in scenes for s in sc.get("steps") or [] if "shot" in s):
@@ -135,6 +140,12 @@ def run(board: dict, dev: Device, out: Path) -> list[dict]:
     raw_dir.mkdir(parents=True, exist_ok=True)
     framed_dir.mkdir(parents=True, exist_ok=True)
     settle = float(board.get("settle_seconds", 2.5))
+    # Leave whatever screen a previous run stopped on.
+    for _ in range(4):
+        if dev.state() in ("EpubReader", "Home"):
+            break
+        dev.command("BACK")
+        time.sleep(2)
     manifest = []
     for scene in board["scenes"]:
         print(f"== {scene['name']}")
@@ -144,9 +155,13 @@ def run(board: dict, dev: Device, out: Path) -> list[dict]:
                 dev.command(f"OPEN {board['books'][value]}")
                 dev.wait_for("EpubReader", 60)
             elif kind == "page":
-                for _ in range(abs(value)):
-                    dev.command("NEXT" if value > 0 else "PREV")
-                    time.sleep(1.2)
+                dev.command(f"PAGE {value}")
+                time.sleep(2.5)
+            elif kind == "goto":
+                dev.command(f"GOTO {value[0]} {value[1]}")
+                time.sleep(5)  # the chapter may be laid out first
+            elif kind == "language":
+                dev.command(f"LANG {value}")
             elif kind == "select":
                 dev.command(f"SELECT {value[0]} {value[1]}")
                 dev.wait_for("ClipSelection", 20)
