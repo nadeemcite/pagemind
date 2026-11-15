@@ -118,7 +118,11 @@ void AiTestActivity::loop() {
     finish();
     return;
   }
-  if (mappedInput.wasPressed(MappedInputManager::Button::Confirm) && AI_SETTINGS.isConfigured()) {
+  int tapX = 0;
+  int tapY = 0;
+  const bool tappedAsk = mappedInput.wasScreenTapped(tapX, tapY) && askButtonW > 0 && tapX >= askButtonX &&
+                         tapX < askButtonX + askButtonW && tapY >= askButtonY && tapY < askButtonY + askButtonH;
+  if ((mappedInput.wasPressed(MappedInputManager::Button::Confirm) || tappedAsk) && AI_SETTINGS.isConfigured()) {
     state = State::Working;
     requestUpdate();
   }
@@ -143,8 +147,7 @@ void AiTestActivity::render(RenderLock&&) {
   }
 
   const bool ok = result == ai::Error::None;
-  renderer.drawText(UI_12_FONT_ID, x, y, ok ? tr(STR_AI_TEST_OK) : tr(STR_AI_TEST_FAILED), true,
-                    EpdFontFamily::BOLD);
+  renderer.drawText(UI_12_FONT_ID, x, y, ok ? tr(STR_AI_TEST_OK) : tr(STR_AI_TEST_FAILED), true, EpdFontFamily::BOLD);
   y += renderer.getLineHeight(UI_12_FONT_ID) + metrics.verticalSpacing * 2;
 
   char line[96];
@@ -172,7 +175,19 @@ void AiTestActivity::render(RenderLock&&) {
            static_cast<unsigned>(stats.minLargestBlock));
   renderer.drawText(SMALL_FONT_ID, x, y, line);
 
-  const auto labels = mappedInput.mapLabels(tr(STR_BACK), AI_SETTINGS.isConfigured() ? tr(STR_AI_ASK_AGAIN) : "", "", "");
+  askButtonW = 0;
+  if (AI_SETTINGS.isConfigured()) {
+    askButtonH = renderer.getLineHeight(UI_12_FONT_ID) + 2 * metrics.verticalSpacing + 8;
+    askButtonW = width;
+    askButtonX = x;
+    askButtonY = pageHeight - metrics.buttonHintsHeight - askButtonH - metrics.verticalSpacing;
+    renderer.drawRoundedRect(askButtonX, askButtonY, askButtonW, askButtonH, 2, 8, true);
+    renderer.drawCenteredText(UI_12_FONT_ID, askButtonY + (askButtonH - renderer.getLineHeight(UI_12_FONT_ID)) / 2,
+                              tr(STR_AI_ASK_AGAIN), true, EpdFontFamily::BOLD);
+  }
+
+  const auto labels =
+      mappedInput.mapLabels(tr(STR_BACK), AI_SETTINGS.isConfigured() ? tr(STR_AI_ASK_AGAIN) : "", "", "");
   GUI.drawButtonHints(renderer, labels.btn1, labels.btn2, labels.btn3, labels.btn4);
   renderer.displayBuffer();
 }

@@ -33,6 +33,8 @@ class AiTestActivity final : public Activity {
   ai::Answer answer;
   ai::CallStats stats;
   int askCount = 0;
+  // On-screen "Ask again" button (touch boards have no button hints); set by render().
+  int askButtonX = 0, askButtonY = 0, askButtonW = 0, askButtonH = 0;
 
   void runTest();
   void onWifiSelectionComplete(bool connected);
