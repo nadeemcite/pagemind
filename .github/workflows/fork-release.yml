@@ -73,5 +73,5 @@ jobs:
         run: |
           gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || \
             gh release create "$GITHUB_REF_NAME" --title "PageMind ${GITHUB_REF_NAME}" \
-              --notes "PageMind ${GITHUB_REF_NAME} for Xteink X4 Pro. Based on CrossPoint Reader; not an official CrossPoint release. Install: see FORK.md."
+              --notes "PageMind ${GITHUB_REF_NAME} for Xteink X4 Pro. Based on CrossPoint Reader; not an official CrossPoint release. Install and setup: see the README."
           gh release upload "$GITHUB_REF_NAME" "$ASSET" "$ASSET.sha256" --clobber

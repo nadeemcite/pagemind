@@ -1,300 +1,200 @@
-# CrossPoint Reader
+<h1 align="center">PageMind</h1>
 
-[![Fund contributors](https://img.shields.io/badge/%F0%9F%91%91_Fund_contributors-royalty.dev-BB953A?style=for-the-badge&labelColor=1a1a1a)](https://app.royalty.dev/crosspoint-reader/crosspoint-reader)
+<p align="center">
+  <strong>Ask your e-reader about what you are reading.</strong><br>
+  Open-source firmware for the Xteink X4 Pro with an AI reading companion that runs on <em>your own</em> cloud.
+</p>
 
-CrossPoint is open-source e-reader firmware - community-built, fully hackable, free forever. It's maintained by a growing community of developers and readers who believe your device should do what you want - not what a manufacturer decided for you.
+<p align="center">
+  <a href="https://github.com/nadeemcite/pagemind/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/nadeemcite/pagemind?label=release&color=2b2b2b"></a>
+  <img alt="Device" src="https://img.shields.io/badge/device-Xteink%20X4%20Pro-2b2b2b">
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-2b2b2b"></a>
+</p>
 
-### Now running on:
-
-- **ESP32C3-based** Xteink X4 and X3.
-- **ESP32S3-based** Xteink X4Pro and X4Classic, Seeed reTerminal Sticky, M5PaperMono, Metalio E-Ink 4, EEGOREAD A4 and Boox Picco.
-
-Check [our Devices page](https://crosspointreader.com/devices) for the full list.
-
-![CrossPoint Reader running on Xteink device](./docs/images/cover.jpg)
-
-> If you're planning to buy an Xteink device, consider purchasing an **X3/X4 Developer Edition** through https://crosspointreader.com. CrossPoint receives a small share of each sale, helping fund development costs.
-
-## What can CrossPoint do?
-
-- **Reader engine**: EPUB 2/3 rendering with embedded-style option, image handling, hyphenation, kerning, adaptive table layouts, native CJK ruby annotations, chapter navigation, footnotes, bookmarks, dictionary lookups ([StarDict](docs/dictionary.md)), go-to-percent, auto page turn, orientation control, focus reading, KOReader progress sync and more.
-
-- **Various formats**: native handling for `.epub`, `.xtc/.xtch`, `.txt`, and `.bmp`.
-
-- **Touch reading**: follow EPUB links and look up words in the dictionary on touch-enabled devices.
-
-- **Highlights and clippings**: highlight text in EPUBs and save excerpts as clippings. Use the reader menu on button devices, or hold a word and drag the selection handles on touch devices. Look up selected words or phrases in the dictionary. Enable Sync Clippings to sync saved excerpts through a compatible CrossPoint Sync server. See [Clippings and Highlights](USER_GUIDE.md#53-clippings-and-highlights).
-
-- **Screenshots.**
-
-- **Custom fonts**: install your favorite fonts on the SD card.
-
-- **Tilt page turn (X3 and Sticky)**.
-
-- **Bluetooth page turners**: pair a remote under Settings → Connectivity → Bluetooth Page Turner. Map short and long presses to page turns, chapter navigation, the reader menu, or clipping selection.
-
-- **USB Drive mode (X4Pro)**: access the SD card as USB mass storage.
-
-- **Library workflow**: indexed title/author search, recently-added and alphabetical views, multilingual grouping, folder browser, recent books, and SD-cache management.
-
-- **Wireless workflows**:
-  
-  - File transfer web UI
-  - EPUB Optimizer
-  - Web settings UI/API (edit many device settings from browser)
-  - WebSocket fast uploads
-  - WebDAV handler
-  - AP mode (hotspot) and STA mode (join existing Wi-Fi), both with QR helpers
-  - Calibre wireless connect flow
-  - OPDS browser with saved servers (up to 8), search, pagination, and direct download; hold Back for one second and release in a catalog to return to the main menu
-  - OTA update checks and installs from GitHub releases
-
-- **Customization**: night mode, multiple themes (Classic, Lyra, Lyra Extended, RoundedRaff), sleep screen modes including transparent overlays, front/side button remapping, status bar controls, power-button behavior, refresh cadence, and more.
-
-- **Localization**: 34 UI languages and counting, including CJK font fallback and RTL support.
-
-- **SD card plugins**: install plugins for book catalogs, downloads, and tools in the device's web interface. Enable Plugins under Settings → Connectivity to show them on Home. On-device plugins use existing firmware screens and operations. JavaScript runs in a browser on your phone or computer, and its page must stay open while it works. Plugins follow [CrossPoint's reading-focused scope](SCOPE.md#out-of-scope). See the [plugin guide](docs/sd-plugins.md).
-
-### Coming soon:
-
-- More themes.
-
-- Much more! stay tuned.
+<!-- SCREENSHOT: hero image, the reader showing a book page next to an Ask AI answer (from the demo capture) -->
 
 ---
 
-## USB-locked devices (Xteink Unlocker)
+You are reading, and you hit a word you don't know, a sentence you can't untangle,
+a line in a language you are still learning. Normally you put the book down and
+reach for your phone. With PageMind you **select the passage, tap Ask AI, and read
+the answer right there on the e-ink screen**, then carry on from the same page.
 
-Some Xteink units purchased from third-party stores (e.g. AliExpress) ship with USB flashing locked from the factory.
-If your device is locked, you will need to use the **Xteink Unlocker** tool available at
-https://crosspointreader.com/#unlock-tool before you can flash CrossPoint.
+PageMind is built on [CrossPoint Reader](https://github.com/crosspoint-reader/crosspoint-reader),
+the open-source firmware for Xteink devices, and keeps everything CrossPoint does.
+It is **not** an official CrossPoint release. Please report PageMind problems
+[here](https://github.com/nadeemcite/pagemind/issues), not to CrossPoint.
 
-**You do not need this tool if you bought your device directly from xteink.com.** Those units are not locked.
+## What you can ask
 
-**Not sure if your device is locked?** Power it on, connect the USB-C cable, and try flashing via the web flasher first (see
-[Install firmware](#install-firmware) below). If the browser's serial device picker does not show your device, try a different
-USB port or browser before assuming the device is locked. Only reach for the unlocker if the device still doesn't appear.
+| | Task | You get |
+|---|---|---|
+| 💡 | **Explain** | The passage in simple words |
+| 📖 | **Define** | The meaning of a word or phrase *as it is used here* |
+| 🌐 | **Translate** | The passage in the language you choose |
+| 💬 | **Ask a question** | An answer to your own question about the passage |
 
-> ### ⚠️ WARNING: READ THIS BEFORE USING THE UNLOCKER ⚠️
-> 
-> **The only officially supported firmwares in the unlock tool are CrossPoint and CrossInk.**
-> 
-> Flashing any other firmware on a USB-locked device may **permanently brick the device** or leave it **permanently
-> stuck on that firmware with no recovery path**. Once USB flashing is re-locked, your only way back is via OTA, and if
-> the firmware you flashed doesn't support OTA, **there is no way out**.
+<!-- SCREENSHOT: the four steps side by side: selection, Ask AI button, task picker, answer -->
 
-## Install firmware
+**Made for real books:**
 
-### Web installer (recommended)
+- **No spoilers.** Only the page on your screen is sent, never the pages ahead.
+- **Your languages.** Answers render in your reading font, including Hindi and other
+  Indic scripts, with proper conjuncts and vowel signs.
+- **Stays out of the way.** Wi-Fi turns on only when you ask, and turns off again.
+- **Plain text on e-ink.** Short answers, paged like a book, no clutter.
 
-1. Connect your device to your computer via USB-C and wake/unlock the device
-2. Go to https://crosspointreader.com/#flash-tools, select your device (X3, X4, Xteink X4Pro, Seeed reTerminal Sticky, or M5PaperMono), and choose an official CrossPoint release.
+<!-- SCREENSHOT: a Hindi passage with its answer -->
 
-### Web installer (specific version)
+## Your cloud, your data
 
-1. Connect your device to your computer via USB-C and wake/unlock the device
-2. Download the firmware file for your device from [Releases](https://github.com/crosspoint-reader/crosspoint-reader/releases), or compile yourself.
-3. Go to https://crosspointreader.com/#flash-tools, select your device, click "Custom .bin" and upload the firmware file.
+PageMind has no PageMind server. Ask AI talks only to an AI server that **you**
+run in your own Google Cloud project, with your own OpenAI or Ollama key.
 
-### Revert to Official Firmware
+```mermaid
+flowchart LR
+    R["📘 X4 Pro<br/>PageMind"] -- "HTTPS, certificate checked<br/>selection + page on screen" --> S["☁️ Your AI server<br/>Google Cloud Run"]
+    S -- "your API key" --> P["🤖 OpenAI or Ollama"]
+    P --> S --> R
+```
 
-To revert to the official firmware, you can also flash the latest official firmware using https://crosspointreader.com/#flash-tools.
+- **What is sent:** the selected text, the page on screen, the book title and
+  author, and your answer language. Nothing else.
+- **Where it goes:** to your server, which forwards it to the provider you chose
+  (under that provider's terms). Nothing goes to the PageMind project.
+- **What is kept:** your server logs only sizes and timing, never book text or answers.
+- **Your key:** the reader stores its key encrypted with a secret that never leaves
+  the device; the provider key stays in your Google Secret Manager.
 
-### Command line
+## Get started
 
-1. Install [`esptool`](https://github.com/espressif/esptool):
+You need an **Xteink X4 Pro**, a **Google Cloud** project with billing turned on,
+and an API key from **OpenAI** or **[Ollama](https://ollama.com)**. Setup takes
+about 15 minutes.
+
+### 1. Install PageMind on the reader
+
+1. Back up the SD card's `/.crosspoint/` folder (progress, settings, bookmarks).
+2. Download `pagemind-<version>-x4pro.bin` from the
+   [latest release](https://github.com/nadeemcite/pagemind/releases/latest).
+3. Connect the X4 Pro by USB-C, wake it, and flash the file with the
+   [CrossPoint web flasher](https://crosspointreader.com/#flash-tools)
+   (select X4 Pro → *Custom .bin*), or with
+   `esptool.py --chip esp32s3 --baud 921600 write_flash 0x10000 pagemind-<version>-x4pro.bin`.
+
+Your books, fonts, settings and reading progress are kept.
+
+> [!WARNING]
+> Some units bought from third-party stores have USB flashing locked. CrossPoint's
+> unlock tool officially supports only CrossPoint and CrossInk, and flashing other
+> firmware on a locked device may leave it stuck. Read
+> [CrossPoint's warning](https://github.com/crosspoint-reader/crosspoint-reader#usb-locked-devices-xteink-unlocker)
+> before you start.
+
+### 2. Deploy your AI server
 
 ```bash
-pip install esptool
+git clone https://github.com/nadeemcite/pagemind.git
+cd pagemind/cloud/ai-proxy
+./deploy.sh
 ```
 
-2. Download the firmware file for your device from the [releases page](https://github.com/crosspoint-reader/crosspoint-reader/releases).
-3. Connect your device via USB-C.
-4. Find the device port. On Linux, run `dmesg` after connecting. On macOS:
+The script asks for your project, provider and model, stores your provider key in
+Secret Manager, deploys the server, and writes **`pagemind-ai.json`** with the
+server URL and a key for your reader. Details and options:
+[cloud/ai-proxy](cloud/ai-proxy/README.md).
 
-```bash
-log stream --predicate 'subsystem == "com.apple.iokit"' --info
-```
+<!-- SCREENSHOT: deploy.sh finishing in a terminal -->
 
-5. Flash an X3 or X4:
+### 3. Connect the reader
 
-```bash
-esptool.py --chip esp32c3 --port /dev/ttyACM0 --baud 921600 write_flash 0x10000 /path/to/firmware.bin
-```
+Copy `pagemind-ai.json` to the **root of the SD card** and restart the reader.
+PageMind imports it, encrypts the key, turns Ask AI on, and deletes the file.
+Then delete your computer's copy: it holds the key in plain text.
 
-   Flash an Xteink X4Pro, Seeed reTerminal Sticky, or M5PaperMono:
+Prefer not to copy files? Start **File Transfer** on the reader, open its address in
+a browser, and paste the URL and key under **Settings → AI Assistant**.
 
-```bash
-esptool.py --chip esp32s3 --port /dev/ttyACM0 --baud 921600 write_flash 0x10000 /path/to/firmware.bin
-```
+Check it: **Settings → Network → AI Assistant → Test connection**.
 
-### Manual
+### 4. Ask
 
-See [Development quick start](#development-quick-start) below.
+Open a book, hold a word and drag to select a passage, tap **Ask AI**, pick a task.
+**Back** returns you to the same page.
 
----
+Answers come in the reader's language by default; choose another under
+**Settings → Network → AI Assistant → Answer Language**.
 
-## Custom SD-card fonts
+## Cost
 
-On devices with external RAM enabled in CrossPoint, copy `.ttf`, `.otf`, or `.ttc` files to the SD card and select them as reader fonts. Put one file in `/fonts/` or `/.fonts/`, or put one family's files in a subfolder. See the [SD card font guide](./docs/sd-card-fonts.md) for the folder layout and styles.
+You pay your own Google Cloud and AI provider bills; PageMind is free.
+The server sleeps when you are not using it, so occasional reading usually fits in
+or near Cloud Run's free tier (stored container images may cost a few cents a
+month). AI costs depend on your provider and model. Set a spending limit at your
+provider and a budget alert in Google Cloud. Each reader key is limited to
+10 questions a minute.
 
-On other devices, convert the font to `.cpfont` first. `.cpfont` files also work on devices with external RAM enabled and have better performance. No firmware reflash is needed to add fonts.
+## FAQ
 
-To make `.cpfont` files:
+<details>
+<summary><strong>Can I use my ChatGPT, Claude or Gemini subscription?</strong></summary>
 
-1. Go to https://crosspointreader.com/fonts and open the "SD-card font builder" form.
-2. Upload up to four styles (regular, bold, italic, bold-italic), set the family name, point sizes, and Unicode range.
-3. Download the generated `.cpfont` files.
-4. Copy them to your SD card under `/fonts/YourFont/` (or `/.fonts/YourFont/` to hide the folder).
-5. Select the font on the device from the font settings.
+No. Those subscriptions cover the providers' own apps, not other software. PageMind
+uses an API key, which you create in the provider's developer console. Ollama's
+cloud offers open models; OpenAI keys work too.
+</details>
 
-Conversion runs the firmware repo's `lib/EpdFont/scripts/fontconvert_sdcard.py` script unmodified, so output matches a local host build.
+<details>
+<summary><strong>Does it work offline?</strong></summary>
 
----
+Reading does, and so do the offline dictionary, highlights and bookmarks. Ask AI
+needs Wi-Fi to reach your server, like CrossPoint's sync and OPDS features.
+</details>
 
-## Documentation
+<details>
+<summary><strong>Which devices are supported?</strong></summary>
 
-- [User Guide](./USER_GUIDE.md)
-- [Web server usage](./docs/webserver.md)
-- [Web server endpoints](./docs/webserver-endpoints.md)
-- [Project scope](./SCOPE.md)
-- [Contributing docs](./docs/contributing/README.md)
-- [Touch and UI development](./docs/contributing/touch-and-ui.md) - how to build new screens on the FreeInkUI activity bases (UiListActivity and friends), plus build envs for the non-Xteink touch devices
+The Xteink X4 Pro. CrossPoint runs on more devices; PageMind will add them once
+they can be tested.
+</details>
 
----
+<details>
+<summary><strong>How do updates work?</strong></summary>
 
-## Development quick start
+**Settings → Check for updates** installs the latest PageMind release from this
+repository. It never installs official CrossPoint.
+</details>
 
-### Prerequisites
+<details>
+<summary><strong>Can I go back to CrossPoint?</strong></summary>
 
-- [pioarduino PlatformIO Core](https://github.com/pioarduino/platformio-core) or [VS Code + pioarduino IDE](https://github.com/pioarduino/pioarduino-vscode-ide)
-- Python 3.8+
-- `clang-format` 21
-- USB-C cable supporting data transfer
+Yes. Flash official CrossPoint with the web flasher. Your books and progress stay on
+the SD card.
+</details>
 
-### Setup
+<details>
+<summary><strong>The first question takes a few seconds longer. Why?</strong></summary>
 
-```bash
-git clone --recursive https://github.com/crosspoint-reader/crosspoint-reader
-cd crosspoint-reader
+Your server sleeps when idle to keep costs near zero, and wakes up on the first
+request. Later questions answer in about two seconds.
+</details>
 
-# if cloned without --recursive:
-git submodule update --init --recursive
-```
+## Everything else
 
-### Nix/NixOS
+PageMind includes all of CrossPoint Reader: EPUB rendering, custom fonts,
+dictionary lookups, highlights and clippings, KOReader sync, OPDS, file transfer and
+more. See [CrossPoint's README](https://github.com/crosspoint-reader/crosspoint-reader#readme)
+and the [user guide](USER_GUIDE.md). It also includes Indic script shaping from
+CrossPoint [PR #3787](https://github.com/crosspoint-reader/crosspoint-reader/pull/3787).
 
-Nix/NixOS users can enter the development shell with either `nix develop` (flakes) or `nix-shell`:
+## For developers
 
-```bash
-nix develop -f nix
-# or
-nix-shell nix
-```
+Build, release and upstream sync: [docs/pagemind-development.md](docs/pagemind-development.md).
+How the feature was planned and tested: [planning/](planning/README.md).
 
-To flash a connected ESP32-C3 device, enable PlatformIO's udev rules in your NixOS configuration:
+## Credits and license
 
-```nix
-services.udev.packages = with pkgs; [ platformio-core.udev ];
-```
-
-After rebuilding the system configuration, reconnect the device or reload udev rules.
-
-### Build / flash / monitor
-
-```bash
-pio run --target upload
-```
-
-### Contributor pre-PR checks
-
-```bash
-./bin/clang-format-fix
-pio check -e default
-pio run -e default
-```
-
-### Debugging
-
-After flashing the new features, it’s recommended to capture detailed logs from the serial port.
-
-First, make sure all required Python packages are installed:
-
-```python
-python3 -m pip install pyserial colorama matplotlib
-```
-
-After that run the script:
-
-```sh
-# For Linux
-# This was tested on Debian and should work on most Linux systems.
-python3 scripts/debugging_monitor.py
-
-# For macOS
-python3 scripts/debugging_monitor.py /dev/cu.usbmodem2101
-```
-
-Minor adjustments may be required for Windows.
-
----
-
-## Internals
-
-CrossPoint Reader is pretty aggressive about caching data down to the SD card to minimise RAM usage. The ESP32-C3 only has ~380KB of usable RAM, so we have to be careful. A lot of the decisions made in the design of the firmware were based on this constraint.
-
-### Data caching
-
-The first time chapters of a book are loaded, they are cached to the SD card. Subsequent loads are served from the
-cache. This cache directory exists at `.crosspoint` on the SD card. The structure is as follows:
-
-```text
-.crosspoint/
-├── epub_<hash>/         # one directory per book, named by content hash
-│   ├── progress.bin     # reading position (chapter, page, etc.)
-│   ├── cover.bmp        # generated cover image
-│   ├── book.bin         # metadata: title, author, spine, TOC
-│   ├── css_rules.cache  # parsed CSS rule cache
-│   ├── img_*            # rendered image cache files
-│   └── sections/        # per-chapter layout cache
-│       ├── 0.bin
-│       ├── 1.bin
-│       └── ...
-├── settings.json        # device settings
-├── state.json           # resume/runtime state
-└── recent.json          # recent books list
-```
-
-Removing `/.crosspoint` clears all cached metadata and forces a full regeneration on next open. Book deletes, overwrites, and moves done through the firmware or web UI clear or re-key matching caches; manual SD-card edits may leave stale cache directories behind.
-
-For more details on the internal file structures, see the [file formats document](./docs/file-formats.md).
-
----
-
-## Contributing
-
-Contributions are welcome. If you're new to the codebase, start with the [contributing docs](./docs/contributing/README.md). For things to work on, check the [ideas discussion board](https://github.com/crosspoint-reader/crosspoint-reader/discussions/categories/ideas) — leave a comment before starting so we don't duplicate effort.
-
-Everyone here is a volunteer, so please be respectful and patient. For governance and community expectations, see [GOVERNANCE.md](./GOVERNANCE.md).
-
----
-
-## Community forks
-
-One of the best things about open source is that anyone can take the code in a different direction. If you need something outside CrossPoint's [scope](./SCOPE.md), check out the community forks:
-
-- [CrossInk](https://github.com/uxjulia/CrossInk) — UX focused with minimal reading stats and broader customizations for the reading experience.
-
-- [papyrix-reader](https://github.com/bigbag/papyrix-reader) — Adds FB2 and MD format support. Actively maintained with Arabic script support. Custom themes.
-
-- [inx](https://github.com/obijuankenobiii/inx) — Completely reimagines the user interface with tabbed navigation.
-
-- [Witch(hunt) Reader](https://github.com/jpirnay/witchhunt-reader) — More faithful CSS styling and background work for slightly snappier interaction. Weather information panel. Markdown support.
-
-**Note:** Many of these features will make their way into CrossPoint over time. Each project chooses its own priorities and tradeoffs.
-
-Want to build your own device? Be sure to check out the [Silkscreen](https://silkscreenreader.com) project or [OnePage Reader](https://github.com/MoveCall/onepage-reader).
-
----
-
-CrossPoint Reader is **not affiliated with Xteink or any device manufacturer**.
+PageMind stands on [CrossPoint Reader](https://github.com/crosspoint-reader/crosspoint-reader)
+and its contributors, the [FreeInk SDK](https://freeink.org), and
+[@ssafayet](https://github.com/ssafayet)'s Indic shaping work.
+MIT licensed, like CrossPoint; CrossPoint's copyright notice is kept in [LICENSE](LICENSE).

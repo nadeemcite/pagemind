@@ -1,2 +1,4 @@
 # Preserve the original whitespace in copied license texts.
 licenses/*.txt -whitespace
+# PageMind keeps its own README when merging CrossPoint (needs: git config merge.ours.driver true)
+README.md merge=ours
