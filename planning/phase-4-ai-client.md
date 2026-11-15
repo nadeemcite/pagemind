@@ -1,6 +1,6 @@
 # Phase 4: Device AI client
 
-**Status:** Not started
+**Status:** In progress
 
 ## Goal
 
