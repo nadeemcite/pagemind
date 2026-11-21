@@ -16,11 +16,22 @@ if a session stops (for example the token quota runs out), start a new session a
 
 ## Current position
 
-- **Phase:** 2 (Evals and prompt tuning), in progress
-- **Step:** prompt v2 deployed (revision `ai-proxy-00009-szv`); 3-run eval with the Sonnet 4.6 judge is running
-- **Next action:** read `phase-2/*-prompt-v2-eval-3runs.txt` and `evals/reports/*-summarize-run{1,2,3}.json`; compare with the v1 baseline; if E1 still misses, tighten again (see "Prompt history" in the Phase 2 notes)
+- **Phase:** 2 done (owner accepted 34/35 on 2026-11-22). Phase 3 not started.
+- **Step:** Phase 2 recorded and committed
+- **Next action:** Phase 3: `src/ai/SummaryWindow.{h,cpp}` host tests first (W1-W8), then the section-cache spike
 - **Blocked on:** nothing
-- **Judge:** `ag/claude-sonnet-4-6` (advisory). `ag/gpt-oss-120b-medium` was too weak; other 9router models returned 404/401/403/410.
+- **Live proxy:** revision `ai-proxy-00009-szv` (prompt v2) on 9router `ag/gemini-3.8-flash`
+
+## To do later (owner decision 2026-11-22: not blocking)
+
+- **Prompt refinement (TBD).** The model still leaks small same-chapter facts in a few runs
+  (judge flagged 1-2 of 29 per run: `tale-mail`, `alice-ch1`, `hp-zoo`, `hobbit-ch1`). Ideas: show
+  the model only `text_before` for the recap and use `text_after` only to confirm the position;
+  a second pass that deletes sentences past the boundary; a stronger model for this task; make
+  judge flags a blocking gate in CI. Also one `502 provider_error` (46 s) on `trap-hp-wand` in run 2:
+  consider a retry and a longer provider timeout for summarize.
+- Run 3 of the final configuration was stopped early (owner direction, token budget): it had flagged
+  `tale-mail` and `alice-ch1` before it was stopped; no report was written for it.
 
 ## Gate checklist
 
@@ -32,7 +43,7 @@ if a session stops (for example the token quota runs out), start a new session a
 | S4 | `UNKNOWN_BOOK` mapping | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
 | S5 | Per-task output budget | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
 | S6 | `/v1/info` lists `summarize` and limits | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
-| E1–E8 | Evals (see plan) | todo | |
+| E1–E8 | Evals (see plan) | pass (accepted) | runs 1-2 of final config: 35/35 and 34/35, GATE PASS; phase-2/20261122-final-config-eval-3runs.txt; evals/reports/ |
 | W1–W8 | Window extractor | todo | |
 | C1–C5 | Device client | todo | |
 | D1–D9 | Device verification | todo | |
@@ -42,6 +53,7 @@ if a session stops (for example the token quota runs out), start a new session a
 
 | Date | Step | Result | Log / commit |
 |---|---|---|---|
+| 2026-11-22 | Phase 2 closed: final config (prompt v2 + corrected judge) run 1 **35/35 GATE PASS**, run 2 **34/35 GATE PASS** (one 502 from the router), run 3 stopped early. Owner accepted 34/35 and deferred prompt refinement (see To do later) | Done, accepted | phase-2/*final-config*, evals/reports/ |
 | 2026-11-22 | Phase 2: **prompt v1 baseline** (run 1, Sonnet judge): 34/35 rules pass; judge flagged 11 of 29 answers as leaking later facts (mostly same-chapter details: 'five daughters', 'wait at Dover for a young lady', Alice growing). E1 FAIL, all other gates pass. Fixed eval flaw: forbidden term `burning` was in the reader's own text (added guard test, 91 tests). Prompt v2: exact-boundary rule, only-met-facts rule, self-check, stop-early rule; deployed as revision 00009-szv | v1 baseline saved | phase-2/20261122-prompt-v1-baseline-run1.txt, evals/reports/baseline/ |
 | 2026-11-22 | Phase 2: wrote `evals/summarize_cases.jsonl` (35 cases: 16 known, 6 traps, 6 unknown, 4 edge, 3 Hindi), `evals/run_summarize_evals.py`, 13 scorer/case tests (90 pass). Smoke test of 3 cases passed; judge model had to be changed (sonnet-5-5 and others 404 on the router) | In progress | phase-2/ |
 | 2026-11-21 | Phase 1: tests first (red), then schema, prompts, validation, UNKNOWN_BOOK, info limit, 7 fixtures | 77 passed; S2 note: the existing info test now expects `summarize` in `tasks` (additive change) | phase-1/*-pytest-all.txt |

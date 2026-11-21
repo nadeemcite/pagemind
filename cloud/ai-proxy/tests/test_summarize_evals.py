@@ -98,3 +98,9 @@ def test_forbidden_terms_are_not_in_the_text_the_reader_has_read():
         before = c["request"]["text_before"].lower()
         for term in c["expect"].get("must_not_contain", []):
             assert term.lower() not in before, f"{c['id']}: '{term}' is in text_before"
+
+
+def test_judge_prompt_knows_the_reader_read_earlier_chapters():
+    from evals.run_summarize_evals import JUDGE_PROMPT
+    assert "whole book from its start" in JUDGE_PROMPT
+    assert "AFTER the last word" in JUDGE_PROMPT

@@ -203,7 +203,7 @@ proxy README, contract docs, `0.2.0` tag through the release pipeline, owner sig
 | Phase | Date | Commit | Result | Notes |
 |---|---|---|---|---|
 | 1 | | | | |
-| 2 | | | | |
+| 2 | 2026-11-22 | see git log | Pass (accepted by owner) | Prompt v2 on `ag/gemini-3.8-flash`; judge `ag/claude-sonnet-4-6`. Final config run 1: 35/35, run 2: 34/35 (router 502), both GATE PASS (E1-E7); run 3 stopped early. Baseline v1 had 11/29 judge flags, v2 about 1-2/29. Prompt refinement deferred: see STATUS.md "To do later". Logs: `summarize-so-far-logs/phase-2/`; reports: `cloud/ai-proxy/evals/reports/` |
 | 3 | | | | |
 | 4 | | | | |
 | 5 | | | | |

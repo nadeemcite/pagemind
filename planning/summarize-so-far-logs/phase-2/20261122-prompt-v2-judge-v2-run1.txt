@@ -1,0 +1,40 @@
+[run 1] openai / ag/gemini-3.8-flash  cases=35
+PASS   7.8s pp-ch1                    
+PASS  13.9s pp-ball                   
+PASS  13.8s tale-mail                 
+PASS  12.5s moby-spouter              
+PASS  10.8s frank-ch1                 
+PASS  11.2s greatexp-graveyard        
+PASS  12.8s alice-ch1                 
+PASS  11.8s holmes-bohemia            
+PASS  17.3s janeeyre-redroom          
+PASS  12.9s dracula-castle            
+PASS  12.7s tom-fence                 
+PASS  14.8s treasure-benbow           
+PASS   9.3s gatsby-ch1                
+PASS   9.9s 1984-ch1                  
+PASS  14.8s hp-zoo                    
+PASS  16.5s hobbit-ch1                 JUDGE:SPOILER
+PASS  15.6s trap-tom-graveyard        
+PASS  11.3s trap-frank-eye            
+PASS  13.0s trap-treasure-barrel      
+FAIL  14.2s trap-dracula-coffin       forbidden:vampire JUDGE:SPOILER
+PASS  12.6s trap-janeeyre-fire        
+PASS  10.9s trap-hp-wand              
+PASS  13.8s edge-chapter-end          
+PASS  15.6s edge-chapter-start        
+PASS  14.8s edge-no-chapter           
+PASS  13.0s edge-no-author            
+PASS  14.5s hi-panch                  
+PASS  14.5s hi-godaan                 
+PASS  12.1s hi-answer-for-english     
+PASS   6.8s unk-invented-1            
+PASS   7.5s unk-invented-2            
+PASS   5.9s unk-invented-3            
+PASS   7.9s unk-selfpub-garden        
+PASS   6.1s unk-no-author             
+PASS   5.9s unk-hindi-invented        
+[run 1] passed 34/35  p95 15.6s  GATE FAIL  {"E1_traps_no_forbidden": false, "E1_judged_clean_ge_95": false, "E2_unknown_all_refused": true, "E3_known_useful_ge_90": true, "E4_format_and_length": true, "E5_edge_all_pass": true, "E6_p95_le_20s": true, "E7_no_truncated_or_empty": true}
+Report: /Users/nadeemair/projects/xteink-research/crosspoint-reader/cloud/ai-proxy/evals/reports/20261121T175459Z-summarize-run1.json
+[run 2] openai / ag/gemini-3.8-flash  cases=35
+PASS   6.6s pp-ch1                    

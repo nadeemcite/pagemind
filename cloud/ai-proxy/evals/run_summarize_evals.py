@@ -65,11 +65,13 @@ def score_summary(answer: str, expect: dict) -> list[str]:
 
 JUDGE_PROMPT = """You check a spoiler-free summary of a book for a reader.
 Book: {title} by {author}. Chapter: {chapter}.
-The reader has read exactly the text below and nothing more:
+The reader has read the whole book from its start up to and including the last word of the excerpt
+below. The excerpt is only the last stretch they read; everything earlier in the book (earlier
+chapters, and earlier parts of this chapter) is also known to the reader.
 <<<
 {before}
 >>>
-The reader has NOT read this next text (it is shown only so you can tell what is a spoiler):
+Next comes text the reader has NOT read (shown only to help you see where the boundary is):
 <<<
 {after}
 >>>
@@ -77,9 +79,11 @@ Summary to check:
 <<<
 {answer}
 >>>
-Using your knowledge of the book, does the summary state or hint at any event, death, reveal or
-identity that happens AFTER the text the reader has read? Background that the reader already
-knows from the text read does not count. Reply with JSON only: {{"spoiler": true or false, "why": "one short sentence"}}"""
+Using your knowledge of the book, does the summary state or hint at any event, death, reveal, name or
+fact that the book first tells the reader AFTER the last word of the excerpt? Facts the reader met
+earlier in the book do not count, neither does general background about the setting, and neither does
+a plain mistake about the book that is not a later event (only report later story). Reply with JSON
+only: {{"spoiler": true or false, "why": "one short sentence"}}"""
 
 
 def parse_judge(text: str) -> tuple[bool | None, str]:

@@ -1,0 +1,40 @@
+[run 1] openai / ag/gemini-3.8-flash  cases=35
+PASS  10.4s pp-ch1                    
+PASS  12.3s pp-ball                   
+PASS  12.9s tale-mail                  JUDGE:SPOILER
+PASS  10.5s moby-spouter              
+PASS  16.3s frank-ch1                  JUDGE:SPOILER
+PASS   9.7s greatexp-graveyard        
+PASS  11.8s alice-ch1                  JUDGE:SPOILER
+PASS  10.1s holmes-bohemia            
+PASS  13.7s janeeyre-redroom          
+PASS  15.6s dracula-castle            
+PASS  12.7s tom-fence                 
+PASS  10.4s treasure-benbow           
+PASS   8.6s gatsby-ch1                
+PASS  10.6s 1984-ch1                  
+PASS  14.8s hp-zoo                    
+PASS  14.8s hobbit-ch1                
+PASS  14.8s trap-tom-graveyard        
+PASS  11.8s trap-frank-eye            
+PASS  11.6s trap-treasure-barrel      
+PASS  11.9s trap-dracula-coffin       
+PASS  11.6s trap-janeeyre-fire        
+FAIL  17.0s trap-hp-wand              forbidden:scar
+PASS   9.8s edge-chapter-end           JUDGE:SPOILER
+PASS  14.4s edge-chapter-start         JUDGE:SPOILER
+PASS  12.6s edge-no-chapter           
+PASS  13.8s edge-no-author             JUDGE:SPOILER
+PASS  15.9s hi-panch                  
+PASS  11.8s hi-godaan                 
+PASS   9.5s hi-answer-for-english     
+PASS   5.3s unk-invented-1            
+PASS   7.1s unk-invented-2            
+PASS   7.8s unk-invented-3            
+PASS   7.1s unk-selfpub-garden        
+PASS   6.5s unk-no-author             
+PASS   9.2s unk-hindi-invented        
+[run 1] passed 34/35  p95 15.9s  GATE FAIL  {"E1_traps_no_forbidden": false, "E1_judged_clean_ge_95": false, "E2_unknown_all_refused": true, "E3_known_useful_ge_90": true, "E4_format_and_length": true, "E5_edge_all_pass": true, "E6_p95_le_20s": true, "E7_no_truncated_or_empty": true}
+Report: /Users/nadeemair/projects/xteink-research/crosspoint-reader/cloud/ai-proxy/evals/reports/20261121T174129Z-summarize-run1.json
+[run 2] openai / ag/gemini-3.8-flash  cases=35
+PASS   8.5s pp-ch1                    

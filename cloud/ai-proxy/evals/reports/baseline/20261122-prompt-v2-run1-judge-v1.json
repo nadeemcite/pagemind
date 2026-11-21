@@ -1,0 +1,413 @@
+{
+  "summary": {
+    "when": "2026-11-21T17:41:29+00:00",
+    "run": 1,
+    "provider": "openai",
+    "model": "ag/gemini-3.8-flash",
+    "judge_model": "ag/claude-sonnet-4-6",
+    "cases": 35,
+    "passed": 34,
+    "p50_s": 11.76,
+    "p95_s": 15.87,
+    "gates": {
+      "E1_traps_no_forbidden": false,
+      "E1_judged_clean_ge_95": false,
+      "E2_unknown_all_refused": true,
+      "E3_known_useful_ge_90": true,
+      "E4_format_and_length": true,
+      "E5_edge_all_pass": true,
+      "E6_p95_le_20s": true,
+      "E7_no_truncated_or_empty": true
+    },
+    "gate_pass": false
+  },
+  "results": [
+    {
+      "id": "pp-ch1",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers what the reader has already encountered: the opening ironic observation and Mrs. Bennet's question about Netherfield Park, with no hints about future events.",
+      "status": 200,
+      "seconds": 10.39,
+      "answer": "The novel has just opened with the observation that a wealthy bachelor is universally considered by local families to be in need of a wife, and therefore fair game for their daughters. Mrs. Bennet has immediately approached her husband, Mr. Bennet, to ask if he has heard the news that the estate of Netherfield Park has finally been leased. Mr. Bennet has simply replied that he has not.\n\nSet in provincial Regency England, the story opens in the Bennet household, introduced by an ironic third-person narrator who highlights the social preoccupation with marriage, money, and eligible suitors."
+    },
+    {
+      "id": "pp-ball",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers events and context the reader has already encountered in the text they have read.",
+      "status": 200,
+      "seconds": 12.31,
+      "answer": "News that a wealthy, single gentleman named Mr. Bingley has rented Netherfield Park throws the Bennet household into excitement. Mrs. Bennet is desperate to see her five daughters married, and she is thrilled when her husband quietly pays the newcomer an introductory visit. \n\nAt a local ball in Meryton, the neighborhood finally meets the Netherfield party. Mr. Bingley proves lively, pleasant, and eager to dance, showing immediate admiration for the eldest Bennet sister, Jane. By contrast, his wealthy and aristocratic friend, Mr. Darcy, makes a terrible impression. Though initially admired for his tall figure and fortune, Darcy reveals himself to be cold, aloof, and disdainful of the gathering. When Bingley encourages him to partner Elizabeth Bennet, who is sitting out a dance, Darcy dismisses her as merely tolerable and not handsome enough to tempt him.\n\nSet in the rural English countryside of the Regency era, the story follows the Bennet family under the observant eye of a witty, ironic third-person narrator. For the Bennets, securing comfortable marriages for the daughters is an urgent necessity, as their family estate is entailed away to a distant relative."
+    },
+    {
+      "id": "tale-mail",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": true,
+      "judge_why": "The summary reveals that the message instructs Mr. Lorry to 'wait at Dover for a young lady,' which is information from the unread portion of the chapter that the reader has not yet encountered.",
+      "status": 200,
+      "seconds": 12.9,
+      "answer": "The story opens in the year 1775, contrasting conditions in England and France. Both nations suffer from social turmoil, harsh laws, and widespread lawlessness, with London plagued by highway robberies and France sliding toward revolution.\n\nOn a cold, foggy late-November night, the Dover mail coach struggles up Shooter's Hill. The passengers, coachman, and guard are on edge, deeply suspicious of one another in the dark. A galloping horseman suddenly overtakes the coach, alarming the guard. \n\nThe rider turns out to be Jerry, an odd-job messenger from Tellson's Bank in London. He delivers a written message to one of the passengers, Mr. Jarvis Lorry, also of Tellson's Bank. After reading the instruction to wait at Dover for a young lady, Mr. Lorry gives Jerry a cryptic verbal reply to carry back: \"Recalled to life.\"\n\nSet against an atmosphere of mutual distrust and impending upheaval, the narrative introduces Mr. Lorry on a secretive errand of business. The omniscient narrator frames these events within a troubled era where traveling at night carries constant peril."
+    },
+    {
+      "id": "moby-spouter",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only restates what Ishmael has already experienced in the read text, without revealing the harpooneer, the shared bed, or any future events.",
+      "status": 200,
+      "seconds": 10.47,
+      "answer": "Ishmael, feeling restless on land and having little money, decides to go to sea to explore the watery world. He travels to New Bedford on a freezing Saturday night in December, planning to take a ferry to the historic whaling port of Nantucket.\n\nUpon learning that the packet boat has already sailed, he wanders the dark, chilly streets looking for cheap shelter. He finds the Spouter-Inn, kept by a landlord named Peter Coffin, and enters to escape the bitter cold.\n\nThe narrative is set in nineteenth-century Massachusetts and told from the perspective of Ishmael, a reflective wanderer seeking escape from his gloomy moods on shore. So far, he is on his own and has only just stepped into the whalers' boarding house to find a bed."
+    },
+    {
+      "id": "frank-ch1",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": true,
+      "judge_why": "The summary reveals that Victor Frankenstein is the stranger rescued by Captain Walton and frames the entire Arctic expedition context, which the reader has not yet encountered in Chapter 1.",
+      "status": 200,
+      "seconds": 16.26,
+      "answer": "Captain Robert Walton, leading an Arctic expedition toward the North Pole, rescued an exhausted European man stranded on the ice. After slowly recovering aboard Walton's ship, the stranger began recounting the story of his life.\n\nHis name is Victor Frankenstein, born into a prominent family in Geneva. His respected father married Caroline Beaufort, the daughter of a deceased friend. During a later journey in Italy, Caroline discovered a destitute family caring for a young girl named Elizabeth Lavenza. Moved by compassion, Caroline adopted Elizabeth to be raised in their household, and Victor immediately embraced her with deep affection.\n\nThe novel frames Victor's personal history as a tale told aboard an icebound vessel in the remote Arctic ocean, contrasting Walton's harsh polar journey with Victor's comfortable, loving childhood in Geneva and abroad."
+    },
+    {
+      "id": "greatexp-graveyard",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers events and background information already established in the text the reader has read, with no hints at future events.",
+      "status": 200,
+      "seconds": 9.74,
+      "answer": "Pip, a young orphan, lives with his sister, Mrs. Joe Gargery, and her husband, Joe, the blacksmith. While visiting his parents' grave in the bleak marsh churchyard, Pip was suddenly grabbed by a desperate, escaped convict with an iron chain around his leg. The terrifying man threatened him, demanding that Pip bring him food and a metal file from the forge to cut off his leg iron.\n\nFrightened for his life, Pip fled home to the forge. Despite his fears of his harsh, short-tempered sister, the terrified boy has just raided the pantry, stealing bread and a pork pie to fulfill his promise to the desperate stranger.\n\nThe story is set in the misty marsh country of Kent, narrated by Pip as he recalls his youth. An impressionable and lonely orphan, Pip is raised strictly by his sharp-tongued sister, finding his only warmth and kindness in the gentle blacksmith, Joe Gargery."
+    },
+    {
+      "id": "alice-ch1",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": true,
+      "judge_why": "The summary mentions Alice landing in a long hallway, which she has not yet discovered in the text she has read.",
+      "status": 200,
+      "seconds": 11.83,
+      "answer": "Alice was sitting idly by her sister on a riverbank when she noticed an unusual sight: a White Rabbit with pink eyes, speaking aloud and fretting about being late. Intrigued, Alice chased after it across a field and followed it straight down a large rabbit-hole.\n\nShe fell down a remarkably deep shaft, floating down slowly enough to observe cupboards, bookshelves, and maps along the walls. Upon finally landing at the bottom, she found herself in a long hallway. She discovered a three-legged glass table bearing a small golden key, as well as a bottle labeled \"DRINK ME.\" After checking that it was not marked poison, she decided to taste the beverage and found it delicious.\n\nThe story is told by a gentle, playful third-person narrator who follows young, curious Alice as she slips away from a drowsy summer afternoon into a strange subterranean world."
+    },
+    {
+      "id": "holmes-bohemia",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers what the reader has already encountered: Watson's presence, Holmes identifying the King, and the compromising photograph situation, without revealing any subsequent plot developments.",
+      "status": 200,
+      "seconds": 10.12,
+      "answer": "Dr. Watson, visiting his old friend Sherlock Holmes at Baker Street, looked on as a masked client arrived claiming to be Count von Kramm. Holmes promptly pierced the disguise, identifying the caller as the hereditary King of Bohemia. \n\nThe monarch revealed his desperate situation. He is about to marry a Scandinavian princess, but years ago he had a relationship with the American singer and adventuress Irene Adler. She retains a compromising photograph of the two of them together, and the King fears she will expose it to his intended bride's family to ruin his alliance. \n\nThis story is narrated by Dr. Watson in Victorian London. Watson chronicles the deductive genius of Sherlock Holmes, who here takes on a delicate private mission for European royalty."
+    },
+    {
+      "id": "janeeyre-redroom",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers events and background details already present in the text the reader has read, with no hints at future events.",
+      "status": 200,
+      "seconds": 13.75,
+      "answer": "Jane Eyre, a young orphan, lives at Gateshead Hall with her widowed aunt, Mrs. Reed, and her three cousins. Treated as an unwelcome burden and excluded from the family, Jane finds solace in reading alone. When her cruel cousin John unjustly attacks her by throwing a heavy book at her head, Jane fiercely retaliates.\n\nHer aunt and the servants intervene, immediately blaming Jane for the altercation. As punishment, Mrs. Reed orders Jane to be locked inside the dreaded red-room, the grand and rarely used bedchamber where her late uncle, Mr. Reed, died nine years earlier. Left alone in the dark, cold room, Jane broods over the bitter injustice of her life. Growing terrified by the gloomy surroundings, she sees a strange ray of light on the wall, fears it is an apparition of her dead uncle, and screams in terror.\n\nThis early part of the novel is set in nineteenth-century England at the Reeds' country estate. Jane narrates her childhood memories of isolation, navigating the cruelty of her wealthy relatives and the household servants."
+    },
+    {
+      "id": "dracula-castle",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers events and details already present in the text the reader has read, with no hints at future reveals or events.",
+      "status": 200,
+      "seconds": 15.64,
+      "answer": "English solicitor Jonathan Harker has journeyed across Europe to the remote Carpathian Mountains of Transylvania on a business assignment. Employed to arrange the purchase of an estate in London for a nobleman named Count Dracula, Jonathan records his impressions as he travels.\n\nAs he drew nearer to his destination, the local people in Bistritz grew visibly frightened upon learning where he was headed, whispering prayers and pressing a crucifix into his hands for protection. Met at the Borgo Pass by a mysterious and commanding coachman, Harker was taken on an unsettling midnight carriage ride through the mountains, surrounded by packs of howling wolves and strange blue flames flickering in the dark.\n\nThe novel begins through Harker's personal journal entries, setting up a sharp contrast between his practical, modern English worldview and the ancient superstitions of the isolated Eastern European frontier."
+    },
+    {
+      "id": "tom-fence",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers background context and events up to Ben Rogers approaching Tom, without revealing how Tom tricks the other boys into doing his whitewashing for him.",
+      "status": 200,
+      "seconds": 12.71,
+      "answer": "Young Tom Sawyer lives with his Aunt Polly and half-brother Sid in the small town of St. Petersburg along the Mississippi River. Tom is full of mischief and constantly tries to evade work and rules. After playing hooky from school to go swimming, Tom was caught by Aunt Polly when his brother pointed out that his collar had been resewn with different colored thread. Later that evening, Tom got into a street fight with a neatly dressed newcomer and chased him home. \n\nAs punishment for his misbehavior, Aunt Polly sentenced Tom to spend his Saturday whitewashing a large wooden fence. While other boys enjoy their free morning, Tom is stuck laboring in the summer heat. He tried to trick the slave boy Jim into trading chores, but Aunt Polly caught them and put a stop to it. Now, Ben Rogers has approached, eating an apple and teasing Tom about having to work while everyone else is heading off to swim, but Tom pretends the whitewashing is an important and delicate task.\n\nThe novel is set in a sleepy mid-nineteenth-century Missouri town, narrated with warm humor as it chronicles Tom's youthful escapades."
+    },
+    {
+      "id": "treasure-benbow",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only restates details already present in the text the reader has read, with no hints at future events or reveals.",
+      "status": 200,
+      "seconds": 10.36,
+      "answer": "The narrator begins recording the account of Treasure Island at the request of Squire Trelawney. He recalls the arrival of an old sea-dog, Billy Bones, who took up lodging at the Admiral Benbow inn with his heavy sea-chest and a scarred hand. \n\nDuring his stay, the old seaman sang \"Yo-ho-ho, and a bottle of rum\" and paid the narrator a monthly silver fourpenny to keep a sharp lookout for a seafaring man with one leg. The terrifying figure of this one-legged sailor began to haunt the narrator's dreams.\n\nThe story is told by young Jim Hawkins, looking back on events from his youth at his family's coastal inn in eighteenth-century England. So far, the tale centers on the quiet inn being disrupted by the rough old seaman and his mysterious dread of an unknown sailor."
+    },
+    {
+      "id": "gatsby-ch1",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers details already established in the text the reader has read, with no hints at future events or revelations.",
+      "status": 200,
+      "seconds": 8.56,
+      "answer": "Nick Carraway introduces himself, reflecting on his father's advice and his decision to move East to learn the bond business. He has settled on Long Island in the community of West Egg, renting a modest house right next door to a massive mansion owned by a man named Gatsby. \n\nNick has now traveled across the bay to East Egg for dinner at the home of his cousin Daisy and her husband, Tom Buchanan, a powerful and aggressive man Nick knew from their days at New Haven.\n\nThe novel is set in the 1920s in the wealthy coastal enclaves outside New York City. Through Nick's observant and reserved perspective, the story begins by contrasting his modest circumstances with the immense, established wealth of the Buchanans across the bay."
+    },
+    {
+      "id": "1984-ch1",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only describes events and details already present in the text the reader has read, with no hints at future events or reveals.",
+      "status": 200,
+      "seconds": 10.57,
+      "answer": "The story opens on a cold April day as Winston Smith, a thirty-nine-year-old employee of the Ministry of Truth, returns home to his flat in Victory Mansions. Throughout the building, posters featuring an imposing face warn that Big Brother is watching. Inside his apartment, where the telescreen can never be completely turned off, Winston sits out of its view in a small alcove and begins writing in a diary, an act forbidden by the authorities.\n\nThe novel is set in a bleak, totalitarian society where every aspect of life is subjected to constant surveillance and control. Winston lives under this suffocating regime, secretly harboring a quiet act of personal defiance."
+    },
+    {
+      "id": "hp-zoo",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers events and background the reader has already encountered in the text they have read.",
+      "status": 200,
+      "seconds": 14.82,
+      "answer": "As an infant, Harry Potter miraculously survived the dark wizard who murdered his parents, leaving Harry with a faint lightning-bolt scar on his forehead. Left on the doorstep of his only living relatives, Harry was taken in by his aunt Petunia and uncle Vernon Dursley.\n\nFor nearly ten years, Harry has endured a miserable existence, treated as an outcast and relegated to a cramped cupboard under the stairs while his bullying cousin Dudley is thoroughly spoiled. On Dudley's eleventh birthday, Harry is unexpectedly brought along on a family trip to the zoo. In the reptile house, Harry is astonished to find that he can communicate with a captive boa constrictor. When Dudley pushes Harry aside, the tank's glass mysteriously vanishes, freeing the snake to slither past the terrified visitors. Convinced Harry is responsible for the chaos, a furious Uncle Vernon locks him in his cupboard once again.\n\nThe story is told by a third-person narrator, contrasting the strict, suburban normality of the Dursley household on Privet Drive with the inexplicable, strange occurrences that persistently follow Harry."
+    },
+    {
+      "id": "hobbit-ch1",
+      "group": "known",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers events and background the reader has already encountered, without revealing the map, key, burglar plan, or Bilbo's morning after.",
+      "status": 200,
+      "seconds": 14.77,
+      "answer": "Bilbo Baggins is a respectable, comfort-loving hobbit living a quiet life in his snug hole at Bag End. Hobbits are small, peaceable folk who cherish good food, routine, and comfort, and they pointedly avoid adventures.\n\nOne morning, the wizard Gandalf visits Bilbo and proposes an adventure, which Bilbo politely declines. The next evening, however, thirteen dwarves arrive uninvited at Bilbo's house, led by the proud Thorin Oakenshield. After emptying Bilbo's well-stocked pantry, the company plays their instruments and sings a haunting song about their ancestral home beneath the Lonely Mountain and the great hoard of gold they were forced to leave behind.\n\nThe tale is told by an engaging, conversational narrator who introduces the reader to Middle-earth, where the peaceful routines of the Shire stand in stark contrast to the distant, perilous histories of wizards and dwarves."
+    },
+    {
+      "id": "trap-tom-graveyard",
+      "group": "trap",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only mentions that the boys spotted the three men approaching to rob a grave, which matches exactly what the reader has already read, without revealing the subsequent quarrel, murder, or frame-up.",
+      "status": 200,
+      "seconds": 14.81,
+      "answer": "Young Tom Sawyer lives with his Aunt Polly in the village of St. Petersburg. A clever and mischievous boy, Tom has spent his recent days outsmarting other children into doing his chores, falling in love with Becky Thatcher, and avoiding school.\n\nTom arranged an adventure with Huckleberry Finn, the town outcast, to sneak into the cemetery at night to test a superstition about curing warts using a dead cat. Creeping into the spooky graveyard under cover of darkness, the boys hid among the trees. Their nocturnal escapade suddenly turned tense when they spotted three local men approaching with a lantern to rob a grave: Doctor Robinson, Muff Potter, and Injun Joe.\n\nSet along the Mississippi River in the mid-nineteenth century, the novel captures the mischief and folklore of small-town American youth through a wry, observant narrator."
+    },
+    {
+      "id": "trap-frank-eye",
+      "group": "trap",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers background context and events up to the exact moment the reader has reached, without revealing the creature's awakening or any subsequent events.",
+      "status": 200,
+      "seconds": 11.82,
+      "answer": "Captain Robert Walton, sailing on an Arctic expedition, rescued the frozen and exhausted Victor Frankenstein. Aboard the ship, Victor began recounting his life story.\n\nRaised in a devoted Genevan family alongside his adopted companion Elizabeth Lavenza and friend Henry Clerval, Victor departed for the University of Ingolstadt following his mother's death. There, he threw himself into natural philosophy and chemistry. Consumed by an ambition to overcome death, he unlocked the principle of life. \n\nOver nearly two solitary years, Victor gathered materials from charnel houses and slaughterhouses to assemble a colossal human form. Now, on a dreary, rainy November night at one in the morning, alone by candlelight in his workshop, he gathers the instruments to infuse the spark of life into the lifeless body lying at his feet.\n\nVictor acts as the inner narrator, telling his cautionary tale to Walton aboard an icebound vessel. His obsessive pursuit of scientific glory has driven him to complete isolation from the friends and family he left behind in Switzerland."
+    },
+    {
+      "id": "trap-treasure-barrel",
+      "group": "trap",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary ends at the moment Jim hears Silver begin to speak, without revealing what Silver says or what Jim learns from overhearing the conversation.",
+      "status": 200,
+      "seconds": 11.62,
+      "answer": "Young Jim Hawkins discovered a map to the buried hoard of the notorious pirate Captain Flint among the belongings of an old seaman who died at his family inn. Sharing the secret with Dr. Livesey and Squire Trelawney, the gentlemen chartered the schooner Hispaniola from Bristol to hunt down the treasure.\n\nTrelawney recruited the crew, including the charismatic one-legged ship's cook, Long John Silver, who helped gather the remaining hands. Although Captain Smollett openly distrusted the voyage and his men, the passage across the Atlantic went smoothly. \n\nNow, with the ship anchored within sight of the island, Jim climbed inside an almost empty apple barrel on deck to fetch an apple. While sitting quietly in the dark inside, he heard Long John Silver lean against the outside of the barrel and begin to speak.\n\nSet in the eighteenth century, the novel is narrated by Jim Hawkins as he looks back on his journey from an English seaside inn to the uncharted waters of a pirate treasure island."
+    },
+    {
+      "id": "trap-dracula-coffin",
+      "group": "trap",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "All events mentioned in the summary—Jonathan's imprisonment, the three women, the forced letters, and the discovery of the chapel with coffins—occur before or within the text the reader has already read.",
+      "status": 200,
+      "seconds": 11.92,
+      "answer": "Jonathan Harker, an English solicitor, traveled to Transylvania to finalize a real estate purchase in London for Count Dracula. Upon arriving at the remote, forbidding Castle Dracula, Jonathan soon realized that his host was no ordinary nobleman. The Count displayed unnatural strength, cast no reflection, and held command over wolves.\n\nJonathan quickly discovered that he was a prisoner trapped in the castle. While exploring the forbidden rooms, he encountered three predatory phantom women who nearly fed on him before Dracula furiously intervened. The Count has since forced Jonathan to write misleading letters home with future dates, making Jonathan fear his death is near. Desperate for a way out, Jonathan has explored deep into the castle, navigating a steep, winding staircase until reaching an ancient ruined chapel filled with mounds of earth and old coffins.\n\nThe story is told primarily through Jonathan Harker's private journal entries, capturing his mounting terror within the isolated Carpathian Mountains. He is cut off from his fiancee, Mina, and at the mercy of the sinister Count."
+    },
+    {
+      "id": "trap-janeeyre-fire",
+      "group": "trap",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers events and details the reader has already encountered, without revealing what Jane discovers in Rochester's room or any subsequent events.",
+      "status": 200,
+      "seconds": 11.58,
+      "answer": "Jane Eyre, an orphaned young woman, survived a harsh childhood with cruel relatives at Gateshead and endured years of strict discipline at Lowood School. After working as a teacher there, she sought a new life and accepted a position as governess at Thornfield Hall.\n\nAt Thornfield, Jane took charge of Adele Varens, the young French ward of the estate's brooding master, Mr. Edward Rochester. Jane and Rochester soon established an unconventional rapport through late-night conversations. However, strange undercurrents disturb the house. Jane has repeatedly heard an eerie, chilling laugh echoing from the third storey, which the housekeeper attributed to Grace Poole, a solitary seamstress. \n\nNow, in the dead of night, Jane has been startled awake by demonic laughter right outside her door. Stepping into the gallery, she has discovered a candle abandoned on the floor and noticed the smell of smoke.\n\nThis gothic romance is narrated by Jane herself in Victorian England. Thornfield Hall is an imposing, isolated country manor where quiet routine masks unspoken domestic mysteries."
+    },
+    {
+      "id": "trap-hp-wand",
+      "group": "trap",
+      "ok": false,
+      "fails": [
+        "forbidden:scar"
+      ],
+      "judge_spoiler": false,
+      "judge_why": "The summary only references events and details the reader has already encountered in the text they have read.",
+      "status": 200,
+      "seconds": 17.03,
+      "answer": "Harry Potter spent ten miserable years with his cruel relatives, the Dursleys, unaware of his true identity. Everything changed on his eleventh birthday when Hagrid arrived to deliver an invitation to Hogwarts School of Witchcraft and Wizardry. Hagrid revealed that Harry is a famous wizard who survived a dark wizard named Voldemort, who murdered Harry's parents and left Harry with his lightning scar.\n\nHagrid escorted Harry to Diagon Alley to gather his school supplies. After retrieving gold from Gringotts bank, Harry bought his robes and books, and Hagrid gifted him an owl. Now, Harry is inside Ollivanders shop, trying wand after wand under the shopkeeper's watchful eye, waiting for the one that suits him.\n\nThe novel is told by a third-person narrator, following an orphaned boy as he discovers a vibrant magical world hidden just beyond normal British society."
+    },
+    {
+      "id": "edge-chapter-end",
+      "group": "edge",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": true,
+      "judge_why": "The summary reveals that the conversation is between Mrs. Bennet and her husband, and mentions 'the Bennet household' and 'their daughters', which the reader cannot know from the excerpt they have read, as no names or family relationships have been established yet.",
+      "status": 200,
+      "seconds": 9.8,
+      "answer": "The novel opens with the observation that a wealthy single man is universally presumed to be in search of a wife. \n\nMrs. Bennet eagerly shares a piece of local gossip with her husband: Netherfield Park, a nearby estate, has finally been leased. According to her neighbor, the new tenant is Mr. Bingley, a wealthy, unmarried young gentleman from the north of England who possesses four or five thousand pounds a year. Mrs. Bennet immediately sees this newcomer as an ideal matrimonial prospect for one of their daughters.\n\nThe story is set in provincial Regency England, where social status and financial stability heavily influence marriage prospects. The Bennet household is dominated by the practical necessity of finding advantageous matches for their unmarried daughters."
+    },
+    {
+      "id": "edge-chapter-start",
+      "group": "edge",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": true,
+      "judge_why": "The summary reveals that eating the cake caused Alice to begin growing ('feel an astonishing change'), which is an event that occurs after the reader's current stopping point.",
+      "status": 200,
+      "seconds": 14.37,
+      "answer": "After following a clothed White Rabbit down a rabbit-hole, Alice tumbled down a remarkably deep well and landed in a hall of locked doors. On a three-legged glass table, she discovered a tiny golden key that opened a low door leading into a beautiful garden, but she was far too large to squeeze through.\n\nTo solve this, she drank from a bottle labeled \"DRINK ME\" and shrank to ten inches tall. Unfortunately, she had left the key on top of the table and could no longer reach it. Soon after, she found a small cake marked \"EAT ME\" under the table. Hoping it would make her grow larger to retrieve the key or shrink her even further to slip under the door, she ate it and waited to see the effect. She has just begun to feel an astonishing change.\n\nThe story is told by a playful, whimsical narrator following Alice, a polite and curious young girl who has tumbled out of the ordinary world and into a strange realm where physical logic constantly shifts."
+    },
+    {
+      "id": "edge-no-chapter",
+      "group": "edge",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers events and details the reader has already encountered, without revealing anything about the Pequod, its captain, or later events.",
+      "status": 200,
+      "seconds": 12.57,
+      "answer": "Ishmael, seeking renewal at sea, travels to New Bedford, Massachusetts, aiming to embark on a whaling voyage from the island of Nantucket. Finding that the ferry has already departed, he takes lodging at the crowded Spouter-Inn. Because no private rooms remain, he is forced to share a bed with Queequeg, a heavily tattooed harpooner from the South Pacific island of Kokovoko.\n\nAlthough initially terrified by Queequeg's fearsome appearance and unfamiliar customs, Ishmael quickly discovers that the harpooner is gentle, civil, and honest. The two men smoke a pipe together, establishing a deep mutual friendship. Having agreed to ship out together, they leave the inn and walk down to the wharf to catch the packet for Nantucket.\n\nThe story is narrated in the first person by Ishmael, an observant wanderer navigating the maritime world of nineteenth-century New England alongside his newfound companion Queequeg."
+    },
+    {
+      "id": "edge-no-author",
+      "group": "edge",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": true,
+      "judge_why": "The summary mentions Alice getting trapped inside the White Rabbit's cottage after growing too large, which is an event from an earlier chapter that the reader has not read based on the provided text snippet.",
+      "status": 200,
+      "seconds": 13.78,
+      "answer": "After chasing a talking White Rabbit down a hole, young Alice lands in a strange subterranean realm where magical food and drink repeatedly cause her to shrink and grow. Struggling to control her size and keep her sense of self, she wanders through bizarre encounters, including swimming in a pool of her own tears with various talking creatures and getting trapped inside the White Rabbit's cottage after growing too large.\n\nEscaping into the woods, Alice comes upon a large mushroom with a blue Caterpillar sitting atop it, smoking a hookah. The Caterpillar questions her identity and listens to her complaints about changing sizes so often. It then advises her that one side of the mushroom will make her grow taller, while the other side will make her grow shorter.\n\nWonderland is a surreal fantasy world governed by absurd rules and dream logic, where Alice's polite Victorian manners are constantly challenged by eccentric, argumentative creatures."
+    },
+    {
+      "id": "hi-panch",
+      "group": "hindi",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers the friendship between Jumman and Algu and the property transfer already described in the text the reader has read, without revealing what happens after.",
+      "status": 200,
+      "seconds": 15.87,
+      "answer": "कहानी की शुरुआत जुम्मन शेख और अलगू चौधरी की गहरी मित्रता के परिचय से होती है। दोनों मित्रों के बीच अटूट विश्वास है और वे खेती तथा लेन-देन में भी साझेदार हैं।\n\nजुम्मन की एक वृद्ध खाला (मौसी) हैं, जिनके पास थोड़ी संपत्ति थी। उन्होंने अपनी वह जायदाद जुम्मन के नाम लिख दी। जब तक दानपत्र नहीं लिखा गया था, तब तक परिवार में खालाजान की खूब आवभगत और ख़ातिरदारी होती रही।\n\nयह कथा ग्रामीण भारत की पृष्ठभूमि पर आधारित है, जहाँ मित्रता, सामाजिक संबंध और पारिवारिक जीवन का यथार्थ रूप प्रस्तुत किया गया है। जुम्मन और अलगू इस कहानी के केंद्रीय पात्र हैं।"
+    },
+    {
+      "id": "hi-godaan",
+      "group": "hindi",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers what the reader has already read: Hori preparing to visit Raysahab, Dhania's question, the need to avoid eviction, and Hori's desire for a cow to gain social respect.",
+      "status": 200,
+      "seconds": 11.76,
+      "answer": "उपन्यास की शुरुआत में किसान होरीराम अपने बैलों को सानी-पानी देकर जमींदार रायसाहब से मिलने जाने की तैयारी करता है। वह अपनी पत्नी धनिया से कहता है कि वह बेटे गोबर को काम पर भेज दे।\n\nधनिया इतनी सुबह जाने को लेकर सवाल करती है, पर होरी समझाता है कि जमींदार के पास हाजिरी लगाना जरूरी है, ताकि खेती और घर पर कोई संकट न आए। इसी बीच होरी के मन में एक गाय पालने की तीव्र इच्छा भी प्रकट होती है। उसका मानना है कि दरवाजे पर एक गाय बँध जाने से परिवार की मर्यादा और सामाजिक प्रतिष्ठा बढ़ जाएगी।\n\nयह कहानी भारतीय ग्रामीण समाज की पृष्ठभूमि पर आधारित है, जहाँ एक साधारण किसान परिवार अपनी आजीविका, जमींदारी व्यवस्था के दबाव और सामाजिक मान-सम्मान के बीच संघर्ष कर रहा है। कथावाचक तीसरे व्यक्ति के रूप में इस यथार्थ को प्रस्तुत करता है।"
+    },
+    {
+      "id": "hi-answer-for-english",
+      "group": "hindi",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": false,
+      "judge_why": "The summary only covers the opening line and the conversation about Netherfield Park being let, which is exactly what the reader has already read, with no hints about future events.",
+      "status": 200,
+      "seconds": 9.49,
+      "answer": "कहानी की शुरुआत इस प्रसिद्ध विचार के साथ होती है कि एक अमीर कुंवारे पुरुष को निश्चित रूप से एक पत्नी की तलाश होती है। \n\nमिसेज बेनेट अपने पति मिस्टर बेनेट से बातचीत शुरू करती हैं। वह उन्हें बताती हैं कि पास ही स्थित नेदरफील्ड पार्क आखिरकार किराए पर उठ गया है। जब मिस्टर बेनेट कहते हैं कि उन्हें इस बात की जानकारी नहीं है, तो मिसेज बेनेट जोर देकर कहती हैं कि यह सच है, क्योंकि मिसेज लॉन्ग ने अभी-अभी आकर उन्हें यह खबर दी है।\n\nयह कहानी उन्नीसवीं सदी की शुरुआत के इंग्लैंड के ग्रामीण समाज की पृष्ठभूमि पर आधारित है। यहाँ विवाह और सामाजिक स्थिति पारिवारिक जीवन के बेहद महत्वपूर्ण पहलू हैं, और पाठक अभी केवल मिस्टर और मिसेज बेनेट से ही परिचित हुए हैं।"
+    },
+    {
+      "id": "unk-invented-1",
+      "group": "unknown",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": null,
+      "judge_why": "",
+      "status": 200,
+      "seconds": 5.31,
+      "answer": "This book is not well known enough for a reliable summary."
+    },
+    {
+      "id": "unk-invented-2",
+      "group": "unknown",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": null,
+      "judge_why": "",
+      "status": 200,
+      "seconds": 7.08,
+      "answer": "This book is not well known enough for a reliable summary."
+    },
+    {
+      "id": "unk-invented-3",
+      "group": "unknown",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": null,
+      "judge_why": "",
+      "status": 200,
+      "seconds": 7.75,
+      "answer": "This book is not well known enough for a reliable summary."
+    },
+    {
+      "id": "unk-selfpub-garden",
+      "group": "unknown",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": null,
+      "judge_why": "",
+      "status": 200,
+      "seconds": 7.05,
+      "answer": "This book is not well known enough for a reliable summary."
+    },
+    {
+      "id": "unk-no-author",
+      "group": "unknown",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": null,
+      "judge_why": "",
+      "status": 200,
+      "seconds": 6.47,
+      "answer": "This book is not well known enough for a reliable summary."
+    },
+    {
+      "id": "unk-hindi-invented",
+      "group": "unknown",
+      "ok": true,
+      "fails": [],
+      "judge_spoiler": null,
+      "judge_why": "",
+      "status": 200,
+      "seconds": 9.19,
+      "answer": "This book is not well known enough for a reliable summary."
+    }
+  ]
+}

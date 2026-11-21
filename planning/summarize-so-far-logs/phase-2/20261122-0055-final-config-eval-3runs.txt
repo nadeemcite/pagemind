@@ -1,0 +1,91 @@
+[run 1] openai / ag/gemini-3.8-flash  cases=35
+PASS   8.2s pp-ch1                    
+PASS  11.6s pp-ball                   
+PASS  12.5s tale-mail                 
+PASS  12.1s moby-spouter              
+PASS  13.9s frank-ch1                 
+PASS  16.3s greatexp-graveyard        
+PASS   9.7s alice-ch1                 
+PASS  11.6s holmes-bohemia            
+PASS  16.2s janeeyre-redroom          
+PASS  11.6s dracula-castle            
+PASS  10.8s tom-fence                 
+PASS  19.8s treasure-benbow           
+PASS  13.9s gatsby-ch1                
+PASS  10.6s 1984-ch1                  
+PASS  14.2s hp-zoo                    
+PASS  10.6s hobbit-ch1                
+PASS  15.3s trap-tom-graveyard        
+PASS  12.5s trap-frank-eye            
+PASS  13.5s trap-treasure-barrel      
+PASS  13.1s trap-dracula-coffin       
+PASS  11.2s trap-janeeyre-fire        
+PASS  17.2s trap-hp-wand              
+PASS  10.4s edge-chapter-end          
+PASS  11.9s edge-chapter-start        
+PASS  10.6s edge-no-chapter           
+PASS  10.4s edge-no-author            
+PASS  11.7s hi-panch                  
+PASS  13.4s hi-godaan                 
+PASS  10.6s hi-answer-for-english     
+PASS   6.8s unk-invented-1            
+PASS   5.9s unk-invented-2            
+PASS   6.1s unk-invented-3            
+PASS   6.7s unk-selfpub-garden        
+PASS   5.5s unk-no-author             
+PASS   6.0s unk-hindi-invented        
+[run 1] passed 35/35  p95 16.3s  GATE PASS  {"E1_traps_no_forbidden": true, "E1_judged_clean_ge_95": true, "E2_unknown_all_refused": true, "E3_known_useful_ge_90": true, "E4_format_and_length": true, "E5_edge_all_pass": true, "E6_p95_le_20s": true, "E7_no_truncated_or_empty": true}
+Report: /Users/nadeemair/projects/xteink-research/crosspoint-reader/cloud/ai-proxy/evals/reports/20261121T180743Z-summarize-run1.json
+[run 2] openai / ag/gemini-3.8-flash  cases=35
+PASS   8.0s pp-ch1                    
+PASS  14.9s pp-ball                   
+PASS  17.1s tale-mail                 
+PASS  15.7s moby-spouter              
+PASS  14.5s frank-ch1                 
+PASS  15.4s greatexp-graveyard        
+PASS  20.1s alice-ch1                 
+PASS  11.4s holmes-bohemia            
+PASS  10.4s janeeyre-redroom          
+PASS  13.8s dracula-castle            
+PASS  15.9s tom-fence                 
+PASS  11.5s treasure-benbow           
+PASS  13.6s gatsby-ch1                
+PASS  14.8s 1984-ch1                  
+PASS  14.4s hp-zoo                     JUDGE:SPOILER
+PASS  10.2s hobbit-ch1                
+PASS  11.9s trap-tom-graveyard        
+PASS  14.2s trap-frank-eye            
+PASS  15.6s trap-treasure-barrel      
+PASS  12.2s trap-dracula-coffin       
+PASS  11.2s trap-janeeyre-fire        
+FAIL  46.2s trap-hp-wand              http_502:provider_error
+PASS  17.0s edge-chapter-end          
+PASS  16.9s edge-chapter-start        
+PASS  12.7s edge-no-chapter           
+PASS  13.0s edge-no-author            
+PASS  12.3s hi-panch                  
+PASS  15.1s hi-godaan                 
+PASS  10.5s hi-answer-for-english     
+PASS   7.5s unk-invented-1            
+PASS   7.8s unk-invented-2            
+PASS   7.3s unk-invented-3            
+PASS   5.9s unk-selfpub-garden        
+PASS   6.1s unk-no-author             
+PASS   6.5s unk-hindi-invented        
+[run 2] passed 34/35  p95 17.1s  GATE PASS  {"E1_traps_no_forbidden": true, "E1_judged_clean_ge_95": true, "E2_unknown_all_refused": true, "E3_known_useful_ge_90": true, "E4_format_and_length": true, "E5_edge_all_pass": true, "E6_p95_le_20s": true, "E7_no_truncated_or_empty": true}
+Report: /Users/nadeemair/projects/xteink-research/crosspoint-reader/cloud/ai-proxy/evals/reports/20261121T182111Z-summarize-run2.json
+[run 3] openai / ag/gemini-3.8-flash  cases=35
+PASS  10.8s pp-ch1                    
+PASS  11.0s pp-ball                   
+PASS  12.8s tale-mail                  JUDGE:SPOILER
+PASS  12.6s moby-spouter              
+PASS  10.0s frank-ch1                 
+PASS  14.5s greatexp-graveyard        
+PASS  12.7s alice-ch1                  JUDGE:SPOILER
+PASS   9.7s holmes-bohemia            
+PASS  13.5s janeeyre-redroom          
+PASS  13.3s dracula-castle            
+PASS  18.8s tom-fence                 
+PASS  11.4s treasure-benbow           
+PASS  10.2s gatsby-ch1                
+PASS  10.6s 1984-ch1                  
