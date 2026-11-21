@@ -45,6 +45,8 @@ Errors are `{"error": "<code>"}`; the codes are listed in the contract.
 | `MAX_INPUT_CHARS` | `4000` | Longest selected text |
 | `MAX_CONTEXT_CHARS` | `2000` | Longest surrounding text |
 | `MAX_OUTPUT_TOKENS` | `400` | Answer length cap |
+| `SUMMARIZE_MAX_OUTPUT_TOKENS` | `900` | Answer budget for Summarize so far (reasoning models spend part of it thinking) |
+| `MAX_WINDOW_CHARS` | `3000` | Longest `text_before` / `text_after` for Summarize so far |
 | `REQUESTS_PER_MINUTE` | `10` | Per device token |
 | `MAX_BODY_BYTES` | `32768` | Largest request body, checked before parsing |
 | `PROVIDER_TIMEOUT_S` | `30` | Provider request timeout |

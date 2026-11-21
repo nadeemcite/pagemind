@@ -16,11 +16,12 @@ if a session stops (for example the token quota runs out), start a new session a
 
 ## Current position
 
-- **Phase:** 4 done (Device client and screens); Phase 5 not started
-- **Step:** Phase 4 committed
-- **Next action:** Phase 5: flash `pagemind_x4pro` to the connected reader (back up `/.crosspoint` + My Clippings.txt first, per the SD backup rule), run D1-D9 with the serial log, write README/FORK.md docs, bump version to `0.2.0`, tag, release. Owner sign-off at the end.
-- **Blocked on:** nothing
+- **Phase:** 5 (Real-device verification and release), in progress
+- **Step:** README and proxy README written (feature, privacy note, spoiler caveat). **Waiting for the SD backup**: the SD card is not mounted; the owner must put the reader in USB Drive mode so `/.crosspoint` and `/My Clippings.txt` can be copied to `~/projects/xteink-research/backups/2026-11-22-before-summarize/`
+- **Next action:** after the backup: flash `pagemind_x4pro` with `.venv/bin/pio run -e pagemind_x4pro -t upload --upload-port /dev/cu.usbmodem101`, then D1-D9 with the serial log (pyserial in `.venv`, 115200 baud) saved to `phase-5/`
+- **Blocked on:** owner (USB Drive mode for the backup)
 - **Live proxy:** revision `ai-proxy-00009-szv` (prompt v2) on 9router `ag/gemini-3.8-flash`
+- **Device now runs:** `0.1.1-dev` build (SHA-384 fix, no Summarize)
 
 ## To do later (owner decision 2026-11-22: not blocking)
 
@@ -59,6 +60,7 @@ Full task file: [planning/todo/summarize-prompt-refinement.md](../todo/summarize
 
 | Date | Step | Result | Log / commit |
 |---|---|---|---|
+| 2026-11-22 | Phase 5 started: README (Summarize so far section: popular books only, what is sent incl. unread words after the position, spoiler caveat, update the server) and proxy README (2 new env vars) | In progress | git log |
 | 2026-11-22 | Phase 4: tests first (C1/C2, replacing the Phase 3 skip), then `AiProtocol` (Summarize task, `ProxyOutdated`, window fields, `tailUtf8`, `checkTaskSupported`), `Section::getTextForPage`, menu item `SUMMARIZE`, `EpubReaderActivity::startSummarize`, `AiAskActivity` skips the picker, 2 new strings (English; other languages fall back). Host 1081/1081; firmware builds, flash 84.9% (was 83.3% at 0.1.0). First build attempt failed to start (`pio` not on PATH in the background shell): used `.venv/bin/pio` | Done | phase-4/ |
 | 2026-11-22 | Phase 3: `src/ai/SummaryWindow.{h,cpp}` + `test/ai_summary_window` (19 tests, tests first). Found and fixed a red test left from Phase 1: `AiClient.RequestsFromFixturesMatchContract` read the new summarize fixtures; skipped them until Phase 4 (marked TODO). Added a 12-page-per-side cap. Spike note written. Full host suite 1072/1072, clang-format clean | Done | phase-3/ |
 | 2026-11-22 | Phase 2 closed: final config (prompt v2 + corrected judge) run 1 **35/35 GATE PASS**, run 2 **34/35 GATE PASS** (one 502 from the router), run 3 stopped early. Owner accepted 34/35 and deferred prompt refinement (see To do later) | Done, accepted | phase-2/*final-config*, evals/reports/ |

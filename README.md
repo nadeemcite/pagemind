@@ -51,12 +51,13 @@ It is **not** an official CrossPoint release. Please report PageMind problems
 ## Your cloud, your data
 
 PageMind has no PageMind server. Ask AI talks only to an AI server that **you**
-run in your own Google Cloud project, with your own OpenAI or Ollama key.
+run in your own Google Cloud project, with your own AI key (OpenAI, Ollama, or any
+OpenAI-compatible service).
 
 ```mermaid
 flowchart LR
     R["📘 X4 Pro<br/>PageMind"] -- "HTTPS, certificate checked<br/>selection + page on screen" --> S["☁️ Your AI server<br/>Google Cloud Run"]
-    S -- "your API key" --> P["🤖 OpenAI or Ollama"]
+    S -- "your API key" --> P["🤖 Your AI provider"]
     P --> S --> R
 ```
 
@@ -124,6 +125,25 @@ Open a book, hold a word and drag to select a passage, tap **Ask AI**, pick a ta
 
 Answers come in the reader's language by default; choose another under
 **Settings → Network → AI Assistant → Answer Language**.
+
+### Summarize so far
+
+Picked a famous book back up and lost the thread? Open the **Reader Menu** and choose
+**Summarize so far**. You get a short recap of the story up to the page you are on,
+plus a little background to help you follow it, without spoilers.
+
+- **Popular books only.** The AI answers from what it already knows about the book. If it
+  does not know the book well, it says so instead of guessing.
+- **What is sent** to your server and your AI provider: the title, the author, the chapter
+  name, about 200 words before your position and about 200 words after it, both inside the
+  current chapter. The words after your position are unread text. They are only used to
+  find where you are in the book, and the AI is told not to use them in the recap.
+  Do not use this feature on books you want to keep private.
+- **Spoilers.** The AI is told to stop at your page. It is a language model, so it can
+  occasionally slip a small detail from just after your page. In our tests this happened
+  in roughly one answer in thirty.
+- **Update your server.** This needs the latest server. If you deployed earlier, run
+  `./deploy.sh` again; the reader tells you if your server is too old.
 
 ## Cost
 
