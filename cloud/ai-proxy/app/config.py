@@ -40,6 +40,9 @@ class Settings:
     max_input_chars: int = field(default_factory=lambda: _int("MAX_INPUT_CHARS", 4000))
     max_context_chars: int = field(default_factory=lambda: _int("MAX_CONTEXT_CHARS", 2000))
     max_output_tokens: int = field(default_factory=lambda: _int("MAX_OUTPUT_TOKENS", 400))
+    # Summarize-so-far: each text window, and a larger answer budget (router models reason first).
+    max_window_chars: int = field(default_factory=lambda: _int("MAX_WINDOW_CHARS", 3000))
+    summarize_max_output_tokens: int = field(default_factory=lambda: _int("SUMMARIZE_MAX_OUTPUT_TOKENS", 900))
     requests_per_minute: int = field(default_factory=lambda: _int("REQUESTS_PER_MINUTE", 10))
     # Raw request body cap, checked before JSON parsing (UTF-8 and JSON escapes make bytes > chars).
     max_body_bytes: int = field(default_factory=lambda: _int("MAX_BODY_BYTES", 32768))

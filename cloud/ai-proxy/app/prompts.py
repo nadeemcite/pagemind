@@ -8,6 +8,7 @@ class Task(str, Enum):
     DEFINE = "define"        # meaning of a word/phrase in this context
     TRANSLATE = "translate"  # translate the selection into the reader's language
     ASK = "ask"              # free question about the selection
+    SUMMARIZE = "summarize"  # spoiler-free recap of a well-known book up to the reading position
 
 
 # The e-reader shows plain text on a small e-ink screen.
@@ -47,4 +48,49 @@ def build_user_prompt(
     parts.append(f"Selected text:\n<<<\n{text}\n>>>")
     if task is Task.ASK and question:
         parts.append(f"Reader's question: {question}")
+    return "\n\n".join(parts)
+
+
+# --- Summarize so far -------------------------------------------------------
+# Unlike the other tasks this one uses the model's own knowledge of the book:
+# the device sends only two short windows around the reading position.
+
+UNKNOWN_BOOK_MARKER = "UNKNOWN_BOOK"
+UNKNOWN_BOOK_MESSAGE = "This book is not well known enough for a reliable summary."
+BOUNDARY = "=== READING POSITION: the reader has read everything above this line and nothing below it ==="
+
+SUMMARIZE_SYSTEM_PROMPT = (
+    "You help a reader of a well-known book on a small e-ink e-reader. "
+    "You are given the book title, author, the chapter, and two short excerpts: the text just before "
+    "the reader's current position and the text just after it. "
+    f"Use your own knowledge of the book to recap the story up to the reading position. "
+    "Never reveal anything that happens after the reading position. The text after the position is unread: "
+    "use it only to work out where in the book the reader is, never as part of the recap, and do not "
+    "hint at what comes next. If you are not sure whether something has happened yet, leave it out. "
+    "Then add one or two sentences of background that help the reader understand the book so far "
+    "(who the main characters are, the setting, the situation). "
+    f"If you do not know this book well enough to describe its plot, reply with exactly {UNKNOWN_BOOK_MARKER} "
+    "and nothing else. Do not invent plot or characters. "
+    "Answer in plain text only: no Markdown, no bullet symbols, no headings, no emoji. "
+    "Use short paragraphs and at most about 180 words."
+)
+
+
+def build_summarize_prompt(
+    *,
+    book_title: str,
+    text_before: str,
+    text_after: str = "",
+    book_author: str = "",
+    chapter: str = "",
+    language: str = "",
+) -> str:
+    parts = ["Summarize the story so far, up to the reading position, without spoilers."]
+    if language:
+        parts.append(f"Write the answer in this language: {language}.")
+    parts.append(f'Book: "{book_title}"' + (f" by {book_author}" if book_author else "") if book_title else "Book: unknown title")
+    if chapter:
+        parts.append(f"Chapter: {chapter}")
+    after = f"\n\nText after the reading position (unread, for locating only):\n<<<\n{text_after}\n>>>" if text_after else ""
+    parts.append(f"Text before the reading position:\n<<<\n{text_before}\n>>>\n\n{BOUNDARY}{after}")
     return "\n\n".join(parts)

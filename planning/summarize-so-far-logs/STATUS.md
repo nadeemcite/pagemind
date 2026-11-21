@@ -16,21 +16,21 @@ if a session stops (for example the token quota runs out), start a new session a
 
 ## Current position
 
-- **Phase:** 1 (Contract and server)
-- **Step:** not started
-- **Next action:** write the contract schema changes (S1), then tests first
+- **Phase:** 1 done locally; owner has not been asked to review it
+- **Step:** Phase 1 committed
+- **Next action:** Phase 2: deploy the proxy with `summarize`, write `evals/summarize_cases.jsonl` and scoring, run against 9router
 - **Blocked on:** nothing
 
 ## Gate checklist
 
 | Gate | Check | State | Evidence (log file / commit) |
 |---|---|---|---|
-| S1 | Schema accepts new fixtures, rejects bad ones | todo | |
-| S2 | Existing tests and fixtures unchanged | todo | |
-| S3 | Prompt builder cases | todo | |
-| S4 | `UNKNOWN_BOOK` mapping | todo | |
-| S5 | Per-task output budget | todo | |
-| S6 | `/v1/info` lists `summarize` and limits | todo | |
+| S1 | Schema accepts new fixtures, rejects bad ones | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
+| S2 | Existing tests and fixtures unchanged | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
+| S3 | Prompt builder cases | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
+| S4 | `UNKNOWN_BOOK` mapping | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
+| S5 | Per-task output budget | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
+| S6 | `/v1/info` lists `summarize` and limits | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
 | E1–E8 | Evals (see plan) | todo | |
 | W1–W8 | Window extractor | todo | |
 | C1–C5 | Device client | todo | |
@@ -41,7 +41,8 @@ if a session stops (for example the token quota runs out), start a new session a
 
 | Date | Step | Result | Log / commit |
 |---|---|---|---|
-| 2026-11-21 | Plan written and approved; status tracking set up | Done | this commit |
+| 2026-11-21 | Phase 1: tests first (red), then schema, prompts, validation, UNKNOWN_BOOK, info limit, 7 fixtures | 77 passed; S2 note: the existing info test now expects `summarize` in `tasks` (additive change) | phase-1/*-pytest-all.txt |
+| 2026-11-21 | Plan written and approved; status tracking set up | Done | 4a582587 |
 
 ## How to resume
 

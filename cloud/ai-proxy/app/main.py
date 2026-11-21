@@ -16,24 +16,45 @@ from collections import defaultdict, deque
 from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 from .config import Settings
 from .logs import event, setup_logging
-from .prompts import SYSTEM_PROMPT, Task, build_user_prompt
-from .providers import Provider, ProviderError, make_provider
+from .prompts import (
+    SUMMARIZE_SYSTEM_PROMPT,
+    SYSTEM_PROMPT,
+    UNKNOWN_BOOK_MARKER,
+    UNKNOWN_BOOK_MESSAGE,
+    Task,
+    build_summarize_prompt,
+    build_user_prompt,
+)
+from .providers import Answer, Provider, ProviderError, make_provider
 
 API_VERSION = 1
 
 
 class AskRequest(BaseModel):
     task: Task = Task.EXPLAIN
-    text: str = Field(min_length=1)
+    text: str = ""  # required for every task except summarize
     context: str = ""
     question: str = Field(default="", max_length=500)
     language: str = Field(default="", max_length=40)
     book_title: str = Field(default="", max_length=200)
     book_author: str = Field(default="", max_length=200)
+    # summarize only: the reading position sits between the two windows.
+    chapter: str = Field(default="", max_length=200)
+    text_before: str = ""
+    text_after: str = ""
+
+    @model_validator(mode="after")
+    def _required_text(self):
+        if self.task is Task.SUMMARIZE:
+            if not self.text_before.strip():
+                raise ValueError("text_before is required")
+        elif not self.text:
+            raise ValueError("text is required")
+        return self
 
 
 class AskResponse(BaseModel):
@@ -48,6 +69,7 @@ class InfoResponse(BaseModel):
     max_input_chars: int
     max_context_chars: int
     max_question_chars: int
+    max_window_chars: int
     provider: str
     model: str
 
@@ -160,6 +182,7 @@ def create_app(settings: Settings | None = None, provider: Provider | None = Non
             max_input_chars=settings.max_input_chars,
             max_context_chars=settings.max_context_chars,
             max_question_chars=500,
+            max_window_chars=settings.max_window_chars,
             provider=settings.provider,
             model=model_name,
         )
@@ -172,8 +195,20 @@ def create_app(settings: Settings | None = None, provider: Provider | None = Non
             raise HTTPException(status_code=413, detail="text_too_long")
         if len(req.context) > settings.max_context_chars:
             raise HTTPException(status_code=413, detail="context_too_long")
+        if max(len(req.text_before), len(req.text_after)) > settings.max_window_chars:
+            raise HTTPException(status_code=413, detail="context_too_long")
 
-        user_prompt = build_user_prompt(
+        summarize = req.task is Task.SUMMARIZE
+        system_prompt = SUMMARIZE_SYSTEM_PROMPT if summarize else SYSTEM_PROMPT
+        max_tokens = settings.summarize_max_output_tokens if summarize else settings.max_output_tokens
+        user_prompt = build_summarize_prompt(
+            book_title=req.book_title,
+            book_author=req.book_author,
+            chapter=req.chapter,
+            text_before=req.text_before,
+            text_after=req.text_after,
+            language=req.language,
+        ) if summarize else build_user_prompt(
             req.task,
             req.text,
             context=req.context,
@@ -184,10 +219,14 @@ def create_app(settings: Settings | None = None, provider: Provider | None = Non
         )
         started = time.monotonic()
         try:
-            answer = await provider.complete(SYSTEM_PROMPT, user_prompt, settings.max_output_tokens)
+            answer = await provider.complete(system_prompt, user_prompt, max_tokens)
         except ProviderError as e:
             event(logging.WARNING, "provider_error", device=device, task=req.task.value, error=str(e))
             raise HTTPException(status_code=502, detail="provider_error") from e
+
+        unknown_book = summarize and answer.text.strip().upper().startswith(UNKNOWN_BOOK_MARKER)
+        if unknown_book:
+            answer = Answer(text=UNKNOWN_BOOK_MESSAGE, model=answer.model, truncated=False)
 
         event(
             logging.INFO,
@@ -197,6 +236,7 @@ def create_app(settings: Settings | None = None, provider: Provider | None = Non
             in_chars=len(user_prompt),
             out_chars=len(answer.text),
             truncated=answer.truncated,
+            unknown_book=unknown_book,
             ms=int((time.monotonic() - started) * 1000),
         )
         return AskResponse(answer=answer.text, model=answer.model, truncated=answer.truncated)

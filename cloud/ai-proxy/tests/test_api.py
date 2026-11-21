@@ -94,7 +94,7 @@ def test_info_needs_token_and_reports_limits():
     body = r.json()
     assert body["api"] == 1
     assert body["max_input_chars"] == 123
-    assert body["tasks"] == ["explain", "define", "translate", "ask"]
+    assert body["tasks"] == ["explain", "define", "translate", "ask", "summarize"]
 
 
 def test_unknown_task_is_422():

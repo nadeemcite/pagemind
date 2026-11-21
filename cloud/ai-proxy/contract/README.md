@@ -24,9 +24,20 @@ with its own 404.
 ## Requests
 
 - Body is UTF-8 JSON, at most 32,768 bytes (server setting `MAX_BODY_BYTES`).
-- `text` is required. Lengths are counted in Unicode characters.
+- `text` is required for every task except `summarize`. Lengths are counted in Unicode characters.
 - Unknown fields are rejected by the schema; the server ignores them, so the
   device must not send any.
+
+## Summarize (additive, 2026-11-21)
+
+`task: "summarize"` is added to v1 without a version change: existing requests, fixtures and
+devices are unaffected. It takes `book_title`, `book_author`, `chapter`, `text_before` (required,
+about 200 words ending at the reading position) and `text_after` (about 200 words after it, for
+locating only), plus `language`. Both windows are limited by `max_window_chars` from `/v1/info`
+(3000); over the limit is `413 context_too_long`. Proxies older than this change do not list
+`summarize` in `tasks`, and the device must say the proxy needs an update. When the model does not
+know the book, the proxy answers `200` with a fixed "not well known" message. Design and gates:
+`planning/summarize-so-far.md`.
 
 ## Errors
 
