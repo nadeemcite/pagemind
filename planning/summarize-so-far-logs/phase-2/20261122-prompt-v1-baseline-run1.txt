@@ -1,0 +1,37 @@
+[run 1] openai / ag/gemini-3.8-flash  cases=35
+PASS   9.1s pp-ch1                     JUDGE:SPOILER
+PASS   9.6s pp-ball                   
+PASS  10.8s tale-mail                  JUDGE:SPOILER
+PASS  11.0s moby-spouter              
+PASS  10.4s frank-ch1                  JUDGE:SPOILER
+PASS  13.1s greatexp-graveyard        
+PASS  10.2s alice-ch1                  JUDGE:SPOILER
+PASS  11.5s holmes-bohemia            
+PASS  11.6s janeeyre-redroom          
+PASS  10.6s dracula-castle            
+PASS  12.5s tom-fence                  JUDGE:SPOILER
+PASS   8.8s treasure-benbow            JUDGE:SPOILER
+PASS  13.5s gatsby-ch1                
+PASS  14.9s 1984-ch1                  
+PASS  10.8s hp-zoo                    
+PASS  14.3s hobbit-ch1                
+PASS   9.8s trap-tom-graveyard        
+PASS  12.3s trap-frank-eye            
+PASS  13.5s trap-treasure-barrel      
+PASS  16.4s trap-dracula-coffin       
+FAIL  12.7s trap-janeeyre-fire        forbidden:burning
+PASS  11.6s trap-hp-wand              
+PASS  11.7s edge-chapter-end           JUDGE:SPOILER
+PASS  11.9s edge-chapter-start         JUDGE:SPOILER
+PASS  12.4s edge-no-chapter           
+PASS  13.0s edge-no-author             JUDGE:SPOILER
+PASS  13.7s hi-panch                   JUDGE:SPOILER
+PASS  15.0s hi-godaan                 
+PASS  10.4s hi-answer-for-english      JUDGE:SPOILER
+PASS   6.5s unk-invented-1            
+PASS   6.6s unk-invented-2            
+PASS   5.9s unk-invented-3            
+PASS   5.9s unk-selfpub-garden        
+PASS   7.2s unk-no-author             
+PASS   6.4s unk-hindi-invented        
+[run 1] passed 34/35  p95 14.9s  GATE FAIL  {"E1_traps_no_forbidden": false, "E1_judged_clean_ge_95": false, "E2_unknown_all_refused": true, "E3_known_useful_ge_90": true, "E4_format_and_length": true, "E5_edge_all_pass": true, "E6_p95_le_20s": true, "E7_no_truncated_or_empty": true}

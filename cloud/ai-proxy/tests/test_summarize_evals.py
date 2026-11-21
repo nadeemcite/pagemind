@@ -90,3 +90,11 @@ def test_edge_cases_cover_missing_pieces():
     assert any(len(r["text_before"]) < 60 for r in edges)   # chapter start
     assert any("chapter" not in r for r in edges)           # no chapter name
     assert any("book_author" not in r for r in edges)       # no author
+
+
+def test_forbidden_terms_are_not_in_the_text_the_reader_has_read():
+    # A forbidden term that already appears in text_before would fail a correct answer.
+    for c in CASES:
+        before = c["request"]["text_before"].lower()
+        for term in c["expect"].get("must_not_contain", []):
+            assert term.lower() not in before, f"{c['id']}: '{term}' is in text_before"

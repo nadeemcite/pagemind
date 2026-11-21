@@ -1,0 +1,14 @@
+[run 1] openai / ag/gemini-3.8-flash  cases=35
+PASS  10.5s pp-ch1                     JUDGE:SPOILER
+PASS  13.0s pp-ball                   
+PASS  10.7s tale-mail                  JUDGE:SPOILER
+PASS  10.7s moby-spouter               JUDGE:SPOILER
+PASS  10.8s frank-ch1                  JUDGE:SPOILER
+PASS  10.5s greatexp-graveyard        
+PASS  11.0s alice-ch1                  JUDGE:SPOILER
+PASS  10.4s holmes-bohemia            
+PASS   9.8s janeeyre-redroom          
+PASS  10.3s dracula-castle            
+PASS  12.6s tom-fence                  JUDGE:SPOILER
+PASS  15.0s treasure-benbow           
+PASS   9.4s gatsby-ch1                

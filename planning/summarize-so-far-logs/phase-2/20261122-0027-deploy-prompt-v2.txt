@@ -1,0 +1,33 @@
+
+Project:        nadeem-personal
+Region:         us-central1
+Service:        ai-proxy
+Provider/model: openai / ag/gemini-3.8-flash
+Base URL:       https://9router.devnadeem.com/v1/
+Key secret:     9router_api_key
+Device keys:    ai-proxy-device-keys
+
+==> Enabling APIs (Cloud Run, Cloud Build, Artifact Registry, Secret Manager)
+Operation "operations/acat.p2-597120914452-99d2ce7e-d854-4c8d-9b1c-7de664cb8aeb" finished successfully.
+==> Provider API key secret: 9router_api_key
+    exists, reusing it
+==> Device API keys secret: ai-proxy-device-keys
+    exists, reusing it (use ./rotate-key.sh to add or revoke keys)
+==> Runtime service account: ai-proxy-runtime@nadeem-personal.iam.gserviceaccount.com (can read only these two secrets)
+    exists, reusing it
+==> Deploying to Cloud Run (builds the container with Cloud Build; takes a few minutes)
+Building using Dockerfile and deploying container to Cloud Run service [[1mai-proxy[m] in project [[1mnadeem-personal[m] region [[1mus-central1[m]
+Building and deploying...
+Uploading sources......................done
+Building Container...................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................done
+Setting IAM Policy...................................done
+Creating Revision..................................................................................................................................done
+Routing traffic.....done
+Done.
+Service [[1mai-proxy[m] revision [[1mai-proxy-00009-szv[m] has been deployed and is serving [1m100[m percent of traffic.
+Service URL: [1mhttps://ai-proxy-597120914452.us-central1.run.app[m
+==> Checking https://ai-proxy-cyshxss5ta-uc.a.run.app/health
+{"ok":true}
+
+Done. Server URL: https://ai-proxy-cyshxss5ta-uc.a.run.app
+Existing device keys were kept. For a new key and setup file: ./rotate-key.sh add

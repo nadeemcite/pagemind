@@ -103,12 +103,14 @@ def test_prompt_chapter_end_omits_after_section():
 
 
 def test_system_prompt_rules():
-    s = SUMMARIZE_SYSTEM_PROMPT
-    assert UNKNOWN_BOOK_MARKER in s
-    assert "plain text" in s.lower()
-    low = s.lower()
-    assert "spoil" in low or "after the reading position" in low
-    assert "own knowledge" in low or "what you know" in low
+    low = SUMMARIZE_SYSTEM_PROMPT.lower()
+    assert UNKNOWN_BOOK_MARKER in SUMMARIZE_SYSTEM_PROMPT
+    assert "plain text" in low
+    assert "own knowledge" in low
+    # Boundary rules found necessary by the Phase 2 evals: exact position, same-chapter leaks, self-check.
+    assert "exact boundary" in low and "even later in the same chapter" in low
+    assert "only include a fact if the reader has already met it" in low
+    assert "check every sentence" in low
 
 
 # S4: unknown book
