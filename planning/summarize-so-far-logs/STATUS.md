@@ -24,6 +24,8 @@ if a session stops (for example the token quota runs out), start a new session a
 
 ## To do later (owner decision 2026-11-22: not blocking)
 
+Full task file: [planning/todo/summarize-prompt-refinement.md](../todo/summarize-prompt-refinement.md).
+
 - **Prompt refinement (TBD).** The model still leaks small same-chapter facts in a few runs
   (judge flagged 1-2 of 29 per run: `tale-mail`, `alice-ch1`, `hp-zoo`, `hobbit-ch1`). Ideas: show
   the model only `text_before` for the recap and use `text_after` only to confirm the position;

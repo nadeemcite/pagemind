@@ -95,3 +95,7 @@ Status values: `Not started` → `In progress` → `Gate review` → `Complete`.
   at least.
 - **Sync with upstream** at least once per phase, and rerun that phase's automated
   checks after the merge.
+
+## Later tasks
+
+- [Refine the Summarize-so-far prompt](todo/summarize-prompt-refinement.md): deferred, not blocking.
