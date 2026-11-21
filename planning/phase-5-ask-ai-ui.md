@@ -132,4 +132,5 @@ below, and `v0.1.0` is published.
 | D7 | 2026-11-15 | | Out of scope | Owner: no second person available; repeat later |
 | Final eval | | | | |
 | `v0.1.0` published | 2026-11-15 | 0.1.0 tag | Pass | Release `PageMind 0.1.0: Ask AI` (not prerelease, latest); SHA-256 OK; ESP32-S3 image valid; contains `PageMind 0.1.0 (CrossPoint 2.0.0)`, `/v1/ask`, PageMind OTA URL; release notes added. Tag is plain `0.1.0` (upstream tags no longer fetched) |
-| Owner sign-off | | | | |
+| `0.1.1` fix | 2026-11-21 | 0.1.1 tag | Pass | Cloud Run moved to an ECDSA chain signed with SHA-384; wolfSSL lacked SHA-384/512 (`-232`, shown as "Could not connect"). Built with `-DWOLFSSL_SHA384 -DWOLFSSL_SHA512`; verified on device: TLS 1.3 handshake, `/v1/info` 200, `/v1/ask` 200 |
+| Owner sign-off | 2026-11-21 | 0.1.1 tag | Complete | Owner: "it works". D5, D6 and the final eval were not run; accepted by owner |

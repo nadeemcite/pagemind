@@ -44,6 +44,8 @@ class OpenAIProvider:
                     {"role": "user", "content": user},
                 ],
                 max_completion_tokens=max_tokens,
+                # Some OpenAI-compatible routers stream by default; the proxy needs one JSON body.
+                stream=False,
             )
         except openai.APIError as e:
             raise ProviderError(f"OpenAI error: {e.__class__.__name__}") from e

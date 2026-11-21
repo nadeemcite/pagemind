@@ -35,9 +35,9 @@ Errors are `{"error": "<code>"}`; the codes are listed in the contract.
 |---|---|---|
 | `PROVIDER` | `openai` | `openai` or `ollama` |
 | `DEVICE_TOKENS` | — | **Required.** Comma-separated device tokens |
-| `OPENAI_API_KEY` | — | OpenAI key (secret) |
+| `OPENAI_API_KEY` | — | API key for OpenAI or your OpenAI-compatible router (secret) |
 | `OPENAI_MODEL` | — | **Required for OpenAI.** Model name from your OpenAI account |
-| `OPENAI_BASE_URL` | — | Optional OpenAI-compatible endpoint instead of OpenAI |
+| `OPENAI_BASE_URL` | — | Any OpenAI-compatible endpoint (router, gateway, self-hosted), e.g. `https://router.example.com/v1/` |
 | `OLLAMA_HOST` | `https://ollama.com` | Ollama cloud, or your own Ollama server URL |
 | `OLLAMA_API_KEY` | — | Ollama cloud key (secret); not needed for your own server |
 | `OLLAMA_MODEL` | — | **Required for Ollama.** Model name available on that host |
@@ -106,11 +106,12 @@ Easiest first:
 Run it again after changes; it reuses what exists. `./deploy.sh --dry-run`
 prints every command without changing anything. All options: `./deploy.sh --help`.
 
-Example (existing Ollama key in secret `ollama_api_key`):
+Example (OpenAI-compatible router, key already in secret `router_api_key`):
 
 ```bash
 ./deploy.sh --project my-project --region us-central1 \
-  --provider ollama --model glm-5.3-flash --key-secret ollama_api_key
+  --provider openai --base-url https://router.example.com/v1/ \
+  --model my-model --key-secret router_api_key
 ```
 
 ### Device API keys

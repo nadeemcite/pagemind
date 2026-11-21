@@ -10,7 +10,8 @@
 #   --project ID          Google Cloud project            [GCP_PROJECT]
 #   --region REGION       Cloud Run region, default us-central1 [GCP_REGION]
 #   --service NAME        Cloud Run service, default ai-proxy
-#   --provider NAME       ollama or openai                [AI_PROVIDER]
+#   --provider NAME       openai (any OpenAI-compatible API) or ollama, default openai [AI_PROVIDER]
+#   --base-url URL        OpenAI-compatible endpoint, e.g. https://router.example.com/v1/ [OPENAI_BASE_URL]
 #   --model NAME          model name at the provider      [AI_MODEL]
 #   --key-secret NAME     secret holding the provider API key
 #                         (default: ollama-api-key or openai-api-key)
@@ -24,6 +25,7 @@ set -euo pipefail
 PROJECT="${GCP_PROJECT:-}"
 REGION="${GCP_REGION:-us-central1}"
 SERVICE="ai-proxy"
+BASE_URL="${OPENAI_BASE_URL:-}"
 PROVIDER="${AI_PROVIDER:-}"
 MODEL="${AI_MODEL:-}"
 KEY_SECRET=""
@@ -43,6 +45,7 @@ while [[ $# -gt 0 ]]; do
     --region) REGION="$2"; shift 2 ;;
     --service) SERVICE="$2"; shift 2 ;;
     --provider) PROVIDER="$2"; shift 2 ;;
+    --base-url) BASE_URL="$2"; shift 2 ;;
     --model) MODEL="$2"; shift 2 ;;
     --key-secret) KEY_SECRET="$2"; shift 2 ;;
     --tokens-secret) TOKENS_SECRET="$2"; shift 2 ;;
@@ -95,7 +98,7 @@ fi
 
 [[ -n "$PROJECT" ]] || PROJECT="$(gcloud config get-value project 2>/dev/null || true)"
 [[ -n "$PROJECT" ]] || ask PROJECT "Google Cloud project ID"
-[[ -n "$PROVIDER" ]] || ask PROVIDER "Provider (ollama or openai)" "ollama"
+[[ -n "$PROVIDER" ]] || ask PROVIDER "Provider (openai or ollama)" "openai"
 case "$PROVIDER" in ollama|openai) ;; *) die "provider must be ollama or openai" ;; esac
 [[ -n "$MODEL" ]] || ask MODEL "Model name at $PROVIDER"
 [[ -n "$MODEL" ]] || die "a model name is required"
@@ -106,12 +109,15 @@ if [[ "$PROVIDER" == "ollama" ]]; then
 else
   MODEL_VAR="OPENAI_MODEL"; KEY_VAR="OPENAI_API_KEY"
 fi
+ENV_VARS="PROVIDER=$PROVIDER,$MODEL_VAR=$MODEL"
+if [[ "$PROVIDER" == "openai" && -n "$BASE_URL" ]]; then ENV_VARS="$ENV_VARS,OPENAI_BASE_URL=$BASE_URL"; fi
 
 echo
 echo "Project:        $PROJECT"
 echo "Region:         $REGION"
 echo "Service:        $SERVICE"
 echo "Provider/model: $PROVIDER / $MODEL"
+[[ -n "$BASE_URL" ]] && echo "Base URL:       $BASE_URL"
 echo "Key secret:     $KEY_SECRET"
 echo "Device keys:    $TOKENS_SECRET"
 [[ $DRY_RUN -eq 1 ]] && echo "Mode:           dry run (nothing will change)"
@@ -190,7 +196,7 @@ run "${G[@]}" run deploy "$SERVICE" \
   --allow-unauthenticated \
   --max-instances 1 --min-instances 0 \
   --memory 512Mi --cpu 1 --timeout 60 \
-  --set-env-vars "PROVIDER=$PROVIDER,$MODEL_VAR=$MODEL" \
+  --set-env-vars "$ENV_VARS" \
   --set-secrets "DEVICE_TOKENS=$TOKENS_SECRET:latest,$KEY_VAR=$KEY_SECRET:latest"
 
 if [[ $DRY_RUN -eq 1 ]]; then
