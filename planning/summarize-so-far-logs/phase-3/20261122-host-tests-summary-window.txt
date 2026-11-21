@@ -1,0 +1,43 @@
+Test project /Users/nadeemair/projects/xteink-research/crosspoint-reader/build/test
+      Start 128: SummaryWindow.MidChapterIsExactAndContiguous
+ 1/19 Test #128: SummaryWindow.MidChapterIsExactAndContiguous ..........................   Passed    0.00 sec
+      Start 129: SummaryWindow.ReadsOnlyNeededPages
+ 2/19 Test #129: SummaryWindow.ReadsOnlyNeededPages ....................................   Passed    0.00 sec
+      Start 130: SummaryWindow.ChapterStartHasShortBeforeAndFullAfter
+ 3/19 Test #130: SummaryWindow.ChapterStartHasShortBeforeAndFullAfter ..................   Passed    0.00 sec
+      Start 131: SummaryWindow.ChapterEndHasFullBeforeAndEmptyAfter
+ 4/19 Test #131: SummaryWindow.ChapterEndHasFullBeforeAndEmptyAfter ....................   Passed    0.00 sec
+      Start 132: SummaryWindow.ShortChapterHasNoOverlap
+ 5/19 Test #132: SummaryWindow.ShortChapterHasNoOverlap ................................   Passed    0.01 sec
+      Start 133: SummaryWindow.SinglePageChapterBeforeOnly
+ 6/19 Test #133: SummaryWindow.SinglePageChapterBeforeOnly .............................   Passed    0.00 sec
+      Start 134: SummaryWindow.HindiWordsAreNeverSplit
+ 7/19 Test #134: SummaryWindow.HindiWordsAreNeverSplit .................................   Passed    0.00 sec
+      Start 135: SummaryWindow.ReadsAtMostTwelvePagesPerSide
+ 8/19 Test #135: SummaryWindow.ReadsAtMostTwelvePagesPerSide ...........................   Passed    0.00 sec
+      Start 136: SummaryWindow.NeverAsksOutsideTheChapter
+ 9/19 Test #136: SummaryWindow.NeverAsksOutsideTheChapter ..............................   Passed    0.01 sec
+      Start 137: SummaryWindow.MissingPageEndsTheWindow
+10/19 Test #137: SummaryWindow.MissingPageEndsTheWindow ................................   Passed    0.00 sec
+      Start 138: SummaryWindow.CurrentPageUnavailableGivesEmpty
+11/19 Test #138: SummaryWindow.CurrentPageUnavailableGivesEmpty ........................   Passed    0.00 sec
+      Start 139: SummaryWindow.InvalidArgumentsGiveEmpty
+12/19 Test #139: SummaryWindow.InvalidArgumentsGiveEmpty ...............................   Passed    0.00 sec
+      Start 140: SummaryWindow.LongWordsAreClippedOnWordBoundariesNearestThePosition
+13/19 Test #140: SummaryWindow.LongWordsAreClippedOnWordBoundariesNearestThePosition ...   Passed    0.00 sec
+      Start 141: SummaryWindow.LimitCountsCodePointsNotBytes
+14/19 Test #141: SummaryWindow.LimitCountsCodePointsNotBytes ...........................   Passed    0.00 sec
+      Start 142: SummaryWindow.WhitespaceIsCollapsed
+15/19 Test #142: SummaryWindow.WhitespaceIsCollapsed ...................................   Passed    0.00 sec
+      Start 143: ChapterLabel.PrefersTocTitle
+16/19 Test #143: ChapterLabel.PrefersTocTitle ..........................................   Passed    0.00 sec
+      Start 144: ChapterLabel.FallsBackToChapterNumber
+17/19 Test #144: ChapterLabel.FallsBackToChapterNumber .................................   Passed    0.00 sec
+      Start 145: ChapterLabel.EmptyWhenNothingKnown
+18/19 Test #145: ChapterLabel.EmptyWhenNothingKnown ....................................   Passed    0.00 sec
+      Start 146: ChapterLabel.LongTitleIsClippedToTheServerLimit
+19/19 Test #146: ChapterLabel.LongTitleIsClippedToTheServerLimit .......................   Passed    0.00 sec
+
+100% tests passed out of 19
+
+Total Test time (real) =   0.10 sec

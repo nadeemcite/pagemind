@@ -1,0 +1,23 @@
+CMake Warning (author) at /opt/homebrew/share/cmake/Modules/FetchContent.cmake:1968 (message):
+  Calling FetchContent_Populate(wolfssl_src) is deprecated, call
+  FetchContent_MakeAvailable(wolfssl_src) instead.  Policy CMP0169 can be set
+  to OLD to allow FetchContent_Populate(wolfssl_src) to be called directly
+  for now, but the ability to call it with declared details will be removed
+  completely in a future version.
+Call Stack (most recent call first):
+  ai_secret_box/CMakeLists.txt:10 (FetchContent_Populate)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+CMake Warning (author) at /opt/homebrew/share/cmake/Modules/FetchContent.cmake:1968 (message):
+  Calling FetchContent_Populate(arduinojson_src) is deprecated, call
+  FetchContent_MakeAvailable(arduinojson_src) instead.  Policy CMP0169 can be
+  set to OLD to allow FetchContent_Populate(arduinojson_src) to be called
+  directly for now, but the ability to call it with declared details will be
+  removed completely in a future version.
+Call Stack (most recent call first):
+  ai_settings/CMakeLists.txt:10 (FetchContent_Populate)
+This warning is for project developers.  Use -Wno-author to suppress it.
+
+-- Configuring done (3.5s)
+-- Generating done (0.4s)
+-- Build files have been written to: /Users/nadeemair/projects/xteink-research/crosspoint-reader/build/test

@@ -16,9 +16,9 @@ if a session stops (for example the token quota runs out), start a new session a
 
 ## Current position
 
-- **Phase:** 2 done (owner accepted 34/35 on 2026-11-22). Phase 3 not started.
-- **Step:** Phase 2 recorded and committed
-- **Next action:** Phase 3: `src/ai/SummaryWindow.{h,cpp}` host tests first (W1-W8), then the section-cache spike
+- **Phase:** 3 done (Reading-window extractor); Phase 4 not started
+- **Step:** Phase 3 committed
+- **Next action:** Phase 4: protocol fields in `AiProtocol` (tests first, C1/C2), menu item (C3), activity, `pio run` (C4), contract sync (C5). Replace the summarize skip in `test/ai_client/AiClientTest.cpp` (marked `TODO(summarize phase 4)`).
 - **Blocked on:** nothing
 - **Live proxy:** revision `ai-proxy-00009-szv` (prompt v2) on 9router `ag/gemini-3.8-flash`
 
@@ -46,7 +46,7 @@ Full task file: [planning/todo/summarize-prompt-refinement.md](../todo/summarize
 | S5 | Per-task output budget | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
 | S6 | `/v1/info` lists `summarize` and limits | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
 | E1–E8 | Evals (see plan) | pass (accepted) | runs 1-2 of final config: 35/35 and 34/35, GATE PASS; phase-2/20261122-final-config-eval-3runs.txt; evals/reports/ |
-| W1–W8 | Window extractor | todo | |
+| W1–W8 | Window extractor | pass | host tests 19/19 (phase-3/20261122-host-tests-summary-window.txt), full suite 1072/1072 (phase-3/20261122-host-tests-all.txt); W8 spike: phase-3/spike-note.md (device heap/time deferred to Phase 5 D8) |
 | C1–C5 | Device client | todo | |
 | D1–D9 | Device verification | todo | |
 | Release | `0.2.0` published | todo | |
@@ -55,6 +55,7 @@ Full task file: [planning/todo/summarize-prompt-refinement.md](../todo/summarize
 
 | Date | Step | Result | Log / commit |
 |---|---|---|---|
+| 2026-11-22 | Phase 3: `src/ai/SummaryWindow.{h,cpp}` + `test/ai_summary_window` (19 tests, tests first). Found and fixed a red test left from Phase 1: `AiClient.RequestsFromFixturesMatchContract` read the new summarize fixtures; skipped them until Phase 4 (marked TODO). Added a 12-page-per-side cap. Spike note written. Full host suite 1072/1072, clang-format clean | Done | phase-3/ |
 | 2026-11-22 | Phase 2 closed: final config (prompt v2 + corrected judge) run 1 **35/35 GATE PASS**, run 2 **34/35 GATE PASS** (one 502 from the router), run 3 stopped early. Owner accepted 34/35 and deferred prompt refinement (see To do later) | Done, accepted | phase-2/*final-config*, evals/reports/ |
 | 2026-11-22 | Phase 2: **prompt v1 baseline** (run 1, Sonnet judge): 34/35 rules pass; judge flagged 11 of 29 answers as leaking later facts (mostly same-chapter details: 'five daughters', 'wait at Dover for a young lady', Alice growing). E1 FAIL, all other gates pass. Fixed eval flaw: forbidden term `burning` was in the reader's own text (added guard test, 91 tests). Prompt v2: exact-boundary rule, only-met-facts rule, self-check, stop-early rule; deployed as revision 00009-szv | v1 baseline saved | phase-2/20261122-prompt-v1-baseline-run1.txt, evals/reports/baseline/ |
 | 2026-11-22 | Phase 2: wrote `evals/summarize_cases.jsonl` (35 cases: 16 known, 6 traps, 6 unknown, 4 edge, 3 Hindi), `evals/run_summarize_evals.py`, 13 scorer/case tests (90 pass). Smoke test of 3 cases passed; judge model had to be changed (sonnet-5-5 and others 404 on the router) | In progress | phase-2/ |

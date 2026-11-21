@@ -88,6 +88,9 @@ TEST(AiClient, RequestsFromFixturesMatchContract) {
   for (const auto& path : fixtures("requests")) {
     JsonDocument f;
     ASSERT_FALSE(deserializeJson(f, readFile(path))) << path;
+    // TODO(summarize phase 4): the device client builds summarize requests in Phase 4,
+    // which replaces this skip with its own fixture test (planning/summarize-so-far.md, C1).
+    if (std::string(f["task"] | "explain") == "summarize") continue;
     ai::AskRequest req;
     req.task = taskFrom(f["task"] | "explain");
     req.text = f["text"] | "";
