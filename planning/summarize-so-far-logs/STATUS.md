@@ -16,10 +16,11 @@ if a session stops (for example the token quota runs out), start a new session a
 
 ## Current position
 
-- **Phase:** 1 done locally; owner has not been asked to review it
-- **Step:** Phase 1 committed
-- **Next action:** Phase 2: deploy the proxy with `summarize`, write `evals/summarize_cases.jsonl` and scoring, run against 9router
+- **Phase:** 2 (Evals and prompt tuning), in progress
+- **Step:** 35 cases and the scorer are written (90 proxy tests pass); the first 3-run live eval is running
+- **Next action:** read `phase-2/*-eval-3runs.txt` and `evals/reports/*-summarize-run{1,2,3}.json`; fix the prompt for any failed gate; rerun
 - **Blocked on:** nothing
+- **Note:** judge model is `ag/gpt-oss-120b-medium` (the other 9router models tried returned 404/401/403/410). Its verdicts are advisory.
 
 ## Gate checklist
 
@@ -41,6 +42,7 @@ if a session stops (for example the token quota runs out), start a new session a
 
 | Date | Step | Result | Log / commit |
 |---|---|---|---|
+| 2026-11-22 | Phase 2: wrote `evals/summarize_cases.jsonl` (35 cases: 16 known, 6 traps, 6 unknown, 4 edge, 3 Hindi), `evals/run_summarize_evals.py`, 13 scorer/case tests (90 pass). Smoke test of 3 cases passed; judge model had to be changed (sonnet-5-5 and others 404 on the router) | In progress | phase-2/ |
 | 2026-11-21 | Phase 1: tests first (red), then schema, prompts, validation, UNKNOWN_BOOK, info limit, 7 fixtures | 77 passed; S2 note: the existing info test now expects `summarize` in `tasks` (additive change) | phase-1/*-pytest-all.txt |
 | 2026-11-21 | Plan written and approved; status tracking set up | Done | 4a582587 |
 
