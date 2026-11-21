@@ -17,11 +17,11 @@ if a session stops (for example the token quota runs out), start a new session a
 ## Current position
 
 - **Phase:** 5 (Real-device verification and release), in progress
-- **Step:** README and proxy README written (feature, privacy note, spoiler caveat). **SD backup done and verified** (423 files, `diff -rq` identical, plus `My Clippings.txt`) at `~/projects/xteink-research/backups/2026-11-22-before-summarize/`; the card was ejected. **Waiting for the owner to leave USB Drive mode and replug** so the serial port `/dev/cu.usbmodem101` returns
-- **Next action:** after the backup: flash `pagemind_x4pro` with `.venv/bin/pio run -e pagemind_x4pro -t upload --upload-port /dev/cu.usbmodem101`, then D1-D9 with the serial log (pyserial in `.venv`, 115200 baud) saved to `phase-5/`
-- **Blocked on:** owner (leave USB Drive mode, replug)
+- **Done:** SD backup, flash of `pagemind_x4pro` (summarize build), D1-D4 (owner report; D1 request in the serial log)
+- **Next action:** replug the reader (USB port gone after the last flow), restart the logger (`phase-5/serial_log.py`, it reconnects), then D5 (Hindi), D6 (errors), D7 (orientation and input), D8 (memory, 20 rounds or a reduced count agreed with the owner), D9 (server log), then release `0.2.0`
+- **Blocked on:** owner (replug / wake the reader)
 - **Live proxy:** revision `ai-proxy-00009-szv` (prompt v2) on 9router `ag/gemini-3.8-flash`
-- **Device now runs:** `0.1.1-dev` build (SHA-384 fix, no Summarize)
+- **Device now runs:** the Summarize build (`pagemind_x4pro`, flashed 2026-11-22)
 
 ## To do later (owner decision 2026-11-22: not blocking)
 
@@ -53,13 +53,22 @@ Full task file: [planning/todo/summarize-prompt-refinement.md](../todo/summarize
 | C3 | Menu item hidden unless Ask AI is configured | pass (host + review) | `isConfigured` host tests (`test/ai_settings`); gating is `AI_SETTINGS.isConfigured()` in `EpubReaderMenuActivity::buildMenuItems`; device check in Phase 5 D1/D7 (same approach as Phase 5 A2) |
 | C4 | `pio run -e pagemind_x4pro` builds; host tests pass; clang-format clean | pass | phase-4/*-pio-build.txt: RAM 34.1%, flash 84.9%; 1081/1081; `clang-format-fix -g` no changes |
 | C5 | Contract stays in sync (server and device read the same fixtures) | pass | proxy pytest 92 passed (phase-4/*proxy-pytest.txt) and device host tests both validate every fixture in `cloud/ai-proxy/contract/` |
-| D1–D9 | Device verification | todo | |
+| D1 | Popular English book, mid-chapter | pass | Owner: works. Log: `Summarize: page 151/642, before 1080 B, after 1065 B, chapter 'THE BOY WHO LIVED'`; TLS 1.3 ok; `/v1/info` 200 in 11.5 s; `/v1/ask` 200 in 22.7 s; min free heap 83 KB, min block 34.8 KB (phase-5/20261122-0154-serial-d1.txt) |
+| D2 | Chapter start and chapter end | pass (owner report) | Owner: works. No log: the logger died when the reader restarted itself after the first flow (USB port dropped); fixed with a reconnecting logger |
+| D3 | Spoiler trap | pass (owner report) | Owner: no spoilers seen across multiple chapters; no single trap page checked |
+| D4 | Unknown book | pass (owner report) | Owner: works |
+| D5 | Hindi | todo | |
+| D6 | Errors | todo | |
+| D7 | Orientation and input | todo | |
+| D8 | Memory and power | todo | |
+| D9 | Request log on the server | todo | |
 | Release | `0.2.0` published | todo | |
 
 ## Step log (newest first)
 
 | Date | Step | Result | Log / commit |
 |---|---|---|---|
+| 2026-11-22 | Phase 5: flashed the summarize build (hash verified, 118 s); D1-D4 pass per owner. Observations: on the device the ask took 22.7 s and `/v1/info` 11.5 s (cold start + two TLS handshakes), slower than the eval's p95 of 16 s through the proxy alone: add to the prompt-refinement to-do (latency) | Done | phase-5/ |
 | 2026-11-22 | Phase 5: SD backup before flashing (`/.crosspoint` 423 files identical, `My Clippings.txt` 572 B); no stray `pagemind-ai.json` on the card | Done | backups/2026-11-22-before-summarize |
 | 2026-11-22 | Phase 5 started: README (Summarize so far section: popular books only, what is sent incl. unread words after the position, spoiler caveat, update the server) and proxy README (2 new env vars) | In progress | git log |
 | 2026-11-22 | Phase 4: tests first (C1/C2, replacing the Phase 3 skip), then `AiProtocol` (Summarize task, `ProxyOutdated`, window fields, `tailUtf8`, `checkTaskSupported`), `Section::getTextForPage`, menu item `SUMMARIZE`, `EpubReaderActivity::startSummarize`, `AiAskActivity` skips the picker, 2 new strings (English; other languages fall back). Host 1081/1081; firmware builds, flash 84.9% (was 83.3% at 0.1.0). First build attempt failed to start (`pio` not on PATH in the background shell): used `.venv/bin/pio` | Done | phase-4/ |

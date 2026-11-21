@@ -1,0 +1,129 @@
+[10017] [INF] [MEM] Free: 158200 bytes, Total: 260036 bytes, Min Free: 157708 bytes, MaxAlloc: 114676 bytes
+[10018] [INF] [MEM] PSRAM: Free: 7218840 bytes, Total: 8388608 bytes, Min Free: 7218840 bytes, MaxAlloc: 7208948 bytes
+[20035] [INF] [MEM] Free: 158200 bytes, Total: 260036 bytes, Min Free: 157708 bytes, MaxAlloc: 114676 bytes
+[20035] [INF] [MEM] PSRAM: Free: 7218840 bytes, Total: 8388608 bytes, Min Free: 7218840 bytes, MaxAlloc: 7208948 bytes
+[30053] [INF] [MEM] Free: 158200 bytes, Total: 260036 bytes, Min Free: 157708 bytes, MaxAlloc: 114676 bytes
+[30053] [INF] [MEM] PSRAM: Free: 7218840 bytes, Total: 8388608 bytes, Min Free: 7218840 bytes, MaxAlloc: 7208948 bytes
+[32916] [DBG] [PWR] Restoring normal CPU frequency
+[32991] [DBG] [ACT] Exiting activity: Home
+[32991] [DBG] [ACT] Entering activity: EpubReader
+[32992] [INF] [MEM] reader enter: free=157452 max_block=110580
+[33064] [DBG] [EBP] Loading ePub: /Pushed Books/Harry Potter Series Book 1-7 - The Philosopher s Stone.epub
+[33065] [INF] [CPRO] open: free=157124 max_block=110580
+[33147] [DBG] [BMC] Loaded cache data: 71 spine, 206 TOC entries
+[33167] [DBG] [CSS] Loaded 15 rules from complete cache
+[33167] [DBG] [EBP] Loaded ePub: /Pushed Books/Harry Potter Series Book 1-7 - The Philosopher s Stone.epub
+[33178] [DBG] [ERS] Loaded cache: 2, 151
+[33197] [DBG] [LOOP] New max loop duration: 208 ms (activity: 207 ms)
+[33199] [DBG] [ERS] Loading file: 1/index_split_000.html, index: 2
+[33207] [DBG] [SCT] Deserialization succeeded: 642 pages
+[33207] [DBG] [ERS] Cache found, skipping build...
+[33376] [DBG] [GFX] Time = 169 ms from clearScreen to displayBuffer
+[34850]   Wait complete:  8279x4_DRF (1342 ms)
+[34919] [DBG] [GFX] Stored BW buffer in 6 chunks (8000 bytes each)
+[34940] [DBG] [GFX] Restored and freed BW buffer chunks
+[34941] [DBG] [ERS] Page render: prewarm=106ms bw_render=43ms display=1540ms bw_store=3ms gray_lsb=9ms gray_msb=10ms gray_display=0ms bw_restore=3ms total=1714ms
+[34941] [DBG] [ERS] Rendered page in 1714ms
+[34996] [DBG] [ERS] Progress saved: spine=2 offset=27678 page=151
+[35426] [DBG] [ERS] Idle prewarm: page 152 in 66ms
+[38638] [DBG] [PWR] Going to low-power mode
+[39168] [DBG] [PWR] Restoring normal CPU frequency
+[39722] [DBG] [ACT] Pushed to activity stack, new size = 1
+[39722] [DBG] [ACT] Entering activity: ClipSelection
+[39954] [DBG] [GFX] Time = 105 ms from clearScreen to displayBuffer
+[40502]   Wait complete:  8279x4_DRF (488 ms)
+[40559] [DBG] [LOOP] New max loop duration: 699 ms (activity: 693 ms)
+[40572] [INF] [MEM] Free: 147412 bytes, Total: 260036 bytes, Min Free: 147076 bytes, MaxAlloc: 106484 bytes
+[40572] [INF] [MEM] PSRAM: Free: 7219488 bytes, Total: 8388608 bytes, Min Free: 7178892 bytes, MaxAlloc: 7208948 bytes
+[42200] [DBG] [GFX] Time = 102 ms from clearScreen to displayBuffer
+[42748]   Wait complete:  8279x4_DRF (488 ms)
+[42935] [DBG] [GFX] Time = 106 ms from clearScreen to displayBuffer
+[43483]   Wait complete:  8279x4_DRF (488 ms)
+[43540] [DBG] [LOOP] New max loop duration: 700 ms (activity: 695 ms)
+[43602] [DBG] [ACT] Exiting activity: ClipSelection
+[43603] [DBG] [ACT] Popped from activity stack, new size = 0
+[43603] [DBG] [ACT] Handling result for popped activity
+[43626] [DBG] [AI] Ask AI: page 151, page text 214 B, selection 12 B, context 214 B
+[43627] [DBG] [ACT] Pushed to activity stack, new size = 1
+[43627] [DBG] [ACT] Entering activity: AiAsk
+[43643] [DBG] [GFX] Time = 15 ms from clearScreen to displayBuffer
+[44201]   Wait complete:  8279x4_DRF (489 ms)
+[49255] [DBG] [GFX] Time = 8 ms from clearScreen to displayBuffer
+[49804]   Wait complete:  8279x4_DRF (489 ms)
+[49861] [DBG] [ACT] Exiting activity: AiAsk
+[49861] [DBG] [ACT] Popped from activity stack, new size = 0
+[49861] [DBG] [ACT] Handling result for popped activity
+[50575]   Wait complete:  8279x4_DRF (488 ms)
+[50578] [INF] [MEM] Free: 152764 bytes, Total: 260036 bytes, Min Free: 147056 bytes, MaxAlloc: 110580 bytes
+[50580] [INF] [MEM] PSRAM: Free: 7227300 bytes, Total: 8388608 bytes, Min Free: 7178892 bytes, MaxAlloc: 7208948 bytes
+[50646] [DBG] [GFX] Stored BW buffer in 6 chunks (8000 bytes each)
+[50666] [DBG] [GFX] Restored and freed BW buffer chunks
+[50666] [DBG] [ERS] Page render: prewarm=93ms bw_render=43ms display=626ms bw_store=4ms gray_lsb=8ms gray_msb=10ms gray_display=0ms bw_restore=2ms total=786ms
+[50667] [DBG] [ERS] Rendered page in 787ms
+[52258] [DBG] [PWR] Going to low-power mode
+[59148] [DBG] [PWR] Restoring normal CPU frequency
+[60591] [INF] [MEM] Free: 155252 bytes, Total: 260036 bytes, Min Free: 147056 bytes, MaxAlloc: 110580 bytes
+[60592] [INF] [MEM] PSRAM: Free: 7227300 bytes, Total: 8388608 bytes, Min Free: 7178892 bytes, MaxAlloc: 7208948 bytes
+[62189] [DBG] [PWR] Going to low-power mode
+[62613] [DBG] [PWR] Restoring normal CPU frequency
+[62821] [DBG] [ACT] Pushed to activity stack, new size = 1
+[62821] [DBG] [ACT] Entering activity: FrontlightPanel
+[62840] [DBG] [GFX] Time = 12186 ms from clearScreen to displayBuffer
+[63396]   Wait complete:  8279x4_DRF (488 ms)
+[65811] [DBG] [PWR] Going to low-power mode
+[66871] [DBG] [PWR] Restoring normal CPU frequency
+[67026] [DBG] [GFX] Time = 16372 ms from clearScreen to displayBuffer
+[67582]   Wait complete:  8279x4_DRF (488 ms)
+[68667] [DBG] [GFX] Time = 18013 ms from clearScreen to displayBuffer
+[69223]   Wait complete:  8279x4_DRF (488 ms)
+[69602] [DBG] [ACT] Exiting activity: FrontlightPanel
+[69602] [DBG] [ACT] Popped from activity stack, new size = 0
+[70315]   Wait complete:  8279x4_DRF (488 ms)
+[70386] [DBG] [GFX] Stored BW buffer in 6 chunks (8000 bytes each)
+[70405] [DBG] [GFX] Restored and freed BW buffer chunks
+[70405] [DBG] [ERS] Page render: prewarm=92ms bw_render=43ms display=625ms bw_store=5ms gray_lsb=7ms gray_msb=10ms gray_display=0ms bw_restore=2ms total=784ms
+[70406] [DBG] [ERS] Rendered page in 785ms
+[70603] [INF] [MEM] Free: 155252 bytes, Total: 260036 bytes, Min Free: 146560 bytes, MaxAlloc: 110580 bytes
+[70604] [INF] [MEM] PSRAM: Free: 7227300 bytes, Total: 8388608 bytes, Min Free: 7178892 bytes, MaxAlloc: 7208948 bytes
+[70744] [DBG] [ACT] Pushed to activity stack, new size = 1
+[70744] [DBG] [ACT] Entering activity: EpubReaderMenu
+[70778] [DBG] [GFX] Time = 34 ms from clearScreen to displayBuffer
+[71336]   Wait complete:  8279x4_DRF (488 ms)
+[73751] [DBG] [PWR] Going to low-power mode
+[74492] [DBG] [PWR] Restoring normal CPU frequency
+[74636] [DBG] [ACT] Exiting activity: EpubReaderMenu
+[74636] [DBG] [ACT] Popped from activity stack, new size = 0
+[74636] [DBG] [ACT] Handling result for popped activity
+[74841] [DBG] [AI] Summarize: page 151/642, before 1080 B, after 1065 B, chapter 'THE BOY WHO LIVED'
+[74842] [DBG] [ACT] Pushed to activity stack, new size = 1
+[74842] [DBG] [ACT] Entering activity: AiAsk
+[74938] [DBG] [ACT] Pushed to activity stack, new size = 2
+[74938] [DBG] [ACT] Entering activity: WifiSelection
+[74945] [DBG] [WCS] Loaded 1 WiFi credentials from file
+[74946] [DBG] [WIFI] Attempting saved network: Its_not_your_wifi
+[75086] [DBG] [GFX] Time = 15 ms from clearScreen to displayBuffer
+[75642]   Wait complete:  8279x4_DRF (488 ms)
+[78550] [DBG] [WIFI] Connected BSSID: 96:27:e6:ee:e9:d4, channel: 8, RSSI: -23 dBm
+[78551] [DBG] [WIFI] Connected with saved/open credentials, completing immediately
+[78551] [DBG] [ACT] Exiting activity: WifiSelection
+[78552] [DBG] [WIFI] Free heap at onExit start: 99208 bytes
+[78552] [DBG] [WIFI] Deleting WiFi scan...
+[78552] [DBG] [WIFI] Free heap after scanDelete: 99208 bytes
+[78552] [DBG] [WIFI] Free heap at onExit end: 99208 bytes
+[78552] [DBG] [ACT] Popped from activity stack, new size = 1
+[78552] [DBG] [ACT] Handling result for popped activity
+[78561] [DBG] [GFX] Time = 8 ms from clearScreen to displayBuffer
+[79110]   Wait complete:  8279x4_DRF (489 ms)
+[79178] [DBG] [GFX] Time = 11 ms from clearScreen to displayBuffer
+[79729]   Wait complete:  8279x4_DRF (489 ms)
+[SecureClient] handshake ok (auto): TLSv1.3 / TLS_AES_128_GCM_SHA256 in 2041 ms
+[90682] [INF] [AI] GET /v1/info -> 200 in 11511 ms, body 215 B, min free 88996, min block 31732
+[SecureClient] handshake ok (auto): TLSv1.3 / TLS_AES_128_GCM_SHA256 in 1973 ms
+[113420] [INF] [AI] POST /v1/ask -> 200 in 22733 ms, body 1037 B, min free 83268, min block 34804
+[113422] [DBG] [ACT] Pushed to activity stack, new size = 2
+[113422] [DBG] [ACT] Entering activity: DictionaryDefinition
+[113581] [DBG] [LOOP] New max loop duration: 35028 ms (activity: 35027 ms)
+[113595] [INF] [MEM] Free: 97856 bytes, Total: 260036 bytes, Min Free: 60288 bytes, MaxAlloc: 38900 bytes
+[113595] [INF] [MEM] PSRAM: Free: 7223140 bytes, Total: 8388608 bytes, Min Free: 7178892 bytes, MaxAlloc: 7208948 bytes
+[113707] [DBG] [GFX] Time = 127 ms from clearScreen to displayBuffer
+[114266]   Wait complete:  8279x4_DRF (489 ms)

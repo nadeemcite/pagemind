@@ -39,6 +39,12 @@ in the same chapter in about 1-2 of 29 judged answers per run. Phase 2 history i
 6. Provider retry and a longer timeout for the `summarize` task (the 502 in run 2).
 7. Move prompt text into a versioned file and keep each eval report next to the prompt version it tested.
 
+## Latency seen on the device (2026-11-22)
+
+D1 on the reader: `/v1/info` 11.5 s (Cloud Run cold start plus TLS) and `/v1/ask` 22.7 s (2 s TLS plus the
+model's reasoning). It works but feels slow. Ideas: cache the `/v1/info` result for the session, skip it for
+summarize (the limits are the defaults), a faster model, or lower reasoning effort (`ag/gemini-3.8-flash-low`).
+
 ## How to run the evals
 
 ```bash
