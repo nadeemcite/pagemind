@@ -16,6 +16,8 @@ const char* taskName(Task t) {
       return "translate";
     case Task::Ask:
       return "ask";
+    case Task::Summarize:
+      return "summarize";
     case Task::Explain:
     default:
       return "explain";
@@ -81,6 +83,8 @@ const char* errorName(const Error e) {
       return "bad_response";
     case Error::ClientBug:
       return "client_bug";
+    case Error::ProxyOutdated:
+      return "proxy_outdated";
   }
   return "unknown";
 }
@@ -97,14 +101,38 @@ std::string_view truncateUtf8(const std::string_view s, const size_t maxChars) {
   return s.substr(0, pos);
 }
 
+std::string_view tailUtf8(const std::string_view s, const size_t maxChars) {
+  size_t chars = 0;
+  size_t pos = s.size();
+  while (pos > 0 && chars < maxChars) {
+    pos--;
+    if ((static_cast<unsigned char>(s[pos]) & 0xC0) != 0x80) chars++;
+  }
+  // `pos` is on a lead byte (or 0) unless the text starts with a broken sequence: skip those bytes.
+  while (pos < s.size() && (static_cast<unsigned char>(s[pos]) & 0xC0) == 0x80) pos++;
+  return s.substr(pos);
+}
+
+Error checkTaskSupported(const Info& info, const Task task) {
+  if (task == Task::Summarize && !info.supportsSummarize) return Error::ProxyOutdated;
+  return Error::None;
+}
+
 std::string buildAskBody(const AskRequest& req, const Limits& limits) {
   JsonDocument doc;
   doc["task"] = taskName(req.task);
   // ArduinoJson copies std::string; string_view needs an explicit copy.
-  doc["text"] = std::string(truncateUtf8(req.text, limits.maxInputChars));
-  if (!req.context.empty()) doc["context"] = std::string(truncateUtf8(req.context, limits.maxContextChars));
-  if (req.task == Task::Ask && !req.question.empty()) {
-    doc["question"] = std::string(truncateUtf8(req.question, limits.maxQuestionChars));
+  if (req.task == Task::Summarize) {
+    // No selected text: the reading position sits between the two windows.
+    if (!req.chapter.empty()) doc["chapter"] = std::string(truncateUtf8(req.chapter, 200));
+    doc["text_before"] = std::string(tailUtf8(req.textBefore, limits.maxWindowChars));
+    if (!req.textAfter.empty()) doc["text_after"] = std::string(truncateUtf8(req.textAfter, limits.maxWindowChars));
+  } else {
+    doc["text"] = std::string(truncateUtf8(req.text, limits.maxInputChars));
+    if (!req.context.empty()) doc["context"] = std::string(truncateUtf8(req.context, limits.maxContextChars));
+    if (req.task == Task::Ask && !req.question.empty()) {
+      doc["question"] = std::string(truncateUtf8(req.question, limits.maxQuestionChars));
+    }
   }
   if (!req.language.empty()) doc["language"] = std::string(truncateUtf8(req.language, 40));
   if (!req.bookTitle.empty()) doc["book_title"] = std::string(truncateUtf8(req.bookTitle, 200));
@@ -145,6 +173,12 @@ Error parseInfoResponse(const int status, const std::string_view body, Info& out
   out.limits.maxContextChars = doc["max_context_chars"].as<uint32_t>();
   out.limits.maxQuestionChars = doc["max_question_chars"] | 500u;
   if (out.limits.maxInputChars == 0) return Error::BadResponse;
+  out.limits.maxWindowChars = doc["max_window_chars"] | 3000u;
+  if (doc["tasks"].is<JsonArrayConst>()) {
+    for (JsonVariantConst t : doc["tasks"].as<JsonArrayConst>()) {
+      if (t.is<const char*>() && strcmp(t.as<const char*>(), "summarize") == 0) out.supportsSummarize = true;
+    }
+  }
   out.provider = doc["provider"] | "";
   out.model = doc["model"] | "";
   return Error::None;

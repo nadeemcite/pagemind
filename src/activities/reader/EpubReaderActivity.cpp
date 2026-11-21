@@ -58,6 +58,7 @@
 #include "activities/settings/TextSettingsActivity.h"
 #include "ai/AiContext.h"
 #include "ai/AiSettingsStore.h"
+#include "ai/SummaryWindow.h"
 #include "clippings/ClippingText.h"
 #include "clippings/ClippingsManager.h"
 #include "components/UITheme.h"
@@ -723,6 +724,44 @@ void EpubReaderActivity::startAskAi(const std::string& selection, const std::str
   startActivityForResult(std::move(activity), [this](const ActivityResult&) { requestUpdate(); });
 }
 
+// "Summarize so far": the words around the end of the current page, inside this chapter.
+// The recap itself comes from the user's AI proxy; the book text sent is the two windows only.
+void EpubReaderActivity::startSummarize() {
+  if (!section || !epub || section->currentPage < 0 || section->currentPage >= section->pageCount) {
+    requestUpdate();
+    return;
+  }
+  ai::AskRequest request;
+  request.task = ai::Task::Summarize;
+  const ai::SummaryWindow window =
+      ai::summaryWindow(section->currentPage, section->pageCount,
+                        [this](const int page, std::string& out) { return section->getTextForPage(page, out); });
+  request.textBefore = window.before;
+  request.textAfter = window.after;
+  std::string tocTitle;
+  const int tocIndex = epub->getTocIndexForSpineIndex(currentSpineIndex);
+  if (tocIndex >= 0 && tocIndex < epub->getTocItemsCount()) tocTitle = epub->getTocItem(tocIndex).title;
+  request.chapter = ai::chapterLabel(tocTitle, currentSpineIndex);
+  request.bookTitle = epub->getTitle();
+  request.bookAuthor = epub->getAuthor();
+  request.language = AI_SETTINGS.getAnswerLanguage().empty() ? I18N.getLanguageName(I18N.getLanguage())
+                                                             : AI_SETTINGS.getAnswerLanguage();
+  LOG_DBG("AI", "Summarize: page %d/%d, before %u B, after %u B, chapter '%s'", section->currentPage,
+          section->pageCount, static_cast<unsigned>(request.textBefore.size()),
+          static_cast<unsigned>(request.textAfter.size()), request.chapter.c_str());
+  if (request.textBefore.empty()) {  // nothing readable on this page (image only): nothing to summarize
+    requestUpdate();
+    return;
+  }
+  auto activity = makeUniqueNoThrow<AiAskActivity>(renderer, mappedInput, std::move(request));
+  if (!activity) {
+    LOG_ERR("AI", "OOM: Summarize activity");
+    requestUpdate();
+    return;
+  }
+  startActivityForResult(std::move(activity), [this](const ActivityResult&) { requestUpdate(); });
+}
+
 void EpubReaderActivity::openClippings() {
   if (!CLIPPINGS.hasClippings()) {
     requestUpdate();
@@ -1337,6 +1376,10 @@ void EpubReaderActivity::onReaderMenuConfirm(EpubReaderMenuActivity::MenuAction 
     }
     case EpubReaderMenuActivity::MenuAction::DICTIONARY: {
       openDictionaryWordSelect();
+      break;
+    }
+    case EpubReaderMenuActivity::MenuAction::SUMMARIZE: {
+      startSummarize();
       break;
     }
     case EpubReaderMenuActivity::MenuAction::DISPLAY_QR: {

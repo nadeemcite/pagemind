@@ -154,6 +154,7 @@ class EpubReaderActivity final : public ReaderActivity {
   static constexpr uint32_t BUILD_ROOM_STEP_MS = 50;
   // PageMind: Ask AI about a text selection (context from the page on screen).
   void startAskAi(const std::string& selection, const std::string& bookTitle, const std::string& author);
+  void startSummarize();
 #if PAGEMIND_DEMO
   bool demoCommand(const char* command) override;
 #endif

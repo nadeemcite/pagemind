@@ -57,7 +57,10 @@ void expectMatchesRequestSchema(const std::string& body) {
   ASSERT_FALSE(deserializeJson(schema, readFile(fs::path(CONTRACT_DIR) / "ask-request.schema.json")));
   JsonDocument doc;
   ASSERT_FALSE(deserializeJson(doc, body)) << body;
-  ASSERT_TRUE(doc["text"].is<const char*>()) << body;
+  // Contract: "text" is required, except for task "summarize", which requires "text_before".
+  const bool summarize = std::string(doc["task"] | "explain") == "summarize";
+  ASSERT_TRUE(doc[summarize ? "text_before" : "text"].is<const char*>()) << body;
+  if (summarize) EXPECT_TRUE(doc["text"].isNull()) << "summarize sends no selected text";
   for (JsonPairConst kv : doc.as<JsonObjectConst>()) {
     JsonVariantConst prop = schema["properties"][kv.key().c_str()];
     ASSERT_FALSE(prop.isNull()) << "unknown field " << kv.key().c_str();
@@ -78,6 +81,7 @@ ai::Task taskFrom(const char* s) {
   if (t == "define") return ai::Task::Define;
   if (t == "translate") return ai::Task::Translate;
   if (t == "ask") return ai::Task::Ask;
+  if (t == "summarize") return ai::Task::Summarize;
   return ai::Task::Explain;
 }
 
@@ -88,9 +92,6 @@ TEST(AiClient, RequestsFromFixturesMatchContract) {
   for (const auto& path : fixtures("requests")) {
     JsonDocument f;
     ASSERT_FALSE(deserializeJson(f, readFile(path))) << path;
-    // TODO(summarize phase 4): the device client builds summarize requests in Phase 4,
-    // which replaces this skip with its own fixture test (planning/summarize-so-far.md, C1).
-    if (std::string(f["task"] | "explain") == "summarize") continue;
     ai::AskRequest req;
     req.task = taskFrom(f["task"] | "explain");
     req.text = f["text"] | "";
@@ -99,12 +100,134 @@ TEST(AiClient, RequestsFromFixturesMatchContract) {
     req.language = f["language"] | "";
     req.bookTitle = f["book_title"] | "";
     req.bookAuthor = f["book_author"] | "";
+    req.chapter = f["chapter"] | "";
+    req.textBefore = f["text_before"] | "";
+    req.textAfter = f["text_after"] | "";
     const std::string body = ai::buildAskBody(req, ai::Limits{});
     expectMatchesRequestSchema(body);
     JsonDocument out;
     deserializeJson(out, body);
-    EXPECT_EQ(std::string(out["text"].as<const char*>()), req.text) << path.filename();
+    if (req.task == ai::Task::Summarize) {
+      // C1: every summarize fixture comes back field for field (this is the contract in both directions).
+      for (const char* key :
+           {"task", "chapter", "text_before", "text_after", "language", "book_title", "book_author"}) {
+        EXPECT_EQ(std::string(out[key] | ""), std::string(f[key] | "")) << key << " in " << path.filename();
+      }
+    } else {
+      EXPECT_EQ(std::string(out["text"].as<const char*>()), req.text) << path.filename();
+    }
   }
+}
+
+// C1: summarize request details.
+TEST(AiClientSummarize, BodyHasWindowsAndNoTextOrQuestion) {
+  ai::AskRequest req;
+  req.task = ai::Task::Summarize;
+  req.text = "must not be sent";
+  req.question = "must not be sent";
+  req.chapter = "Chapter 3";
+  req.textBefore = "before words";
+  req.textAfter = "after words";
+  req.bookTitle = "Moby-Dick";
+  const std::string body = ai::buildAskBody(req, ai::Limits{});
+  JsonDocument out;
+  ASSERT_FALSE(deserializeJson(out, body));
+  EXPECT_EQ(std::string(out["task"].as<const char*>()), "summarize");
+  EXPECT_TRUE(out["text"].isNull());
+  EXPECT_TRUE(out["question"].isNull());
+  EXPECT_TRUE(out["context"].isNull());
+  EXPECT_EQ(std::string(out["text_before"].as<const char*>()), "before words");
+  EXPECT_EQ(std::string(out["text_after"].as<const char*>()), "after words");
+  EXPECT_EQ(std::string(out["chapter"].as<const char*>()), "Chapter 3");
+}
+
+TEST(AiClientSummarize, EmptyAfterAndChapterAreLeftOut) {
+  ai::AskRequest req;
+  req.task = ai::Task::Summarize;
+  req.textBefore = "only before";
+  JsonDocument out;
+  ASSERT_FALSE(deserializeJson(out, ai::buildAskBody(req, ai::Limits{})));
+  EXPECT_TRUE(out["text_after"].isNull());
+  EXPECT_TRUE(out["chapter"].isNull());
+}
+
+TEST(AiClientSummarize, WindowsTrimmedToServerLimitKeepingTheTextNearestThePosition) {
+  ai::AskRequest req;
+  req.task = ai::Task::Summarize;
+  req.textBefore = "AAAA BBBB CCCC";  // position is at the end: keep the end
+  req.textAfter = "DDDD EEEE FFFF";   // keep the start
+  ai::Limits limits;
+  limits.maxWindowChars = 9;
+  JsonDocument out;
+  ASSERT_FALSE(deserializeJson(out, ai::buildAskBody(req, limits)));
+  EXPECT_EQ(std::string(out["text_before"].as<const char*>()), "BBBB CCCC");
+  EXPECT_EQ(std::string(out["text_after"].as<const char*>()), "DDDD EEEE");
+}
+
+TEST(AiClientSummarize, TrimNeverSplitsHindiCharacters) {
+  ai::AskRequest req;
+  req.task = ai::Task::Summarize;
+  for (int i = 0; i < 50; i++) req.textBefore += "मित्रता ";
+  ai::Limits limits;
+  limits.maxWindowChars = 25;
+  JsonDocument out;
+  ASSERT_FALSE(deserializeJson(out, ai::buildAskBody(req, limits)));
+  const std::string before = out["text_before"].as<const char*>();
+  EXPECT_TRUE(validUtf8(before));
+  EXPECT_LE(utf8Chars(before), 25u);
+}
+
+TEST(AiClientSummarize, TailUtf8) {
+  EXPECT_EQ(ai::tailUtf8("abcdef", 3), "def");
+  EXPECT_EQ(ai::tailUtf8("abc", 10), "abc");
+  EXPECT_EQ(ai::tailUtf8("", 3), "");
+  EXPECT_EQ(ai::tailUtf8("aमि", 2), "मि");  // two whole code points (a letter and a vowel sign)
+  EXPECT_TRUE(validUtf8(ai::tailUtf8("मित्रता", 3)));
+  EXPECT_EQ(utf8Chars(std::string(ai::tailUtf8("मित्रता", 3))), 3u);
+}
+
+// C2: /v1/info tells whether the proxy supports summarize, and its window limit.
+TEST(AiClientSummarize, InfoReportsSupportAndWindowLimit) {
+  ai::Info info;
+  ASSERT_EQ(
+      ai::parseInfoResponse(200, readFile(fs::path(CONTRACT_DIR) / "fixtures" / "responses" / "info-ok.json"), info),
+      Error::None);
+  EXPECT_TRUE(info.supportsSummarize);
+  EXPECT_EQ(info.limits.maxWindowChars, 3000u);
+  EXPECT_EQ(ai::checkTaskSupported(info, ai::Task::Summarize), Error::None);
+}
+
+TEST(AiClientSummarize, OldProxyWithoutSummarizeIsReportedNotRetried) {
+  const char* old =
+      R"({"api":1,"tasks":["explain","define","translate","ask"],"max_input_chars":4000,"max_context_chars":2000,)"
+      R"("max_question_chars":500,"provider":"ollama","model":"m"})";
+  ai::Info info;
+  ASSERT_EQ(ai::parseInfoResponse(200, old, info), Error::None);
+  EXPECT_FALSE(info.supportsSummarize);
+  EXPECT_EQ(info.limits.maxWindowChars, 3000u);  // default when the proxy does not report one
+  EXPECT_EQ(ai::checkTaskSupported(info, ai::Task::Summarize), Error::ProxyOutdated);
+  // The other tasks keep working against an old proxy.
+  EXPECT_EQ(ai::checkTaskSupported(info, ai::Task::Explain), Error::None);
+  EXPECT_EQ(ai::checkTaskSupported(info, ai::Task::Ask), Error::None);
+  EXPECT_STREQ(ai::errorName(Error::ProxyOutdated), "proxy_outdated");
+}
+
+TEST(AiClientSummarize, WindowLimitFromServerIsUsed) {
+  const char* body =
+      R"({"api":1,"tasks":["summarize"],"max_input_chars":4000,"max_context_chars":2000,"max_question_chars":500,)"
+      R"("max_window_chars":1200,"provider":"p","model":"m"})";
+  ai::Info info;
+  ASSERT_EQ(ai::parseInfoResponse(200, body, info), Error::None);
+  EXPECT_EQ(info.limits.maxWindowChars, 1200u);
+}
+
+// C2: the "book not well known" answer is an ordinary answer, shown like any other.
+TEST(AiClientSummarize, UnknownBookAnswerParsesAsAnAnswer) {
+  ai::Answer a;
+  ASSERT_EQ(ai::parseAskResponse(
+                200, readFile(fs::path(CONTRACT_DIR) / "fixtures" / "responses" / "summarize-unknown.json"), a),
+            Error::None);
+  EXPECT_NE(a.text.find("not well known"), std::string::npos);
 }
 
 TEST(AiClient, EscapesQuotesNewlinesAndKeepsHindi) {

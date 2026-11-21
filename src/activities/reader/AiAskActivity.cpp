@@ -40,6 +40,10 @@ void AiAskActivity::onEnter() {
     return;
   }
 #endif
+  if (request.task == ai::Task::Summarize) {  // no picker: the menu item is the choice
+    startAsking();
+    return;
+  }
   pickTask();
 }
 
@@ -103,6 +107,7 @@ void AiAskActivity::runAsk() {
   ai::Client client;
   ai::Info info;
   error = client.info(info);  // limits for trimming; also a key check
+  if (error == ai::Error::None) error = ai::checkTaskSupported(info, request.task);
   ai::Answer answer;
   if (error == ai::Error::None) error = client.ask(request, info.limits, answer);
   if (error == ai::Error::None) {
@@ -114,7 +119,10 @@ void AiAskActivity::runAsk() {
 
 void AiAskActivity::showAnswer(ai::Answer&& answer) {
   state = State::Done;
-  std::string title = std::string(tr(STR_AI_ASK_AI)) + " · " + I18N.get(TASK_NAMES[static_cast<int>(request.task)]);
+  const bool summarize = request.task == ai::Task::Summarize;
+  std::string title =
+      summarize ? std::string(tr(STR_AI_SUMMARIZE))
+                : std::string(tr(STR_AI_ASK_AI)) + " · " + I18N.get(TASK_NAMES[static_cast<int>(request.task)]);
   std::string text = std::move(answer.text);
   if (answer.truncated) text += std::string("\n\n") + tr(STR_AI_ANSWER_TRUNCATED);
   auto viewer =

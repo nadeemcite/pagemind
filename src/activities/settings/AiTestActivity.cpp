@@ -34,6 +34,8 @@ StrId aiErrorMessage(const ai::Error e) {
       return StrId::STR_AI_ERR_PROVIDER;
     case ai::Error::ServerUnavailable:
       return StrId::STR_AI_ERR_SERVER;
+    case ai::Error::ProxyOutdated:
+      return StrId::STR_AI_ERR_PROXY_OLD;
     case ai::Error::BadResponse:
     case ai::Error::ClientBug:
     case ai::Error::None:

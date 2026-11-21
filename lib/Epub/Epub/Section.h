@@ -126,6 +126,9 @@ class Section {
   std::unique_ptr<Page> loadPage(int page);
 
   std::string getTextFromSectionFile();
+  // Logical text of page `page` (as getTextFromSectionFile does for the current page).
+  // False when the page is not available (not built yet, or a read error).
+  bool getTextForPage(int page, std::string& out);
 
   // Resolve an anchor from the in-progress build first, then the on-disk anchor map
   // (covers finalized sections and partials from a previous session).

@@ -935,22 +935,27 @@ std::unique_ptr<Page> Section::loadPage(const int page) {
 
 std::string Section::getTextFromSectionFile() {
   std::string fullText;
-  auto p = loadPage(currentPage);
-  if (p) {
-    for (const auto& el : p->elements) {
-      if (el->getTag() == TAG_PageLine) {
-        const auto& line = static_cast<const PageLine&>(*el);
-        if (line.getBlock()) {
-          const auto& block = *line.getBlock();
-          for (uint16_t i = 0; i < block.wordCount(); i++) {
-            if (!fullText.empty()) fullText += " ";
-            fullText += block.wordText(i);
-          }
+  getTextForPage(currentPage, fullText);
+  return fullText;
+}
+
+bool Section::getTextForPage(const int page, std::string& out) {
+  out.clear();
+  auto p = loadPage(page);
+  if (!p) return false;
+  for (const auto& el : p->elements) {
+    if (el->getTag() == TAG_PageLine) {
+      const auto& line = static_cast<const PageLine&>(*el);
+      if (line.getBlock()) {
+        const auto& block = *line.getBlock();
+        for (uint16_t i = 0; i < block.wordCount(); i++) {
+          if (!out.empty()) out += " ";
+          out += block.wordText(i);
         }
       }
     }
   }
-  return fullText;
+  return true;
 }
 
 std::optional<uint16_t> Section::getCachedPageCount() const {

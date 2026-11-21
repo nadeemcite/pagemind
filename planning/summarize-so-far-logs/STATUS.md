@@ -16,9 +16,9 @@ if a session stops (for example the token quota runs out), start a new session a
 
 ## Current position
 
-- **Phase:** 3 done (Reading-window extractor); Phase 4 not started
-- **Step:** Phase 3 committed
-- **Next action:** Phase 4: protocol fields in `AiProtocol` (tests first, C1/C2), menu item (C3), activity, `pio run` (C4), contract sync (C5). Replace the summarize skip in `test/ai_client/AiClientTest.cpp` (marked `TODO(summarize phase 4)`).
+- **Phase:** 4 done (Device client and screens); Phase 5 not started
+- **Step:** Phase 4 committed
+- **Next action:** Phase 5: flash `pagemind_x4pro` to the connected reader (back up `/.crosspoint` + My Clippings.txt first, per the SD backup rule), run D1-D9 with the serial log, write README/FORK.md docs, bump version to `0.2.0`, tag, release. Owner sign-off at the end.
 - **Blocked on:** nothing
 - **Live proxy:** revision `ai-proxy-00009-szv` (prompt v2) on 9router `ag/gemini-3.8-flash`
 
@@ -47,7 +47,11 @@ Full task file: [planning/todo/summarize-prompt-refinement.md](../todo/summarize
 | S6 | `/v1/info` lists `summarize` and limits | pass | pytest log phase-1/20261121-pytest-all.txt (77 passed) |
 | E1–E8 | Evals (see plan) | pass (accepted) | runs 1-2 of final config: 35/35 and 34/35, GATE PASS; phase-2/20261122-final-config-eval-3runs.txt; evals/reports/ |
 | W1–W8 | Window extractor | pass | host tests 19/19 (phase-3/20261122-host-tests-summary-window.txt), full suite 1072/1072 (phase-3/20261122-host-tests-all.txt); W8 spike: phase-3/spike-note.md (device heap/time deferred to Phase 5 D8) |
-| C1–C5 | Device client | todo | |
+| C1 | Host: summarize body matches contract fixtures; old requests unchanged | pass | AiClient/AiClientSummarize tests, phase-4/*host-tests-all.txt (1081/1081) |
+| C2 | Host: response parsing, unknown-book answer is an answer, old proxy gives `ProxyOutdated` | pass | same log |
+| C3 | Menu item hidden unless Ask AI is configured | pass (host + review) | `isConfigured` host tests (`test/ai_settings`); gating is `AI_SETTINGS.isConfigured()` in `EpubReaderMenuActivity::buildMenuItems`; device check in Phase 5 D1/D7 (same approach as Phase 5 A2) |
+| C4 | `pio run -e pagemind_x4pro` builds; host tests pass; clang-format clean | pass | phase-4/*-pio-build.txt: RAM 34.1%, flash 84.9%; 1081/1081; `clang-format-fix -g` no changes |
+| C5 | Contract stays in sync (server and device read the same fixtures) | pass | proxy pytest 92 passed (phase-4/*proxy-pytest.txt) and device host tests both validate every fixture in `cloud/ai-proxy/contract/` |
 | D1–D9 | Device verification | todo | |
 | Release | `0.2.0` published | todo | |
 
@@ -55,6 +59,7 @@ Full task file: [planning/todo/summarize-prompt-refinement.md](../todo/summarize
 
 | Date | Step | Result | Log / commit |
 |---|---|---|---|
+| 2026-11-22 | Phase 4: tests first (C1/C2, replacing the Phase 3 skip), then `AiProtocol` (Summarize task, `ProxyOutdated`, window fields, `tailUtf8`, `checkTaskSupported`), `Section::getTextForPage`, menu item `SUMMARIZE`, `EpubReaderActivity::startSummarize`, `AiAskActivity` skips the picker, 2 new strings (English; other languages fall back). Host 1081/1081; firmware builds, flash 84.9% (was 83.3% at 0.1.0). First build attempt failed to start (`pio` not on PATH in the background shell): used `.venv/bin/pio` | Done | phase-4/ |
 | 2026-11-22 | Phase 3: `src/ai/SummaryWindow.{h,cpp}` + `test/ai_summary_window` (19 tests, tests first). Found and fixed a red test left from Phase 1: `AiClient.RequestsFromFixturesMatchContract` read the new summarize fixtures; skipped them until Phase 4 (marked TODO). Added a 12-page-per-side cap. Spike note written. Full host suite 1072/1072, clang-format clean | Done | phase-3/ |
 | 2026-11-22 | Phase 2 closed: final config (prompt v2 + corrected judge) run 1 **35/35 GATE PASS**, run 2 **34/35 GATE PASS** (one 502 from the router), run 3 stopped early. Owner accepted 34/35 and deferred prompt refinement (see To do later) | Done, accepted | phase-2/*final-config*, evals/reports/ |
 | 2026-11-22 | Phase 2: **prompt v1 baseline** (run 1, Sonnet judge): 34/35 rules pass; judge flagged 11 of 29 answers as leaking later facts (mostly same-chapter details: 'five daughters', 'wait at Dover for a young lady', Alice growing). E1 FAIL, all other gates pass. Fixed eval flaw: forbidden term `burning` was in the reader's own text (added guard test, 91 tests). Prompt v2: exact-boundary rule, only-met-facts rule, self-check, stop-early rule; deployed as revision 00009-szv | v1 baseline saved | phase-2/20261122-prompt-v1-baseline-run1.txt, evals/reports/baseline/ |

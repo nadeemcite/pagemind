@@ -205,6 +205,6 @@ proxy README, contract docs, `0.2.0` tag through the release pipeline, owner sig
 | 1 | | | | |
 | 2 | 2026-11-22 | see git log | Pass (accepted by owner) | Prompt v2 on `ag/gemini-3.8-flash`; judge `ag/claude-sonnet-4-6`. Final config run 1: 35/35, run 2: 34/35 (router 502), both GATE PASS (E1-E7); run 3 stopped early. Baseline v1 had 11/29 judge flags, v2 about 1-2/29. Prompt refinement deferred: see STATUS.md "To do later". Logs: `summarize-so-far-logs/phase-2/`; reports: `cloud/ai-proxy/evals/reports/` |
 | 3 | 2026-11-22 | see git log | Pass | W1-W8: 19 window tests; full host suite 1072/1072; clang-format clean. Walk capped at 12 pages per side. Device heap/time to be measured in Phase 5 (D8). A Phase 1 side effect (summarize fixtures break `AiClientTest`) was found and parked as a marked skip for Phase 4 |
-| 4 | | | | |
+| 4 | 2026-11-22 | see git log | Pass | C1-C5: host 1081/1081, proxy 92/92, firmware builds (RAM 34.1%, flash 84.9%), clang-format clean. Not yet run on the device (Phase 5) |
 | 5 | | | | |
 | Owner sign-off | | | | |

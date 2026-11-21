@@ -9,7 +9,7 @@
 // building and response parsing, with no network code so it runs in host tests.
 namespace ai {
 
-enum class Task : uint8_t { Explain, Define, Translate, Ask };
+enum class Task : uint8_t { Explain, Define, Translate, Ask, Summarize };
 
 enum class Error : uint8_t {
   None,
@@ -24,6 +24,7 @@ enum class Error : uint8_t {
   ServerUnavailable,  // any other status, or a body without a contract error code
   BadResponse,        // 200 that does not match the contract
   ClientBug,          // 413 context_too_long, 422 invalid_request
+  ProxyOutdated,      // /v1/info does not list the task (proxy older than this feature)
 };
 
 const char* errorName(Error e);
@@ -36,12 +37,17 @@ struct AskRequest {
   std::string language;
   std::string bookTitle;
   std::string bookAuthor;
+  // Summarize only: chapter name and the words before / after the reading position.
+  std::string chapter;
+  std::string textBefore;
+  std::string textAfter;
 };
 
 struct Limits {
   uint32_t maxInputChars = 4000;
   uint32_t maxContextChars = 2000;
   uint32_t maxQuestionChars = 500;
+  uint32_t maxWindowChars = 3000;  // summarize: text_before / text_after; default when /v1/info omits it
 };
 
 struct Info {
@@ -49,6 +55,7 @@ struct Info {
   Limits limits;
   std::string provider;
   std::string model;
+  bool supportsSummarize = false;  // "summarize" is in /v1/info tasks
 };
 
 struct Answer {
@@ -63,6 +70,14 @@ constexpr size_t MAX_RESPONSE_BYTES = 16 * 1024;
 // Cut `s` to at most `maxChars` Unicode code points (the unit the server counts),
 // never splitting a UTF-8 sequence. Invalid bytes count as one character each.
 std::string_view truncateUtf8(std::string_view s, size_t maxChars);
+
+// Last `maxChars` code points of `s` (the part nearest the reading position), never
+// splitting a UTF-8 sequence.
+std::string_view tailUtf8(std::string_view s, size_t maxChars);
+
+// None when the proxy supports `task`; ProxyOutdated when it is a newer task the proxy
+// does not list. Older tasks are always supported.
+Error checkTaskSupported(const Info& info, Task task);
 
 // JSON body for POST /v1/ask. Text fields are trimmed to `limits`; empty
 // optional fields are left out.
