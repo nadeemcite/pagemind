@@ -45,14 +45,13 @@ Upstream release workflows are disabled in this repository's Actions settings.
 
 ## Branches and remotes
 
-`personal` is the default branch: upstream `develop` + PR #3787 + PageMind.
+`personal` is the default branch: upstream `develop` + PageMind. PR #3787 (Indic shaping) was merged
+upstream on 2026-11-19 and synced into `personal` on 2026-11-22, so it is no longer carried separately.
 
 ```bash
 git remote add upstream https://github.com/crosspoint-reader/crosspoint-reader.git
-git remote add pr3787   https://github.com/ssafayet/crosspoint-reader.git
 # Upstream's release tags (0.1.0 … 2.0.0) clash with PageMind versions:
 git config remote.upstream.tagOpt --no-tags
-git config remote.pr3787.tagOpt --no-tags
 # Keep PageMind's README.md when merging (see .gitattributes):
 git config merge.ours.driver true
 ```
@@ -60,10 +59,12 @@ git config merge.ours.driver true
 ## Syncing with upstream
 
 ```bash
-git fetch upstream && git fetch pr3787
+git fetch upstream
 git checkout personal
 git merge upstream/develop
-git merge pr3787/indic-language-support-without-harfbuzz   # until #3787 is merged upstream
+# Conflicts: keep upstream's code in files PageMind does not own, and keep the PageMind
+# lines (FORK_DISPLAY_VERSION in AboutActivity, askAiAvailable in test_clipping_selection_text.py).
+cd test && cmake -S . -B ../build/test && cmake --build ../build/test && ctest --test-dir ../build/test
 pio run -e pagemind_x4pro
 git push origin personal
 ```

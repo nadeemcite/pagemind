@@ -16,12 +16,12 @@ if a session stops (for example the token quota runs out), start a new session a
 
 ## Current position
 
-- **Phase:** 5 (Real-device verification and release), in progress
-- **Done:** SD backup, flash of `pagemind_x4pro` (summarize build), D1-D4 (owner report; D1 request in the serial log)
-- **Next action:** replug the reader (USB port gone after the last flow), restart the logger (`phase-5/serial_log.py`, it reconnects), then D5 (Hindi), D6 (errors), D7 (orientation and input), D8 (memory, 20 rounds or a reduced count agreed with the owner), D9 (server log), then release `0.2.0`
-- **Blocked on:** owner (replug / wake the reader)
-- **Live proxy:** revision `ai-proxy-00009-szv` (prompt v2) on 9router `ag/gemini-3.8-flash`
-- **Device now runs:** the Summarize build (`pagemind_x4pro`, flashed 2026-11-22)
+- **Phase:** 5 closed by owner decision (2026-11-22): release `0.2.0` built from the merge of upstream `develop`; owner installs it over Wi-Fi
+- **Done:** backup, flash of the summarize build, D1-D4 (owner), merge of upstream `develop` (PR #3787 now upstream), host 1092/1092, release build ok, `0.2.0` tag
+- **Not run (accepted, owner asked to release now):** D5 Hindi, D6 errors, D7 orientation/input, D8 memory over many runs, D9 server log. The merged build has not run on the device before the release.
+- **Next action:** owner installs `0.2.0` from Settings -> Check for updates, then reports; D5-D8 can be done on that build. Fixes ship as `0.2.1`.
+- **Rollback:** hold Down at power-on for the firmware recovery picker (Phase 1 D4); backup in `~/projects/xteink-research/backups/2026-11-22-before-summarize/`
+- **Live proxy:** revision `ai-proxy-00009-szv`
 
 ## To do later (owner decision 2026-11-22: not blocking)
 
@@ -57,17 +57,18 @@ Full task file: [planning/todo/summarize-prompt-refinement.md](../todo/summarize
 | D2 | Chapter start and chapter end | pass (owner report) | Owner: works. No log: the logger died when the reader restarted itself after the first flow (USB port dropped); fixed with a reconnecting logger |
 | D3 | Spoiler trap | pass (owner report) | Owner: no spoilers seen across multiple chapters; no single trap page checked |
 | D4 | Unknown book | pass (owner report) | Owner: works |
-| D5 | Hindi | todo | |
-| D6 | Errors | todo | |
-| D7 | Orientation and input | todo | |
-| D8 | Memory and power | todo | |
-| D9 | Request log on the server | todo | |
-| Release | `0.2.0` published | todo | |
+| D5 | Hindi | not run | accepted by owner for the 0.2.0 release |
+| D6 | Errors | not run | accepted by owner for the 0.2.0 release |
+| D7 | Orientation and input | not run | accepted by owner for the 0.2.0 release |
+| D8 | Memory and power | not run | D1 request: min free heap 83 KB, min block 34.8 KB; no repeated-run test |
+| D9 | Request log on the server | not run | |
+| Release | `0.2.0` published | tag pushed; see step log | GitHub release `PageMind 0.2.0` |
 
 ## Step log (newest first)
 
 | Date | Step | Result | Log / commit |
 |---|---|---|---|
+| 2026-11-22 | Merged upstream `develop` (31 commits; PR #3787 merged upstream 2026-11-19). 6 conflicts: took upstream for PR-owned files, kept `FORK_DISPLAY_VERSION` and the `askAiAvailable` test stub; dropped the duplicated Indic test. Host 1092/1092; `pagemind_x4pro_release` builds (RAM 34.3%, flash 84.6%). Version 0.2.0, tag pushed | Done | phase-5/*merge* |
 | 2026-11-22 | Phase 5: flashed the summarize build (hash verified, 118 s); D1-D4 pass per owner. Observations: on the device the ask took 22.7 s and `/v1/info` 11.5 s (cold start + two TLS handshakes), slower than the eval's p95 of 16 s through the proxy alone: add to the prompt-refinement to-do (latency) | Done | phase-5/ |
 | 2026-11-22 | Phase 5: SD backup before flashing (`/.crosspoint` 423 files identical, `My Clippings.txt` 572 B); no stray `pagemind-ai.json` on the card | Done | backups/2026-11-22-before-summarize |
 | 2026-11-22 | Phase 5 started: README (Summarize so far section: popular books only, what is sent incl. unread words after the position, spoiler caveat, update the server) and proxy README (2 new env vars) | In progress | git log |

@@ -29,7 +29,7 @@ X4 Pro ──HTTPS, API key──▶ user's Cloud Run proxy ──provider key�
 | 3 | [Device settings and secure key storage](phase-3-device-settings.md) | Server URL and API key settings, key encrypted on the device | Complete |
 | 4 | [Device AI client](phase-4-ai-client.md) | Firmware can call the proxy and parse answers, with no UI yet | Complete |
 | 5 | [Ask AI user experience and public release](phase-5-ask-ai-ui.md) | Select text → Ask AI → answer screen; documented public release | Complete |
-| — | [Summarize so far](summarize-so-far.md) (second feature, own 5 phases) | Spoiler-free recap of the book up to the current page, for popular books | Approved; [status](summarize-so-far-logs/STATUS.md) |
+| — | [Summarize so far](summarize-so-far.md) (second feature, own 5 phases) | Spoiler-free recap of the book up to the current page, for popular books | Released 0.2.0; [status](summarize-so-far-logs/STATUS.md) |
 
 Why this order:
 
