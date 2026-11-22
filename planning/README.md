@@ -99,3 +99,4 @@ Status values: `Not started` → `In progress` → `Gate review` → `Complete`.
 ## Later tasks
 
 - [Refine the Summarize-so-far prompt](todo/summarize-prompt-refinement.md): deferred, not blocking.
+- [Finish the Summarize-so-far device verification](todo/summarize-device-verification.md): D2, D3, D5-D9 and the upstream-merge check, deferred, not blocking.

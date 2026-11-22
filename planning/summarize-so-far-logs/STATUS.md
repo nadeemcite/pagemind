@@ -19,11 +19,14 @@ if a session stops (for example the token quota runs out), start a new session a
 - **Phase:** 5 closed by owner decision (2026-11-22): release `0.2.0` built from the merge of upstream `develop`; owner installs it over Wi-Fi
 - **Done:** backup, flash of the summarize build, D1-D4 (owner), merge of upstream `develop` (PR #3787 now upstream), host 1092/1092, release build ok, `0.2.0` tag
 - **Not run (accepted, owner asked to release now):** D5 Hindi, D6 errors, D7 orientation/input, D8 memory over many runs, D9 server log. The merged build has not run on the device before the release.
-- **Next action:** owner installs `0.2.0` from Settings -> Check for updates, then reports; D5-D8 can be done on that build. Fixes ship as `0.2.1`.
+- **Next action:** none now. Remaining device checks are a to-do for when tokens are back: [planning/todo/summarize-device-verification.md](../todo/summarize-device-verification.md). Fixes ship as `0.2.1`.
 - **Rollback:** hold Down at power-on for the firmware recovery picker (Phase 1 D4); backup in `~/projects/xteink-research/backups/2026-11-22-before-summarize/`
 - **Live proxy:** revision `ai-proxy-00009-szv`
 
 ## To do later (owner decision 2026-11-22: not blocking)
+
+- **Device verification (D2, D3, D5-D9, upstream-merge check):** [planning/todo/summarize-device-verification.md](../todo/summarize-device-verification.md)
+- **Prompt refinement and latency:** see below.
 
 Full task file: [planning/todo/summarize-prompt-refinement.md](../todo/summarize-prompt-refinement.md).
 
